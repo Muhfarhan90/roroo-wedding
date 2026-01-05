@@ -282,6 +282,29 @@
 
                 <!-- Sidebar (Right Side) -->
                 <div class="lg:col-span-1 space-y-6">
+
+                    <!-- Edit Jatuh Tempo - Desktop Only -->
+                    <div class="hidden lg:block bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Edit Jatuh Tempo</h3>
+                        <?php if(!$isFullyPaid): ?>
+                            <div class="space-y-3">
+                                <label for="dueDateEdit" class="block text-sm font-medium text-gray-700">Tanggal Jatuh
+                                    Tempo</label>
+                                <input type="date" id="dueDateEdit"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4b896] focus:border-transparent"
+                                    value="<?php echo e(\Carbon\Carbon::parse($invoice->due_date)->format('Y-m-d')); ?>">
+                                <p class="text-xs text-gray-500">Ubah tanggal jatuh tempo untuk invoice ini sebelum
+                                    download PDF</p>
+                            </div>
+                        <?php else: ?>
+                            <div class="text-center py-4">
+                                <span class="text-green-600 font-semibold">✓ Invoice Lunas</span>
+                                <p class="text-xs text-gray-500 mt-2">Jatuh tempo tidak berlaku untuk invoice yang sudah
+                                    lunas</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
                     <!-- Riwayat Pembayaran -->
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Riwayat Pembayaran</h3>
@@ -311,28 +334,6 @@
                                 </div>
                             <?php endif; ?>
                         </div>
-                    </div>
-
-                    <!-- Edit Jatuh Tempo - Desktop Only -->
-                    <div class="hidden lg:block bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Edit Jatuh Tempo</h3>
-                        <?php if(!$isFullyPaid): ?>
-                            <div class="space-y-3">
-                                <label for="dueDateEdit" class="block text-sm font-medium text-gray-700">Tanggal Jatuh
-                                    Tempo</label>
-                                <input type="date" id="dueDateEdit"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4b896] focus:border-transparent"
-                                    value="<?php echo e(\Carbon\Carbon::parse($invoice->due_date)->format('Y-m-d')); ?>">
-                                <p class="text-xs text-gray-500">Ubah tanggal jatuh tempo untuk invoice ini sebelum
-                                    download PDF</p>
-                            </div>
-                        <?php else: ?>
-                            <div class="text-center py-4">
-                                <span class="text-green-600 font-semibold">✓ Invoice Lunas</span>
-                                <p class="text-xs text-gray-500 mt-2">Jatuh tempo tidak berlaku untuk invoice yang sudah
-                                    lunas</p>
-                            </div>
-                        <?php endif; ?>
                     </div>
 
                     <!-- Catatan / Keterangan -->

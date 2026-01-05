@@ -86,8 +86,8 @@
 
                             <!-- Calendar Days -->
                             @php
-                                $currentDate = $startOfMonth->copy()->startOfWeek();
-                                $endDate = $endOfMonth->copy()->endOfWeek();
+                                $currentDate = $startOfMonth->copy()->startOfWeek(\Carbon\Carbon::SUNDAY);
+                                $endDate = $endOfMonth->copy()->endOfWeek(\Carbon\Carbon::SATURDAY);
                                 $today = \Carbon\Carbon::today();
                             @endphp
 

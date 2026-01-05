@@ -214,9 +214,9 @@
                                             class="p-2 text-gray-600 hover:text-[#d4b896] transition-colors" title="View">
                                             <span class="material-symbols-outlined">visibility</span>
                                         </a>
-                                        <button onclick="printInvoice({{ $invoice->id }})"
+                                        <button onclick="downloadInvoice({{ $invoice->id }})"
                                             class="p-2 text-gray-600 hover:text-[#d4b896] transition-colors"
-                                            title="Print">
+                                            title="Download PDF">
                                             <span class="material-symbols-outlined">print</span>
                                         </button>
                                     </div>
@@ -252,8 +252,8 @@
             filterPanel.classList.toggle('hidden');
         }
 
-        function printInvoice(id) {
-            window.open(`/invoices/${id}/print`, '_blank');
+        function downloadInvoice(id) {
+            window.location.href = `/invoices/${id}/download-pdf`;
         }
 
         function toggleFilter() {

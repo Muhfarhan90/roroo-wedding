@@ -166,12 +166,12 @@
                             <th
                                 class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                 Resepsi</th>
-                            <th
+                            {{-- <th
                                 class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                 Total</th>
                             <th
                                 class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
-                                Sisa</th>
+                                Sisa</th> --}}
                             <th
                                 class="px-2 sm:px-6 py-2 sm:py-4 text-center text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                 Aksi</th>
@@ -202,7 +202,7 @@
                                         {{ $order->client->reception_date ? $order->client->reception_date->format('M d, Y') : '-' }}
                                     </div>
                                 </td>
-                                <td class="px-2 sm:px-6 py-2 sm:py-4">
+                                {{-- <td class="px-2 sm:px-6 py-2 sm:py-4">
                                     @php
                                         $paymentHistory = $order->payment_history ?? [];
                                         $totalPaid = is_array($paymentHistory)
@@ -218,7 +218,7 @@
                                         class="text-xs sm:text-sm font-semibold {{ $order->remaining_amount > 0 ? 'text-red-600' : 'text-green-600' }}">
                                         Rp {{ number_format($order->remaining_amount, 0, ',', '.') }}
                                     </div>
-                                </td>
+                                </td> --}}
                                 <td class="px-2 sm:px-6 py-2 sm:py-4">
                                     <div class="flex items-center justify-center gap-1 sm:gap-2">
                                         <a href="{{ route('orders.show', $order) }}"

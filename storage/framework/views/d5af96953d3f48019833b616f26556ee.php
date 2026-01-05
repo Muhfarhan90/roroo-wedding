@@ -164,12 +164,7 @@
                             <th
                                 class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                 Resepsi</th>
-                            <th
-                                class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
-                                Total</th>
-                            <th
-                                class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
-                                Sisa</th>
+                            
                             <th
                                 class="px-2 sm:px-6 py-2 sm:py-4 text-center text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                 Aksi</th>
@@ -203,25 +198,7 @@
 
                                     </div>
                                 </td>
-                                <td class="px-2 sm:px-6 py-2 sm:py-4">
-                                    <?php
-                                        $paymentHistory = $order->payment_history ?? [];
-                                        $totalPaid = is_array($paymentHistory)
-                                            ? array_sum(array_column($paymentHistory, 'amount'))
-                                            : 0;
-                                    ?>
-                                    <div class="text-xs sm:text-sm text-black font-medium">
-                                        Rp <?php echo e(number_format($totalPaid, 0, ',', '.')); ?>
-
-                                    </div>
-                                </td>
-                                <td class="px-2 sm:px-6 py-2 sm:py-4">
-                                    <div
-                                        class="text-xs sm:text-sm font-semibold <?php echo e($order->remaining_amount > 0 ? 'text-red-600' : 'text-green-600'); ?>">
-                                        Rp <?php echo e(number_format($order->remaining_amount, 0, ',', '.')); ?>
-
-                                    </div>
-                                </td>
+                                
                                 <td class="px-2 sm:px-6 py-2 sm:py-4">
                                     <div class="flex items-center justify-center gap-1 sm:gap-2">
                                         <a href="<?php echo e(route('orders.show', $order)); ?>"
