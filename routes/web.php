@@ -7,6 +7,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -34,4 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('appointments/{id}', [AppointmentController::class, 'show'])->name('appointments.show');
     Route::put('appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
     Route::delete('appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
 });

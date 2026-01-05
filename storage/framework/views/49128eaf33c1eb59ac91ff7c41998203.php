@@ -46,6 +46,12 @@
             <span class="material-symbols-outlined text-xl">calendar_month</span>
             <span class="font-medium">Calendar</span>
         </a>
+
+        <a href="/profile"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors <?php echo e(request()->is('profile*') ? 'text-[#d4b896] border-l-4 border-[#d4b896] bg-[#d4b896]/5' : 'text-[#8b6f47] hover:bg-gray-50 hover:text-[#d4b896]'); ?>">
+            <span class="material-symbols-outlined text-xl">account_circle</span>
+            <span class="font-medium">Profile</span>
+        </a>
     </nav>
 
     <!-- Logout Button -->
@@ -134,6 +140,12 @@
                 class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors <?php echo e(request()->is('calendar*') ? 'text-[#d4b896] border-l-4 border-[#d4b896] bg-[#d4b896]/5' : 'text-[#8b6f47] hover:bg-gray-50 hover:text-[#d4b896]'); ?>">
                 <span class="material-symbols-outlined text-xl">calendar_month</span>
                 <span class="font-medium">Calendar</span>
+            </a>
+
+            <a href="/profile"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors <?php echo e(request()->is('profile*') ? 'text-[#d4b896] border-l-4 border-[#d4b896] bg-[#d4b896]/5' : 'text-[#8b6f47] hover:bg-gray-50 hover:text-[#d4b896]'); ?>">
+                <span class="material-symbols-outlined text-xl">account_circle</span>
+                <span class="font-medium">Profile</span>
             </a>
         </nav>
 
