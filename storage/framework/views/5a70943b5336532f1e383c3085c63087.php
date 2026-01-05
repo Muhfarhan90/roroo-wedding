@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ROROO MUA Admin</title>
+    <meta name="description" content="RORO MUA Admin Login">
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 antialiased">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            <!-- Logo/Brand -->
+            <div class="text-center mb-8">
+                <img src="<?php echo e(asset('logo/logo-roroo-wedding.PNG')); ?>" alt="RORO MUA Logo"
+                    class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-[#d4b896] object-cover">
+                <h1 class="text-3xl font-bold text-[#d4b896] tracking-wider">ROROO MUA Admin</h1>
+                <p class="text-gray-500 text-sm mt-1">Please log in to your account</p>
+            </div>
+
+            <!-- Success Message -->
+            <?php if(session('success')): ?>
+                <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-800 rounded-lg">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        <span><?php echo e(session('success')); ?></span>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <!-- Login Form -->
+            <div class="bg-white border-2 border-[#d4b896] rounded-xl p-8 shadow-lg">
+                <form method="POST" action="<?php echo e(route('login')); ?>">
+                    <?php echo csrf_field(); ?>
+
+                    <!-- Email -->
+                    <div class="mb-6">
+                        <label for="email" class="block text-sm font-semibold text-black mb-2">
+                            Email Address
+                        </label>
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">email</span>
+                            <input type="email" id="email" name="email" value="<?php echo e(old('email')); ?>" required
+                                autofocus
+                                class="w-full pl-12 pr-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                placeholder="Miminroro1@gmail.com">
+                        </div>
+                        <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-2 text-sm text-red-500"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-6">
+                        <label for="password" class="block text-sm font-semibold text-black mb-2">
+                            Password
+                        </label>
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">lock</span>
+                            <input type="password" id="password" name="password" required
+                                class="w-full pl-12 pr-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                placeholder="••••••••">
+                        </div>
+                        <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-2 text-sm text-red-500"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+
+                    <!-- Remember Me -->
+                    <div class="mb-6">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="remember"
+                                class="w-4 h-4 text-[#d4b896] border-gray-300 rounded focus:ring-[#d4b896]">
+                            <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit"
+                        class="w-full py-3 bg-[#d4b896] text-black rounded-lg hover:bg-[#c4a886] transition-colors font-semibold shadow-sm">
+                        Login
+                    </button>
+                </form>
+
+                <!-- Help Text -->
+                <div class="mt-6 text-center text-sm text-gray-600">
+                    <p>Admin credentials:</p>
+                    <p class="font-mono text-xs mt-1">Email: Miminroro1@gmail.com</p>
+                    <p class="font-mono text-xs">Password: Fatimah95</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<?php /**PATH D:\Belajar\roro-wedding\resources\views/auth/login.blade.php ENDPATH**/ ?>
