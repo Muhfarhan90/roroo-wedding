@@ -223,28 +223,32 @@ class OrderController extends Controller
         $decorations = $validated['decorations'] ?? [];
 
         // Photo pelaminan
-        if ($request->hasFile('decorations.photo_pelaminan')) {
-            $file = $request->file('decorations.photo_pelaminan');
-            $filename = time() . '_pelaminan.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('decorations', $filename, 'public');
-            $decorations['photo_pelaminan'] = $path;
-        }
+        if ($request->hasFile('decorations')) {
+            $files = $request->file('decorations');
 
-        // Photo kain tenda
-        if ($request->hasFile('decorations.photo_kain_tenda')) {
-            $file = $request->file('decorations.photo_kain_tenda');
-            $filename = time() . '_kain_tenda.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('decorations', $filename, 'public');
-            $decorations['photo_kain_tenda'] = $path;
-        }
-
-        // Foto gaun 1-3
-        for ($i = 1; $i <= 3; $i++) {
-            if ($request->hasFile("decorations.foto_gaun_{$i}")) {
-                $file = $request->file("decorations.foto_gaun_{$i}");
-                $filename = time() . "_gaun_{$i}." . $file->getClientOriginalExtension();
+            if (isset($files['photo_pelaminan'])) {
+                $file = $files['photo_pelaminan'];
+                $filename = time() . '_pelaminan.' . $file->getClientOriginalExtension();
                 $path = $file->storeAs('decorations', $filename, 'public');
-                $decorations["foto_gaun_{$i}"] = $path;
+                $decorations['photo_pelaminan'] = $path;
+            }
+
+            // Photo kain tenda
+            if (isset($files['photo_kain_tenda'])) {
+                $file = $files['photo_kain_tenda'];
+                $filename = time() . '_kain_tenda.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('decorations', $filename, 'public');
+                $decorations['photo_kain_tenda'] = $path;
+            }
+
+            // Foto gaun 1-3
+            for ($i = 1; $i <= 3; $i++) {
+                if (isset($files["foto_gaun_{$i}"])) {
+                    $file = $files["foto_gaun_{$i}"];
+                    $filename = time() . "_gaun_{$i}." . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('decorations', $filename, 'public');
+                    $decorations["foto_gaun_{$i}"] = $path;
+                }
             }
         }
 
@@ -299,6 +303,11 @@ class OrderController extends Controller
             'total_amount' => 'required|numeric|min:0',
             'payment_status' => 'required|string',
             'decorations' => 'nullable|array',
+            'decorations.photo_pelaminan' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'decorations.photo_kain_tenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'decorations.foto_gaun_1' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'decorations.foto_gaun_2' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'decorations.foto_gaun_3' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'notes' => 'nullable|string',
         ]);
 
@@ -308,6 +317,49 @@ class OrderController extends Controller
         } else {
             $validated['items'] = [];
         }
+
+        // Handle file uploads for decorations
+        $decorations = $order->decorations ?? [];
+
+        // Merge with existing text decorations from form
+        if (isset($validated['decorations'])) {
+            foreach ($validated['decorations'] as $key => $value) {
+                // Only merge non-file fields (text inputs)
+                if (!is_object($value)) {
+                    $decorations[$key] = $value;
+                }
+            }
+        }
+
+        // Handle file uploads
+        if ($request->hasFile('decorations')) {
+            $files = $request->file('decorations');
+
+            if (isset($files['photo_pelaminan'])) {
+                $file = $files['photo_pelaminan'];
+                $filename = time() . '_pelaminan.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('decorations', $filename, 'public');
+                $decorations['photo_pelaminan'] = $path;
+            }
+
+            if (isset($files['photo_kain_tenda'])) {
+                $file = $files['photo_kain_tenda'];
+                $filename = time() . '_kain_tenda.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('decorations', $filename, 'public');
+                $decorations['photo_kain_tenda'] = $path;
+            }
+
+            for ($i = 1; $i <= 3; $i++) {
+                if (isset($files["foto_gaun_{$i}"])) {
+                    $file = $files["foto_gaun_{$i}"];
+                    $filename = time() . "_gaun_{$i}." . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('decorations', $filename, 'public');
+                    $decorations["foto_gaun_{$i}"] = $path;
+                }
+            }
+        }
+
+        $validated['decorations'] = $decorations;
 
         // Recalculate remaining amount based on payment history
         $paymentHistory = $order->payment_history ?? [];
@@ -417,8 +469,16 @@ class OrderController extends Controller
 
     public function downloadPdf(Order $order)
     {
-        $pdf = Pdf::loadView('orders.pdf', compact('order'))
-            ->setPaper('a4', 'portrait');
+        // Load profile for business information
+        $profile = \App\Models\Profile::first();
+
+        $pdf = Pdf::loadView('orders.pdf', compact('order', 'profile'))
+            ->setPaper('a4', 'portrait')
+            ->setOptions([
+                'dpi' => 96,
+                'isRemoteEnabled' => false,
+                'enable_font_subsetting' => true,
+            ]);
 
         return $pdf->download('Order-' . $order->order_number . '.pdf');
     }

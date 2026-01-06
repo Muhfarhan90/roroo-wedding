@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Pesanan #{{ $order->order_number }}</title>
+    <title>Order #{{ $order->order_number }}</title>
     <style>
         * {
             margin: 0;
@@ -14,113 +13,141 @@
 
         body {
             font-family: 'DejaVu Sans', sans-serif;
-            font-size: 12px;
-            line-height: 1.6;
+            font-size: 11px;
+            line-height: 1.5;
             color: #333;
-            padding: 30px 40px;
+            padding: 20px 30px;
         }
 
+        /* Header */
         .header {
-            text-align: center;
-            margin-bottom: 20px;
+            display: table;
+            width: 100%;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #8b7355;
+        }
+
+        .header-left {
+            display: table-cell;
+            width: 70px;
+            vertical-align: middle;
         }
 
         .logo {
-            width: 100px;
-            height: auto;
-            margin: 0 auto 10px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #d4b896;
+            object-fit: cover;
         }
 
-        .header h1 {
-            font-size: 22px;
-            color: #8b7355;
-            margin: 0 0 5px 0;
+        .header-center {
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 15px;
+        }
+
+        .header-title {
+            font-size: 20px;
             font-weight: bold;
+            color: #8b7355;
+            margin-bottom: 3px;
         }
 
-        .order-meta {
-            text-align: center;
-            font-size: 11px;
+        .header-subtitle {
+            font-size: 10px;
             color: #666;
-            margin-top: 5px;
         }
 
-        .divider {
-            border-top: 2px solid #d4b896;
-            margin: 20px 0;
+        .header-right {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: right;
         }
 
+        .order-number {
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .order-date {
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* Section */
         .section {
             margin-bottom: 20px;
-            background: white;
+            page-break-inside: avoid;
+        }
+
+        .section-header {
+            background: #f5f5f5;
+            padding: 8px 12px;
+            border-left: 4px solid #8b7355;
+            margin-bottom: 12px;
         }
 
         .section-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: #8b7355;
-            border-bottom: 2px solid #d4b896;
-            padding-bottom: 5px;
-            margin: 20px 0 15px 0;
+            text-transform: uppercase;
         }
 
-        .info-box {
-            background: #fafafa;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            padding: 15px;
-            margin-bottom: 15px;
+        /* Info Grid */
+        .info-grid {
+            display: table;
+            width: 100%;
+            margin-bottom: 10px;
         }
 
-        .info-row {
-            margin-bottom: 8px;
-            line-height: 1.5;
+        .info-col-2 {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
+            padding: 0 8px;
+        }
+
+        .info-col-2:first-child {
+            padding-left: 0;
+        }
+
+        .info-col-2:last-child {
+            padding-right: 0;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
         }
 
         .info-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            color: #666;
+            font-size: 9px;
             font-weight: bold;
-            margin-bottom: 5px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 3px;
         }
 
         .info-value {
-            font-size: 12px;
+            font-size: 11px;
             color: #333;
-            margin-bottom: 8px;
+            line-height: 1.4;
         }
 
         .info-value strong {
-            font-weight: bold;
             color: #000;
+            font-weight: bold;
         }
 
-        /* Info Section - Two Column Layout */
-        .info-section {
-            display: table;
-            width: 100%;
-            margin: 20px 0;
-        }
-
-        .column-left {
-            display: table-cell;
-            width: 50%;
-            vertical-align: top;
-            padding-right: 10px;
-        }
-
-        .column-right {
-            display: table-cell;
-            width: 50%;
-            vertical-align: top;
-            padding-left: 10px;
-        }
-
+        /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin: 10px 0;
         }
 
         table thead {
@@ -129,283 +156,232 @@
         }
 
         table th {
-            padding: 10px 8px;
+            padding: 8px 10px;
             text-align: left;
-            font-weight: 600;
-            font-size: 11px;
+            font-size: 10px;
+            font-weight: bold;
             text-transform: uppercase;
         }
 
         table td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #e0e0e0;
-            font-size: 12px;
-            color: #333;
-        }
-
-        table tbody tr:nth-child(even) {
-            background: #fafafa;
+            padding: 8px 10px;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 11px;
         }
 
         table tbody tr:last-child td {
             border-bottom: 2px solid #8b7355;
         }
 
-        .text-right {
-            text-align: right;
-        }
-
         .text-center {
             text-align: center;
         }
 
+        .text-right {
+            text-align: right;
+        }
+
         .total-row {
-            background: #fafafa;
+            background: #f9f9f9;
             font-weight: bold;
         }
 
         /* Status Badge */
+        .status-box {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
         .status-badge {
             display: inline-block;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 3px;
+            font-size: 10px;
             font-weight: bold;
             text-transform: uppercase;
         }
 
-        .status-lunas {
+        .badge-lunas {
             background: #d4edda;
             color: #155724;
         }
 
-        .status-belum {
-            background: #f8d7da;
-            color: #721c24;
+        .badge-belum {
+            background: #fff3cd;
+            color: #856404;
         }
 
-        /* Payment Summary Box */
-        .payment-summary {
-            background: #f8f8f8;
-            border: 1px solid #ddd;
+        /* Payment Summary */
+        .payment-box {
+            background: #f9f9f9;
+            padding: 12px;
             border-radius: 4px;
-            padding: 15px;
-            margin: 20px 0;
+            border: 1px solid #e5e5e5;
         }
 
-        .payment-summary-row {
+        /* Custom Items */
+        .custom-grid {
             display: table;
             width: 100%;
-            padding: 5px 0;
         }
 
-        .payment-summary-label {
+        .custom-item {
             display: table-cell;
-            text-align: left;
-            font-size: 11px;
-            color: #666;
-        }
-
-        .payment-summary-value {
-            display: table-cell;
-            text-align: right;
-            font-size: 11px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .payment-summary-row.highlight {
-            border-top: 2px solid #8b7355;
-            padding-top: 10px;
-            margin-top: 5px;
-        }
-
-        .payment-summary-row.highlight .payment-summary-label,
-        .payment-summary-row.highlight .payment-summary-value {
-            font-size: 13px;
-            font-weight: bold;
-            color: #8b7355;
-        }
-
-        /* Notes Section */
-        .notes {
-            background: #fafafa;
-            border-left: 3px solid #d4b896;
-            padding: 15px;
-            margin: 20px 0;
-            font-size: 11px;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .notes-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 12px;
-            color: #8b7355;
-        }
-
-        .notes-content {
-            font-size: 11px;
-            line-height: 1.6;
-        }
-
-        /* Image Styling */
-        .decoration-image {
-            width: 100%;
-            max-width: 200px;
-            height: auto;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            margin-top: 5px;
-        }
-
-        .decoration-grid {
-            display: table;
-            width: 100%;
-            margin: 10px 0;
-        }
-
-        .decoration-item {
-            display: table-cell;
-            width: 33.33%;
-            padding: 10px;
-            text-align: center;
+            width: 50%;
+            padding: 8px;
             vertical-align: top;
         }
 
-        .decoration-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            color: #666;
+        .custom-label {
+            font-size: 9px;
             font-weight: bold;
-            margin-bottom: 8px;
-            display: block;
+            color: #8b7355;
+            text-transform: uppercase;
+            margin-bottom: 5px;
         }
 
+        .custom-value {
+            font-size: 11px;
+            color: #333;
+        }
+
+        /* Notes */
+        .notes-box {
+            background: #fffbf0;
+            border-left: 3px solid #f0ad4e;
+            padding: 12px;
+            font-size: 10px;
+            color: #666;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* Footer */
         .footer {
             margin-top: 30px;
-            text-align: center;
-            font-size: 10px;
-            color: #999;
-            padding-top: 15px;
+            padding-top: 12px;
             border-top: 1px solid #ddd;
+            text-align: center;
+            font-size: 9px;
+            color: #999;
         }
     </style>
 </head>
 
 <body>
+    <!-- Header -->
     <div class="header">
-        <img src="{{ public_path('logo/logo-roroo-wedding.png') }}" alt="ROROO MUA Logo" class="logo">
-        <h1>ROROO</h1>
-        <div class="header-meta">Wedding Make Up</div>
+        <div class="header-left">
+            @php
+                $logoPath = public_path('logo/logo-roroo-wedding.PNG');
+                $logoData = '';
+                if (file_exists($logoPath)) {
+                    $cacheKey = 'logo_base64_order_' . md5_file($logoPath);
+                    $logoData = cache()->remember($cacheKey, 3600, function () use ($logoPath) {
+                        return base64_encode(file_get_contents($logoPath));
+                    });
+                }
+                $logoSrc = $logoData ? 'data:image/png;base64,' . $logoData : '';
+            @endphp
+            @if ($logoSrc)
+                <img src="{{ $logoSrc }}" alt="Logo" class="logo">
+            @endif
+        </div>
+        <div class="header-center">
+            <div class="header-title">Detail Pesanan</div>
+            <div class="header-subtitle">{{ $profile->business_name ?? 'ROROO MUA' }}</div>
+        </div>
+        <div class="header-right">
+            <div class="order-number">Order #{{ $order->order_number }}</div>
+            <div class="order-date">Tanggal: {{ $order->created_at->format('d F Y') }}</div>
+        </div>
     </div>
 
-    <!-- Order Info Box -->
-    <div class="info-box" style="text-align: center; margin-bottom: 20px;">
-        <div style="font-size: 14px; font-weight: bold; color: #8b7355; margin-bottom: 5px;">
-            DETAIL PESANAN
-        </div>
-        <div style="font-size: 13px; font-weight: bold; color: #333;">
-            Order #{{ $order->order_number }}
-        </div>
-        <div style="font-size: 10px; color: #666; margin-top: 3px;">
-            Tanggal: {{ $order->created_at->format('d F Y') }}
-        </div>
-    </div>
-
-    <!-- Detail Klien & Acara -->
+    <!-- Section 1: Detail Klien & Acara -->
     <div class="section">
-        <div class="section-title">Detail Klien & Acara</div>
-
-        <div class="info-section">
-            <div class="column-left">
-                <div class="info-box">
-                    <div class="info-row">
-                        <span class="info-label">Order Number</span>
-                        <div class="info-value"><strong>{{ $order->order_number }}</strong></div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Tanggal Order</span>
-                        <div class="info-value">{{ $order->created_at->format('d F Y') }}</div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">HP Pengantin Wanita</span>
-                        <div class="info-value">{{ $order->client->bride_phone ?? '-' }}</div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">HP Pengantin Pria</span>
-                        <div class="info-value">{{ $order->client->groom_phone ?? '-' }}</div>
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    <div class="info-row">
-                        <span class="info-label">Pengantin Wanita</span>
-                        <div class="info-value"><strong>{{ $order->client->bride_name }}</strong></div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Alamat Pengantin Wanita</span>
-                        <div class="info-value">{{ $order->client->bride_address ?? '-' }}</div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Orang Tua Pengantin Wanita</span>
-                        <div class="info-value">{{ $order->client->bride_parents ?? '-' }}</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="column-right">
-                <div class="info-box">
-                    <div class="info-row">
-                        <span class="info-label">Pengantin Pria</span>
-                        <div class="info-value"><strong>{{ $order->client->groom_name }}</strong></div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Alamat Pengantin Pria</span>
-                        <div class="info-value">{{ $order->client->groom_address ?? '-' }}</div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Orang Tua Pengantin Pria</span>
-                        <div class="info-value">{{ $order->client->groom_parents ?? '-' }}</div>
-                    </div>
-                </div>
-            </div>
+        <div class="section-header">
+            <div class="section-title">Detail Klien & Acara</div>
         </div>
 
-        <div class="info-box">
-            <div class="info-row">
-                <span class="info-label">Lokasi Acara</span>
-                <div class="info-value">{{ $order->client->event_location ?? '-' }}</div>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Tanggal Akad</span>
-                <div class="info-value">
-                    {{ $order->client->akad_date ? $order->client->akad_date->format('d F Y') : '-' }}
-                    @if ($order->client->akad_time)
-                        - {{ date('H:i', strtotime($order->client->akad_time)) }} WIB
-                    @endif
+        <div class="info-grid">
+            <div class="info-col-2">
+                <div class="info-item">
+                    <div class="info-label">Kontak Person</div>
+                    <div class="info-value"><strong>{{ $order->client->bride_name }}</strong></div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">HP Pengantin Wanita</div>
+                    <div class="info-value">{{ $order->client->bride_phone ?? '-' }}</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">HP Pengantin Pria</div>
+                    <div class="info-value">{{ $order->client->groom_phone ?? '-' }}</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Pengantin Pria</div>
+                    <div class="info-value"><strong>{{ $order->client->groom_name }}</strong></div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Orang Tua Pengantin Pria</div>
+                    <div class="info-value">{{ $order->client->groom_parents ?? '-' }}</div>
                 </div>
             </div>
-            <div class="info-row">
-                <span class="info-label">Tanggal Resepsi</span>
-                <div class="info-value">
-                    {{ $order->client->reception_date ? $order->client->reception_date->format('d F Y') : '-' }}
-                    @if ($order->client->reception_time)
-                        - {{ date('H:i', strtotime($order->client->reception_time)) }}
-                        @if ($order->client->reception_end_time)
-                            s/d {{ date('H:i', strtotime($order->client->reception_end_time)) }}
+
+            <div class="info-col-2">
+                <div class="info-item">
+                    <div class="info-label">Pengantin Wanita</div>
+                    <div class="info-value"><strong>{{ $order->client->bride_name }}</strong></div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Orang Tua Pengantin Wanita</div>
+                    <div class="info-value">{{ $order->client->bride_parents ?? '-' }}</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Tanggal Akad</div>
+                    <div class="info-value">
+                        {{ $order->client->akad_date ? $order->client->akad_date->format('d F Y') : '-' }}
+                        @if ($order->client->akad_time)
+                            - {{ date('H:i', strtotime($order->client->akad_time)) }} s/d
+                            {{ $order->client->akad_time ? date('H:i', strtotime($order->client->akad_time)) : '00:00' }}
+                            WIB
                         @endif
-                        WIB
-                    @endif
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Tanggal Resepsi</div>
+                    <div class="info-value">
+                        {{ $order->client->reception_date ? $order->client->reception_date->format('d F Y') : '-' }}
+                        @if ($order->client->reception_time)
+                            - {{ date('H:i', strtotime($order->client->reception_time)) }} s/d
+                            {{ $order->client->reception_end_time ? date('H:i', strtotime($order->client->reception_end_time)) : '00:00' }}
+                            WIB
+                        @endif
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Lokasi Acara</div>
+                    <div class="info-value">{{ $order->client->event_location ?? '-' }}</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Item Pesanan -->
+    <!-- Section 2: Item Pesanan -->
     <div class="section">
-        <div class="section-title">Item Pesanan</div>
+        <div class="section-header">
+            <div class="section-title">Item Pesanan</div>
+        </div>
+
         <table>
             <thead>
                 <tr>
@@ -418,213 +394,237 @@
             <tbody>
                 @if (is_array($order->items) && count($order->items) > 0)
                     @foreach ($order->items as $item)
-                        <tr>
-                            <td>{{ $item['name'] ?? 'N/A' }}</td>
-                            <td class="text-center">{{ $item['quantity'] ?? 0 }}</td>
-                            <td class="text-right">Rp {{ number_format($item['price'] ?? 0, 0, ',', '.') }}</td>
-                            <td class="text-right">Rp {{ number_format($item['total'] ?? 0, 0, ',', '.') }}</td>
-                        </tr>
+                        @if (!empty($item['name']) && $item['name'] !== 'N/A')
+                            <tr>
+                                <td>{{ $item['name'] }}</td>
+                                <td class="text-center">{{ $item['quantity'] ?? 1 }}</td>
+                                <td class="text-right">Rp {{ number_format($item['price'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right">Rp {{ number_format($item['total'] ?? 0, 0, ',', '.') }}</td>
+                            </tr>
+                        @endif
                     @endforeach
-                    <tr class="total-row">
-                        <td colspan="3" class="text-right"><strong>Total</strong></td>
-                        <td class="text-right"><strong>Rp
-                                {{ number_format($order->total_amount, 0, ',', '.') }}</strong></td>
-                    </tr>
-                @else
-                    <tr>
-                        <td colspan="4" class="text-center" style="padding: 20px; color: #999;">Tidak ada item</td>
-                    </tr>
                 @endif
+
+                @if (is_array($order->decorations) && count($order->decorations) > 0)
+                    @foreach ($order->decorations as $key => $decoration)
+                        @if (is_array($decoration) && isset($decoration['name']) && !empty($decoration['name']) && $decoration['name'] !== 'N/A')
+                            <tr>
+                                <td>{{ $decoration['name'] }}</td>
+                                <td class="text-center">1</td>
+                                <td class="text-right">Rp {{ number_format($decoration['price'] ?? 0, 0, ',', '.') }}
+                                </td>
+                                <td class="text-right">Rp {{ number_format($decoration['price'] ?? 0, 0, ',', '.') }}
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endif
+
+                <tr class="total-row">
+                    <td colspan="3" class="text-right">Total</td>
+                    <td class="text-right">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- Pilihan Kustom -->
-    @if (is_array($order->decorations) && count($order->decorations) > 0)
-        <div class="section">
-            <div class="section-title">Pilihan Kustom</div>
+    <!-- Section 3: Pilihan Kustom -->
+    @php
+        $hasCustomOptions = false;
+        $textOptions = [];
+        $photoOptions = [];
+        $gaunPhotos = [];
 
-            @php
-                $hasImages = false;
-                $textDecorations = [];
-            @endphp
+        // Field mapping for labels
+        $fieldLabels = [
+            'kursi_pelaminan' => 'Model Pelaminan',
+            'warna_tenda' => 'Warna Tenda',
+            'harga_dekorasi' => 'Harga Dekorasi',
+            'type_dekorasi' => 'Tipe Dekorasi',
+            'notes_dekorasi' => 'Catatan Dekorasi',
+            'photo_pelaminan' => 'Foto Model Pelaminan',
+            'photo_kain_tenda' => 'Foto Warna Kain Tenda',
+        ];
 
-            <!-- Foto Model Pelaminan -->
-            @if (isset($order->decorations['photo_pelaminan']) && is_string($order->decorations['photo_pelaminan']))
-                @php $hasImages = true; @endphp
-                <div class="info-box">
-                    <span class="info-label">FOTO MODEL PELAMINAN</span>
-                    <div style="text-align: center; margin-top: 10px;">
-                        <img src="{{ public_path('storage/' . $order->decorations['photo_pelaminan']) }}" 
-                             alt="Model Pelaminan" 
-                             class="decoration-image"
-                             style="max-width: 250px;">
-                    </div>
-                    @if(isset($order->decorations['kursi_pelaminan']))
-                        <div class="info-value" style="margin-top: 10px; text-align: center;">
-                            <strong>Kursi:</strong> {{ $order->decorations['kursi_pelaminan'] }}
-                        </div>
-                    @endif
-                </div>
-            @endif
-
-            <!-- Foto Warna Kain Tenda -->
-            @if (isset($order->decorations['photo_kain_tenda']) && is_string($order->decorations['photo_kain_tenda']))
-                @php $hasImages = true; @endphp
-                <div class="info-box">
-                    <span class="info-label">FOTO WARNA KAIN TENDA</span>
-                    <div style="text-align: center; margin-top: 10px;">
-                        <img src="{{ public_path('storage/' . $order->decorations['photo_kain_tenda']) }}" 
-                             alt="Kain Tenda" 
-                             class="decoration-image"
-                             style="max-width: 250px;">
-                    </div>
-                    @if(isset($order->decorations['warna_tenda']))
-                        <div class="info-value" style="margin-top: 10px; text-align: center;">
-                            <strong>Warna:</strong> {{ $order->decorations['warna_tenda'] }}
-                        </div>
-                    @endif
-                </div>
-            @endif
-
-            <!-- Foto Gaun (3 Foto) -->
-            @php
-                $gaunImages = [];
-                for ($i = 1; $i <= 3; $i++) {
-                    if (isset($order->decorations["foto_gaun_{$i}"]) && is_string($order->decorations["foto_gaun_{$i}"])) {
-                        $gaunImages[] = $order->decorations["foto_gaun_{$i}"];
+        // Check decorations
+        if (is_array($order->decorations)) {
+            // Collect gaun photos
+            for ($i = 1; $i <= 3; $i++) {
+                if (isset($order->decorations["foto_gaun_{$i}"]) && !empty($order->decorations["foto_gaun_{$i}"])) {
+                    $photoPath = storage_path('app/public/' . $order->decorations["foto_gaun_{$i}"]);
+                    if (file_exists($photoPath)) {
+                        $cacheKey = 'decoration_gaun_' . $i . '_' . md5_file($photoPath);
+                        $photoData = cache()->remember($cacheKey, 3600, function () use ($photoPath) {
+                            return base64_encode(file_get_contents($photoPath));
+                        });
+                        $gaunPhotos[] =
+                            'data:image/' . pathinfo($photoPath, PATHINFO_EXTENSION) . ';base64,' . $photoData;
                     }
                 }
-            @endphp
+            }
 
-            @if (count($gaunImages) > 0)
-                @php $hasImages = true; @endphp
-                <div class="info-box">
-                    <span class="info-label">FOTO GAUN</span>
-                    <div class="decoration-grid">
-                        @foreach($gaunImages as $index => $gaunImage)
-                            <div class="decoration-item">
-                                <img src="{{ public_path('storage/' . $gaunImage) }}" 
-                                     alt="Gaun {{ $index + 1 }}" 
-                                     class="decoration-image"
-                                     style="max-width: 150px;">
-                                <div style="font-size: 9px; color: #999; margin-top: 5px;">Gaun {{ $index + 1 }}</div>
+            foreach ($order->decorations as $key => $value) {
+                // Skip empty values
+                if (empty($value)) {
+                    continue;
+                }
+
+                // Skip individual gaun photos (handled separately above)
+                if (str_contains($key, 'foto_gaun_')) {
+                    continue;
+                }
+
+                // For photo fields, encode to base64
+                if (str_contains($key, 'photo_') || str_contains($key, 'foto_')) {
+                    $photoPath = storage_path('app/public/' . $value);
+                    if (file_exists($photoPath)) {
+                        $cacheKey = 'decoration_' . $key . '_' . md5_file($photoPath);
+                        $photoData = cache()->remember($cacheKey, 3600, function () use ($photoPath) {
+                            return base64_encode(file_get_contents($photoPath));
+                        });
+                        $label =
+                            $fieldLabels[$key] ??
+                            ucwords(str_replace(['_', 'photo', 'foto'], [' ', 'Foto', 'Foto'], $key));
+                        $photoOptions[$label] =
+                            'data:image/' . pathinfo($photoPath, PATHINFO_EXTENSION) . ';base64,' . $photoData;
+                        $hasCustomOptions = true;
+                    }
+                }
+                // For text fields, show the value
+                elseif (is_string($value)) {
+                    $label = $fieldLabels[$key] ?? ucwords(str_replace('_', ' ', $key));
+                    $textOptions[$label] = $value;
+                    $hasCustomOptions = true;
+                }
+            }
+        }
+
+        if (count($gaunPhotos) > 0) {
+            $hasCustomOptions = true;
+        }
+    @endphp
+
+    @if ($hasCustomOptions)
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">Pilihan Kustom</div>
+            </div>
+
+            <!-- Text Options -->
+            @if (count($textOptions) > 0)
+                <div class="custom-grid" style="margin-bottom: 15px;">
+                    @php
+                        $optionsArray = array_chunk($textOptions, ceil(count($textOptions) / 2), true);
+                    @endphp
+                    @foreach ($optionsArray as $columnOptions)
+                        <div style="display: table-cell; width: 50%; padding: 0 8px; vertical-align: top;">
+                            @foreach ($columnOptions as $label => $value)
+                                <div style="margin-bottom: 10px;">
+                                    <div class="custom-label">{{ $label }}</div>
+                                    <div class="custom-value">{{ $value }}</div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            <!-- Photo Options -->
+            @if (count($photoOptions) > 0)
+                @foreach ($photoOptions as $label => $photoSrc)
+                    <div style="margin-bottom: 15px; page-break-inside: avoid;">
+                        <div class="custom-label" style="margin-bottom: 5px;">{{ $label }}</div>
+                        <div style="text-align: center; background: #f5f5f5; padding: 10px; border-radius: 4px;">
+                            <img src="{{ $photoSrc }}" alt="{{ $label }}"
+                                style="max-width: 100%; max-height: 200px; border-radius: 4px; object-fit: contain;">
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+
+            <!-- Gaun Photos -->
+            @if (count($gaunPhotos) > 0)
+                <div style="margin-bottom: 15px; page-break-inside: avoid;">
+                    <div class="custom-label" style="margin-bottom: 5px;">Foto Gaun</div>
+                    <div style="display: table; width: 100%; table-layout: fixed;">
+                        @foreach ($gaunPhotos as $gaunPhoto)
+                            <div
+                                style="display: table-cell; width: {{ 100 / count($gaunPhotos) }}%; padding: 5px; vertical-align: top;">
+                                <div style="background: #f5f5f5; padding: 5px; border-radius: 4px; text-align: center;">
+                                    <img src="{{ $gaunPhoto }}" alt="Gaun"
+                                        style="max-width: 100%; height: 120px; border-radius: 4px; object-fit: cover;">
+                                </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
             @endif
-
-            <!-- Text Decorations (Kursi & Warna Tenda jika tidak ada foto) -->
-            @php
-                if (isset($order->decorations['kursi_pelaminan']) && !isset($order->decorations['photo_pelaminan'])) {
-                    $textDecorations['Kursi Pelaminan'] = $order->decorations['kursi_pelaminan'];
-                }
-                if (isset($order->decorations['warna_tenda']) && !isset($order->decorations['photo_kain_tenda'])) {
-                    $textDecorations['Warna Tenda'] = $order->decorations['warna_tenda'];
-                }
-            @endphp
-
-            @if (count($textDecorations) > 0)
-                <div class="info-box">
-                    @foreach($textDecorations as $label => $value)
-                        <div style="margin-bottom: 8px;">
-                            <span class="info-label">{{ strtoupper($label) }}</span>
-                            <div class="info-value">{{ $value }}</div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
         </div>
     @endif
 
-    <!-- Status Pembayaran -->
+    <!-- Section 4: Status Pembayaran -->
     <div class="section">
-        <div class="section-title">Status Pembayaran</div>
+        <div class="section-header">
+            <div class="section-title">Status Pembayaran</div>
+        </div>
 
-        <div class="info-box" style="margin-bottom: 15px;">
-            <div class="info-row">
-                <span class="info-label">Status</span>
-                <div class="info-value">
-                    <span
-                        class="status-badge {{ $order->payment_status == 'Lunas' ? 'status-lunas' : 'status-belum' }}">
-                        {{ strtoupper($order->payment_status) }}
-                    </span>
-                </div>
+        <div class="status-box">
+            <div class="info-label" style="margin-bottom: 5px;">STATUS</div>
+            <span class="status-badge {{ $order->payment_status == 'Lunas' ? 'badge-lunas' : 'badge-belum' }}">
+                {{ $order->payment_status == 'Lunas' ? 'LUNAS' : 'BELUM LUNAS' }}
+            </span>
+        </div>
+
+        <div class="payment-box" style="margin-bottom: 12px;">
+            <div class="info-label" style="margin-bottom: 5px;">SISA PEMBAYARAN</div>
+            <div style="font-size: 16px; font-weight: bold; color: #8b7355;">
+                Rp {{ number_format($order->remaining_amount, 0, ',', '.') }}
             </div>
         </div>
 
         @if (is_array($order->payment_history) && count($order->payment_history) > 0)
-            <div class="info-box" style="margin-bottom: 0;">
-                <span class="info-label" style="display: block; margin-bottom: 10px;">Sisa Pembayaran</span>
-                <div class="info-value" style="font-size: 13px; font-weight: bold; color: #8b7355;">
-                    Rp {{ number_format($order->remaining_amount, 0, ',', '.') }}
-                </div>
-            </div>
-
-            <div style="margin-top: 15px;">
-                <span class="info-label" style="display: block; margin-bottom: 10px;">Riwayat Pembayaran</span>
-                <table>
-                    <thead>
+            <div class="info-label" style="margin-bottom: 8px;">RIWAYAT PEMBAYARAN</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">PEMBAYARAN</th>
+                        <th class="text-center" style="width: 25%">TANGGAL</th>
+                        <th class="text-right" style="width: 30%">JUMLAH</th>
+                        <th class="text-center" style="width: 20%">METODE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($order->payment_history as $payment)
                         <tr>
-                            <th style="width: 25%">SISTEM</th>
-                            <th class="text-center" style="width: 25%">TANGGAL</th>
-                            <th class="text-right" style="width: 30%">JUMLAH</th>
-                            <th class="text-center" style="width: 20%">METODE</th>
+                            <td>{{ $payment['dp_number'] ?? 'DP' }}</td>
+                            <td class="text-center">{{ \Carbon\Carbon::parse($payment['paid_at'])->format('d M Y') }}
+                            </td>
+                            <td class="text-right">Rp {{ number_format($payment['amount'] ?? 0, 0, ',', '.') }}</td>
+                            <td class="text-center">{{ $payment['payment_method'] ?? 'Transfer' }}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($order->payment_history as $payment)
-                            <tr>
-                                <td>{{ $payment['dp_number'] ?? 'N/A' }}</td>
-                                <td class="text-center">
-                                    {{ \Carbon\Carbon::parse($payment['paid_at'])->format('d M Y') }}</td>
-                                <td class="text-right">Rp {{ number_format($payment['amount'] ?? 0, 0, ',', '.') }}
-                                </td>
-                                <td class="text-center">{{ $payment['payment_method'] ?? '-' }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @else
-            <div class="info-box">
-                <div class="info-value" style="text-align: center; color: #999;">Belum ada pembayaran</div>
-            </div>
+                    @endforeach
+                </tbody>
+            </table>
         @endif
-
-        <div class="payment-summary">
-            <div class="payment-summary-row">
-                <div class="payment-summary-label">Total Pesanan:</div>
-                <div class="payment-summary-value">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</div>
-            </div>
-            <div class="payment-summary-row">
-                <div class="payment-summary-label">Total Dibayar:</div>
-                <div class="payment-summary-value">
-                    Rp
-                    {{ number_format(array_sum(array_column($order->payment_history ?? [], 'amount')), 0, ',', '.') }}
-                </div>
-            </div>
-            <div class="payment-summary-row highlight">
-                <div class="payment-summary-label">Sisa Tagihan:</div>
-                <div class="payment-summary-value">Rp {{ number_format($order->remaining_amount, 0, ',', '.') }}</div>
-            </div>
-        </div>
     </div>
 
-    <!-- Catatan -->
+    <!-- Section 5: Catatan Khusus (Optional) -->
     @if ($order->notes)
-        <div class="notes">
-            <div class="notes-title">Catatan Pesanan:</div>
-            <div class="notes-content">{{ $order->notes }}</div>
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">Catatan Khusus</div>
+            </div>
+            <div class="notes-box">
+                {{ $order->notes }}
+            </div>
         </div>
     @endif
 
     <!-- Footer -->
     <div class="footer">
-        <p>Terima kasih atas kepercayaan Anda kepada ROROO Wedding Make Up</p>
-        <p style="margin-top: 8px; font-size: 9px;">Dokumen ini dibuat secara otomatis pada {{ now()->format('d F Y H:i') }} WIB</p>
-        <p style="margin-top: 5px; font-weight: bold; color: #8b7355;">© 2026 ROROO MUA - Wedding Services</p>
+        <p>Dokumen ini dibuat secara otomatis pada {{ now()->format('d F Y, H:i') }} WIB</p>
+        <p style="margin-top: 5px;">about:<strong
+                style="color: #8b7355;">{{ $profile->business_name ?? 'ROROO MUA' }}</strong></p>
     </div>
 </body>
 
