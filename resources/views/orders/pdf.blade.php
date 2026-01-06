@@ -275,7 +275,7 @@
     <div class="header">
         <div class="header-left">
             @php
-                $logoPath = public_path('logo/logo-roroo-wedding.PNG');
+                $logoPath = public_path('logo/logo-roroo-wedding.png');
                 $logoData = '';
                 if (file_exists($logoPath)) {
                     $cacheKey = 'logo_base64_order_' . md5_file($logoPath);

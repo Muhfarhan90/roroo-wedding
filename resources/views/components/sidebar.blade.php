@@ -3,7 +3,7 @@
     class="hidden md:flex md:w-64 lg:w-72 bg-white border-r border-[#d4b896] flex-col shadow-lg fixed left-0 top-0 h-screen z-30">
     <!-- Brand -->
     <div class="p-6 border-b border-[#d4b896] text-center">
-        <img src="{{ asset('logo/logo-roroo-wedding.PNG') }}" alt="ROROO MUA Logo"
+        <img src="{{ asset('logo/logo-roroo-wedding.png') }}" alt="ROROO MUA Logo"
             class="w-20 h-20 mx-auto mb-2 rounded-full border-4 border-[#d4b896] object-cover">
         <h1 class="text-[#d4b896] text-xl font-bold tracking-wider">ROROO</h1>
         <p class="text-gray-500 text-[10px] uppercase tracking-widest mt-0.5">Wedding Make Up</p>
@@ -71,7 +71,7 @@
 <header class="md:hidden bg-white border-b border-[#d4b896] px-4 py-3 sticky top-0 z-40 shadow-sm">
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
-            <img src="{{ asset('logo/logo-roroo-wedding.PNG') }}" alt="ROROO MUA Logo"
+            <img src="{{ asset('logo/logo-roroo-wedding.png') }}" alt="ROROO MUA Logo"
                 class="w-10 h-10 rounded-full border-2 border-[#d4b896] object-cover">
             <div>
                 <h1 class="text-[#d4b896] text-base font-bold tracking-wider">ROROO</h1>

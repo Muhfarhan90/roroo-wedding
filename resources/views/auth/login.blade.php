@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - ROROO MUA Admin</title>
     <meta name="description" content="RORO MUA Admin Login">
+    <link rel="icon" type="image/x-icon" href="{{ asset('logo/favicon.ico') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet">
@@ -16,7 +17,7 @@
         <div class="w-full max-w-md">
             <!-- Logo/Brand -->
             <div class="text-center mb-8">
-                <img src="{{ asset('logo/logo-roroo-wedding.PNG') }}" alt="RORO MUA Logo"
+                <img src="{{ asset('logo/logo-roroo-wedding.png') }}" alt="RORO MUA Logo"
                     class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-[#d4b896] object-cover">
                 <h1 class="text-3xl font-bold text-[#d4b896] tracking-wider">ROROO MUA Admin</h1>
                 <p class="text-gray-500 text-sm mt-1">Please log in to your account</p>

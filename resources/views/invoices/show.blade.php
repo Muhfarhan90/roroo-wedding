@@ -61,7 +61,7 @@
                         <!-- Header -->
                         <div class="flex justify-between items-start mb-6 pb-6 border-b border-[#e8d5c4]">
                             <div class="flex items-center gap-4">
-                                <img src="{{ asset('logo/logo-roroo-wedding.PNG') }}" alt="RORO MUA Logo"
+                                <img src="{{ asset('logo/logo-roroo-wedding.png') }}" alt="RORO MUA Logo"
                                     class="w-20 h-20 rounded-full border-2 border-[#d4b896] object-cover">
                                 <div>
                                     <h2 class="text-5xl font-bold text-gray-700">FAKTUR</h2>
