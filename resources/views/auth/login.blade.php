@@ -87,13 +87,6 @@
                         Login
                     </button>
                 </form>
-
-                <!-- Help Text -->
-                <div class="mt-6 text-center text-sm text-gray-600">
-                    <p>Admin credentials:</p>
-                    <p class="font-mono text-xs mt-1">Email: Miminroro1@gmail.com</p>
-                    <p class="font-mono text-xs">Password: Fatimah95</p>
-                </div>
             </div>
         </div>
     </div>
