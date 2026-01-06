@@ -131,7 +131,7 @@
             <tr>
                 <th>No</th>
                 <th>No. Order</th>
-                <th>Mempelai Wanita</th>
+                <th>Nama Mempelai</th>
                 <th>Tanggal Akad</th>
                 <th>Tanggal Resepsi</th>
                 <th>Total</th>
@@ -144,7 +144,7 @@
                 <tr>
                     <td class="text-center">{{ $index + 1 }}</td>
                     <td>{{ $order->order_number }}</td>
-                    <td>{{ $order->client->bride_name }}</td>
+                    <td>{{ $order->client->bride_name }} & {{ $order->client->groom_name }}</td>
                     <td class="text-center">
                         {{ $order->client->akad_date ? $order->client->akad_date->format('d/m/Y') : '-' }}</td>
                     <td class="text-center">

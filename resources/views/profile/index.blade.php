@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="min-h-screen bg-gradient-to-br from-[#faf9f7] to-white p-4 sm:p-6">
-        <div class="max-w-5xl mx-auto">
+        <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <div class="mb-6">
                 <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Business Profile</h1>

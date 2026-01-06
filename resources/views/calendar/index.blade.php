@@ -46,7 +46,18 @@
         @endif
 
         <div class="max-w-7xl mx-auto">
+            <!-- Page Header -->
+            <div class="mb-6 md:mb-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold mb-2 text-black">Calendar</h1>
+                        <p class="text-sm md:text-base text-gray-600">Kelola jadwal dan acara Anda dengan mudah.</p>
+                    </div>
+
+                </div>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
                 <!-- Left: Calendar + Selected Day Appointments -->
                 <div class="lg:col-span-2 space-y-4">
                     <!-- Calendar Card -->
@@ -158,25 +169,43 @@
                         <div class="space-y-2">
                             @forelse($upcomingAppointments as $appointment)
                                 <div onclick="viewAppointment({{ $appointment->id }})"
-                                    class="bg-gray-50 rounded-xl p-3 hover:bg-gray-100 transition-all cursor-pointer flex items-center gap-3 border-l-4"
+                                    class="bg-gray-50 rounded-xl p-3 hover:bg-gray-100 transition-all cursor-pointer flex items-start gap-3 border-l-4"
                                     style="border-left-color: {{ $appointment->color ?? '#d4b896' }};">
                                     <!-- Date Badge -->
-                                    <div class="flex-shrink-0 w-10 h-10 rounded-full border-2 flex items-center justify-center"
+                                    <div class="flex-shrink-0 w-12 h-12 rounded-full border-2 flex flex-col items-center justify-center"
                                         style="border-color: {{ $appointment->color ?? '#d4b896' }};">
-                                        <span class="text-base font-bold"
+                                        <span class="text-lg font-bold leading-tight"
                                             style="color: {{ $appointment->color ?? '#d4b896' }};">{{ $appointment->date->format('d') }}</span>
+                                        <span
+                                            class="text-[9px] font-medium text-gray-500 uppercase">{{ $appointment->date->format('M') }}</span>
                                     </div>
 
                                     <!-- Appointment Info -->
                                     <div class="flex-1 min-w-0">
-                                        <div class="flex items-center gap-2 mb-0.5">
-                                            <span
-                                                class="text-xs font-semibold text-gray-800">{{ \Carbon\Carbon::parse($appointment->start_time)->format('g:i A') }}</span>
+                                        <!-- Time -->
+                                        <div class="flex items-center gap-1.5 mb-1">
+                                            <span class="material-symbols-outlined text-sm text-gray-400">schedule</span>
+                                            <span class="text-xs font-semibold text-gray-800">
+                                                {{ \Carbon\Carbon::parse($appointment->start_time)->format('g:i A') }} -
+                                                {{ \Carbon\Carbon::parse($appointment->end_time)->format('g:i A') }}
+                                            </span>
+                                            <span class="text-[10px] text-gray-400">
+                                                {{ $appointment->date->format('D, M d') }}
+                                            </span>
                                         </div>
-                                        <h4 class="text-sm font-semibold text-gray-900 mb-0.5 truncate">
-                                            {{ $appointment->client ? $appointment->client->bride_name : 'No Name' }}
+
+                                        <!-- Title -->
+                                        <h4 class="text-sm font-bold text-gray-900 mb-1 leading-tight">
+                                            {{ $appointment->title }}
                                         </h4>
-                                        <p class="text-xs text-gray-600 truncate">{{ $appointment->title }}</p>
+
+                                        <!-- Client Name -->
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="material-symbols-outlined text-xs text-gray-400">person</span>
+                                            <p class="text-xs text-gray-600 truncate">
+                                                {{ $appointment->client ? $appointment->client->bride_name : 'No Client' }}
+                                            </p>
+                                        </div>
                                     </div>
 
                                     <!-- Status Badge -->
@@ -226,7 +255,8 @@
                             class="w-full px-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none">
                             <option value="">Select a client</option>
                             @foreach ($clients as $client)
-                                <option value="{{ $client->id }}">{{ $client->bride_name }} & {{ $client->groom_name }}
+                                <option value="{{ $client->id }}">{{ $client->bride_name }} &
+                                    {{ $client->groom_name }}
                                 </option>
                             @endforeach
                         </select>
@@ -360,33 +390,47 @@
                     minute: '2-digit',
                     hour12: true
                 });
+                const endTime = new Date('2000-01-01 ' + appointment.end_time).toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
 
                 const date = new Date(appointment.date);
                 const day = date.getDate();
+                const monthName = date.toLocaleString('en-US', {
+                    month: 'short'
+                });
 
                 const appointmentColor = appointment.color || '#d4b896';
 
                 const statusBadge = appointment.status === 'confirmed' ?
                     '<div class="flex-shrink-0 px-2 py-0.5 bg-[#d4b896]/20 text-[#d4b896] text-[10px] font-medium rounded-full">Confirmed</div>' :
-                    '<button class="flex-shrink-0 p-1 hover:bg-gray-100 rounded-full transition-colors"><span class="material-symbols-outlined text-gray-400 text-lg">edit</span></button>';
+                    '';
 
                 html += `
                     <div onclick="viewAppointment(${appointment.id})"
-                        class="bg-white rounded-xl shadow-sm p-3 hover:shadow-md transition-all cursor-pointer flex items-center gap-3 border-l-4"
+                        class="bg-white rounded-xl shadow-sm p-3 hover:shadow-md transition-all cursor-pointer flex items-start gap-3 border-l-4"
                         style="border-left-color: ${appointmentColor};">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full border-2 flex items-center justify-center"
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full border-2 flex flex-col items-center justify-center"
                              style="border-color: ${appointmentColor};">
-                            <span class="text-base font-bold" style="color: ${appointmentColor};">${day}</span>
+                            <span class="text-lg font-bold leading-tight" style="color: ${appointmentColor};">${day}</span>
+                            <span class="text-[9px] font-medium text-gray-500 uppercase">${monthName}</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-0.5">
-                                <span class="text-xs font-semibold text-gray-800">${startTime}</span>
-                                <span class="text-[10px] text-gray-400">${appointment.client ? appointment.client.bride_name : 'No Client'}</span>
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <span class="material-symbols-outlined text-sm text-gray-400">schedule</span>
+                                <span class="text-xs font-semibold text-gray-800">${startTime} - ${endTime}</span>
                             </div>
-                            <h4 class="text-sm font-semibold text-gray-900 mb-0.5">
-                                ${appointment.client ? appointment.client.bride_name : 'No Name'}
+                            <h4 class="text-sm font-bold text-gray-900 mb-1 leading-tight">
+                                ${appointment.title}
                             </h4>
-                            <p class="text-xs text-gray-600">${appointment.title}</p>
+                            <div class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-xs text-gray-400">person</span>
+                                <p class="text-xs text-gray-600 truncate">
+                                    ${appointment.client ? appointment.client.bride_name : 'No Client'}
+                                </p>
+                            </div>
                         </div>
                         ${statusBadge}
                     </div>

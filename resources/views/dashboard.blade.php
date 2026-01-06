@@ -86,42 +86,37 @@
                         <thead class="bg-gray-50 border-b-2 border-[#d4b896]">
                             <tr>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
-                                    Mempelai Wanita</th>
+                                    class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
+                                    Nama Mempelai</th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
-                                    Mempelai Pria</th>
-                                <th
-                                    class="px-6 py-4 text-left text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
+                                    class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                     Tanggal Akad</th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
+                                    class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                     Tanggal Resepsi</th>
                                 <th
-                                    class="px-6 py-4 text-center text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
+                                    class="px-2 sm:px-6 py-2 sm:py-4 text-center text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                     Days Until</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             @foreach ($upcomingEvents as $event)
                                 <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm font-medium text-black">{{ $event->bride_name }}</div>
+                                    <td class="px-2 sm:px-6 py-2 sm:py-4">
+                                        <div class="text-xs sm:text-sm font-medium text-black">{{ $event->bride_name }} & {{ $event->groom_name }}
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-black">{{ $event->groom_name }}</div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-black">
+                                    <td class="px-2 sm:px-6 py-2 sm:py-4">
+                                        <div class="text-xs sm:text-sm text-black">
                                             {{ $event->akad_date ? $event->akad_date->format('M d, Y') : '-' }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-black">
+                                    <td class="px-2 sm:px-6 py-2 sm:py-4">
+                                        <div class="text-xs sm:text-sm text-black">
                                             {{ $event->reception_date ? $event->reception_date->format('M d, Y') : '-' }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 text-center">
+                                    <td class="px-2 sm:px-6 py-2 sm:py-4 text-center">
                                         @php
                                             $nearestDate =
                                                 $event->akad_date && $event->akad_date->isFuture()
@@ -130,7 +125,7 @@
                                             $daysUntil = $nearestDate ? (int) $nearestDate->diffInDays(now()) : null;
                                         @endphp
                                         <span
-                                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold
+                                            class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-sm font-semibold
                                             {{ $daysUntil <= 7 ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800' }}">
                                             {{ $daysUntil }} days
                                         </span>
@@ -158,69 +153,71 @@
                         <thead class="bg-gray-50 border-b-2 border-[#d4b896]">
                             <tr>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
-                                    Mempelai Wanita</th>
+                                    class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
+                                    Nama Mempelai</th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
+                                    class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                     Tanggal Akad</th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
+                                    class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                     Tanggal Resepsi</th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
+                                    class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                     Total Bayar</th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
+                                    class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                     Sisa Pembayaran</th>
                                 <th
-                                    class="px-6 py-4 text-center text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
+                                    class="px-2 sm:px-6 py-2 sm:py-4 text-center text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                     Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             @foreach ($recentOrders as $order)
                                 <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm font-medium text-black">{{ $order->client->bride_name }}</div>
+                                    <td class="px-2 sm:px-6 py-2 sm:py-4">
+                                        <div class="text-xs sm:text-sm font-medium text-black">
+                                            {{ $order->client->bride_name }} & {{ $order->client->groom_name }}</div>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-black">
+                                    <td class="px-2 sm:px-6 py-2 sm:py-4">
+                                        <div class="text-xs sm:text-sm text-black">
                                             {{ $order->client->akad_date ? $order->client->akad_date->format('M d, Y') : '-' }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-black">
+                                    <td class="px-2 sm:px-6 py-2 sm:py-4">
+                                        <div class="text-xs sm:text-sm text-black">
                                             {{ $order->client->reception_date ? $order->client->reception_date->format('M d, Y') : '-' }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 sm:px-6 py-2 sm:py-4">
                                         @php
                                             $paymentHistory = $order->payment_history ?? [];
                                             $totalPaid = is_array($paymentHistory)
                                                 ? array_sum(array_column($paymentHistory, 'amount'))
                                                 : 0;
                                         @endphp
-                                        <div class="text-sm text-black font-medium">
+                                        <div class="text-xs sm:text-sm text-black font-medium">
                                             Rp {{ number_format($totalPaid, 0, ',', '.') }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 sm:px-6 py-2 sm:py-4">
                                         <div
-                                            class="text-sm font-semibold {{ $order->remaining_amount > 0 ? 'text-red-600' : 'text-green-600' }}">
+                                            class="text-xs sm:text-sm font-semibold {{ $order->remaining_amount > 0 ? 'text-red-600' : 'text-green-600' }}">
                                             Rp {{ number_format($order->remaining_amount, 0, ',', '.') }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center justify-center gap-2">
+                                    <td class="px-2 sm:px-6 py-2 sm:py-4">
+                                        <div class="flex items-center justify-center gap-1 sm:gap-2">
                                             <a href="{{ route('orders.show', $order) }}"
-                                                class="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                                                class="p-1 sm:p-2 text-gray-600 hover:text-blue-600 transition-colors"
                                                 title="View">
-                                                <span class="material-symbols-outlined">visibility</span>
+                                                <span
+                                                    class="material-symbols-outlined text-lg sm:text-2xl">visibility</span>
                                             </a>
                                             <a href="{{ route('orders.edit', $order) }}"
-                                                class="p-2 text-gray-600 hover:text-[#d4b896] transition-colors"
+                                                class="p-1 sm:p-2 text-gray-600 hover:text-[#d4b896] transition-colors"
                                                 title="Edit">
-                                                <span class="material-symbols-outlined">edit</span>
+                                                <span class="material-symbols-outlined text-lg sm:text-2xl">edit</span>
                                             </a>
                                         </div>
                                     </td>
