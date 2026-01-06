@@ -69,10 +69,16 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <h3 class="text-lg font-bold text-gray-900">RORO MUA</h3>
-                                <p class="text-[10px] text-gray-500 mt-1">Perumahan Kaliwulu blok AC no.1</p>
-                                <p class="text-[10px] text-gray-500">Kec.Plered Kab Cirebon</p>
-                                <p class="text-[10px] text-gray-500">(Depan Lapangan)</p>
+                                <h3 class="text-lg font-bold text-gray-900">{{ $profile->business_name ?? 'RORO MUA' }}</h3>
+                                @if ($profile && $profile->address)
+                                    @foreach (explode("\n", $profile->address) as $line)
+                                        <p class="text-[10px] text-gray-500 mt-1">{{ $line }}</p>
+                                    @endforeach
+                                @else
+                                    <p class="text-[10px] text-gray-500 mt-1">Perumahan Kaliwulu blok AC no.1</p>
+                                    <p class="text-[10px] text-gray-500">Kec.Plered Kab Cirebon</p>
+                                    <p class="text-[10px] text-gray-500">(Depan Lapangan)</p>
+                                @endif
                             </div>
                         </div>
 
@@ -248,11 +254,6 @@
                                 @if ($lastPayment)
                                     <p><span class="font-semibold">Invoice untuk:</span> Pembayaran
                                         {{ $lastPayment['dp_number'] ?? 'N/A' }} - {{ $invoice->order->order_number }}</p>
-                                    <p><span class="font-semibold">Catatan pembayaran:</span> Pembayaran
-                                        {{ $lastPayment['dp_number'] ?? 'N/A' }} untuk pesanan
-                                        {{ $invoice->order->order_number }}</p>
-                                    <p><span class="font-semibold">Keterangan tambahan:</span> Invoice untuk pembayaran
-                                        {{ $lastPayment['dp_number'] ?? 'N/A' }} - {{ $invoice->order->order_number }}</p>
                                     <p class="mt-4 text-gray-600 italic">Terima kasih telah memilih ROROO MUA untuk hari
                                         istimewa Anda! Kami sangat menghargai kepercayaan Anda.</p>
                                 @else
@@ -266,13 +267,24 @@
                             <div class="flex justify-between items-start text-xs text-gray-600">
                                 <div>
                                     <p class="font-semibold mb-2">Informasi Banking Bank</p>
-                                    <p>BCA: 774 539 3493 a/n Tatimatu Ghofaroh</p>
-                                    <p>BRI: 0101 01030 547 563 a/n Tatimatu Ghofaroh</p>
+                                    @if ($profile && $profile->banks && count($profile->banks) > 0)
+                                        @foreach ($profile->banks as $bank)
+                                            <p>{{ $bank['bank_name'] }}: {{ $bank['account_number'] }} a/n
+                                                {{ $bank['account_holder'] }}</p>
+                                        @endforeach
+                                    @else
+                                        <p>BCA: 774 539 3493 a/n Tatimatu Ghofaroh</p>
+                                        <p>BRI: 0101 01030 547 563 a/n Tatimatu Ghofaroh</p>
+                                    @endif
                                 </div>
                                 <div class="text-right">
                                     <p class="font-semibold mb-2">Hubungi Kami</p>
-                                    <p>+62857-0000-5543</p>
-                                    <p>roromua@gmail.com</p>
+                                    @if ($profile && $profile->phone)
+                                        <p>Telp: {{ $profile->phone }}</p>
+                                    @endif
+                                    @if ($profile && $profile->email)
+                                        <p>Emai: {{ $profile->email }}</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -346,12 +358,6 @@
                                 <div class="text-sm text-gray-700 space-y-2">
                                     <p><span class="font-semibold text-gray-900">Invoice untuk:</span> Pembayaran
                                         {{ $lastPayment['dp_number'] ?? 'N/A' }} - {{ $invoice->order->order_number }}</p>
-                                    <p><span class="font-semibold text-gray-900">Catatan pembayaran:</span> Pembayaran
-                                        {{ $lastPayment['dp_number'] ?? 'N/A' }} untuk pesanan
-                                        {{ $invoice->order->order_number }}</p>
-                                    <p><span class="font-semibold text-gray-900">Keterangan tambahan:</span> Invoice untuk
-                                        pembayaran {{ $lastPayment['dp_number'] ?? 'N/A' }} -
-                                        {{ $invoice->order->order_number }}</p>
                                     <p class="text-gray-600 italic pt-2">Terima kasih telah memilih ROROO MUA untuk hari
                                         istimewa Anda! Kami sangat menghargai kepercayaan Anda.</p>
                                 </div>

@@ -67,10 +67,16 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <h3 class="text-lg font-bold text-gray-900">RORO MUA</h3>
-                                <p class="text-[10px] text-gray-500 mt-1">Perumahan Kaliwulu blok AC no.1</p>
-                                <p class="text-[10px] text-gray-500">Kec.Plered Kab Cirebon</p>
-                                <p class="text-[10px] text-gray-500">(Depan Lapangan)</p>
+                                <h3 class="text-lg font-bold text-gray-900"><?php echo e($profile->business_name ?? 'RORO MUA'); ?></h3>
+                                <?php if($profile && $profile->address): ?>
+                                    <?php $__currentLoopData = explode("\n", $profile->address); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $line): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <p class="text-[10px] text-gray-500 mt-1"><?php echo e($line); ?></p>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php else: ?>
+                                    <p class="text-[10px] text-gray-500 mt-1">Perumahan Kaliwulu blok AC no.1</p>
+                                    <p class="text-[10px] text-gray-500">Kec.Plered Kab Cirebon</p>
+                                    <p class="text-[10px] text-gray-500">(Depan Lapangan)</p>
+                                <?php endif; ?>
                             </div>
                         </div>
 
@@ -249,11 +255,6 @@
                                 <?php if($lastPayment): ?>
                                     <p><span class="font-semibold">Invoice untuk:</span> Pembayaran
                                         <?php echo e($lastPayment['dp_number'] ?? 'N/A'); ?> - <?php echo e($invoice->order->order_number); ?></p>
-                                    <p><span class="font-semibold">Catatan pembayaran:</span> Pembayaran
-                                        <?php echo e($lastPayment['dp_number'] ?? 'N/A'); ?> untuk pesanan
-                                        <?php echo e($invoice->order->order_number); ?></p>
-                                    <p><span class="font-semibold">Keterangan tambahan:</span> Invoice untuk pembayaran
-                                        <?php echo e($lastPayment['dp_number'] ?? 'N/A'); ?> - <?php echo e($invoice->order->order_number); ?></p>
                                     <p class="mt-4 text-gray-600 italic">Terima kasih telah memilih ROROO MUA untuk hari
                                         istimewa Anda! Kami sangat menghargai kepercayaan Anda.</p>
                                 <?php else: ?>
@@ -267,13 +268,24 @@
                             <div class="flex justify-between items-start text-xs text-gray-600">
                                 <div>
                                     <p class="font-semibold mb-2">Informasi Banking Bank</p>
-                                    <p>BCA: 774 539 3493 a/n Tatimatu Ghofaroh</p>
-                                    <p>BRI: 0101 01030 547 563 a/n Tatimatu Ghofaroh</p>
+                                    <?php if($profile && $profile->banks && count($profile->banks) > 0): ?>
+                                        <?php $__currentLoopData = $profile->banks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bank): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <p><?php echo e($bank['bank_name']); ?>: <?php echo e($bank['account_number']); ?> a/n
+                                                <?php echo e($bank['account_holder']); ?></p>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php else: ?>
+                                        <p>BCA: 774 539 3493 a/n Tatimatu Ghofaroh</p>
+                                        <p>BRI: 0101 01030 547 563 a/n Tatimatu Ghofaroh</p>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="text-right">
                                     <p class="font-semibold mb-2">Hubungi Kami</p>
-                                    <p>+62857-0000-5543</p>
-                                    <p>roromua@gmail.com</p>
+                                    <?php if($profile && $profile->phone): ?>
+                                        <p>Telp: <?php echo e($profile->phone); ?></p>
+                                    <?php endif; ?>
+                                    <?php if($profile && $profile->email): ?>
+                                        <p>Emai: <?php echo e($profile->email); ?></p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -348,12 +360,6 @@
                                 <div class="text-sm text-gray-700 space-y-2">
                                     <p><span class="font-semibold text-gray-900">Invoice untuk:</span> Pembayaran
                                         <?php echo e($lastPayment['dp_number'] ?? 'N/A'); ?> - <?php echo e($invoice->order->order_number); ?></p>
-                                    <p><span class="font-semibold text-gray-900">Catatan pembayaran:</span> Pembayaran
-                                        <?php echo e($lastPayment['dp_number'] ?? 'N/A'); ?> untuk pesanan
-                                        <?php echo e($invoice->order->order_number); ?></p>
-                                    <p><span class="font-semibold text-gray-900">Keterangan tambahan:</span> Invoice untuk
-                                        pembayaran <?php echo e($lastPayment['dp_number'] ?? 'N/A'); ?> -
-                                        <?php echo e($invoice->order->order_number); ?></p>
                                     <p class="text-gray-600 italic pt-2">Terima kasih telah memilih ROROO MUA untuk hari
                                         istimewa Anda! Kami sangat menghargai kepercayaan Anda.</p>
                                 </div>

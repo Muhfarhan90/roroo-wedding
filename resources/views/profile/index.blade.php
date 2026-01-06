@@ -132,46 +132,78 @@
 
                     <!-- Social Media -->
                     <div>
-                        <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-[#d4b896]">share</span>
-                            Media Sosial
-                        </h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Instagram</label>
-                                <input type="text" name="social_media[instagram]"
-                                    value="{{ old('social_media.instagram', $profile->social_media['instagram'] ?? '') }}"
-                                    class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4b896]"
-                                    placeholder="@username">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Facebook</label>
-                                <input type="text" name="social_media[facebook]"
-                                    value="{{ old('social_media.facebook', $profile->social_media['facebook'] ?? '') }}"
-                                    class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4b896]"
-                                    placeholder="facebook.com/page">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">TikTok</label>
-                                <input type="text" name="social_media[tiktok]"
-                                    value="{{ old('social_media.tiktok', $profile->social_media['tiktok'] ?? '') }}"
-                                    class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4b896]"
-                                    placeholder="@username">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
-                                <input type="text" name="social_media[whatsapp]"
-                                    value="{{ old('social_media.whatsapp', $profile->social_media['whatsapp'] ?? '') }}"
-                                    class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4b896]"
-                                    placeholder="08123456789">
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Website</label>
-                                <input type="text" name="social_media[website]"
-                                    value="{{ old('social_media.website', $profile->social_media['website'] ?? '') }}"
-                                    class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4b896]"
-                                    placeholder="https://website.com">
-                            </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[#d4b896]">share</span>
+                                Media Sosial
+                            </h2>
+                            <button type="button" onclick="addSocialMedia()"
+                                class="px-3 py-1 bg-[#d4b896] text-white text-sm rounded-lg hover:bg-[#c4a886] transition-colors flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">add</span>
+                                Tambah
+                            </button>
+                        </div>
+                        <div id="socialMediaList" class="space-y-3">
+                            @if ($profile->social_media && count($profile->social_media) > 0)
+                                @foreach ($profile->social_media as $index => $social)
+                                    <div class="social-media-item bg-gray-50 rounded-lg p-4">
+                                        <div class="flex items-start justify-between mb-3">
+                                            <span class="text-sm font-medium text-gray-700">Media Sosial
+                                                #{{ $index + 1 }}</span>
+                                            <button type="button" onclick="removeSocialMedia(this)"
+                                                class="text-red-500 hover:text-red-600">
+                                                <span class="material-symbols-outlined text-sm">delete</span>
+                                            </button>
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-600 mb-1">Platform</label>
+                                                <select name="social_media[{{ $index }}][platform]"
+                                                    class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#d4b896]"
+                                                    required>
+                                                    <option value="">Pilih Platform</option>
+                                                    <option value="Instagram"
+                                                        {{ ($social['platform'] ?? '') == 'Instagram' ? 'selected' : '' }}>
+                                                        Instagram</option>
+                                                    <option value="Facebook"
+                                                        {{ ($social['platform'] ?? '') == 'Facebook' ? 'selected' : '' }}>
+                                                        Facebook</option>
+                                                    <option value="TikTok"
+                                                        {{ ($social['platform'] ?? '') == 'TikTok' ? 'selected' : '' }}>
+                                                        TikTok</option>
+                                                    <option value="YouTube"
+                                                        {{ ($social['platform'] ?? '') == 'YouTube' ? 'selected' : '' }}>
+                                                        YouTube</option>
+                                                    <option value="Twitter"
+                                                        {{ ($social['platform'] ?? '') == 'Twitter' ? 'selected' : '' }}>
+                                                        Twitter</option>
+                                                    <option value="WhatsApp"
+                                                        {{ ($social['platform'] ?? '') == 'WhatsApp' ? 'selected' : '' }}>
+                                                        WhatsApp</option>
+                                                    <option value="Website"
+                                                        {{ ($social['platform'] ?? '') == 'Website' ? 'selected' : '' }}>
+                                                        Website</option>
+                                                    <option value="Lainnya"
+                                                        {{ ($social['platform'] ?? '') == 'Lainnya' ? 'selected' : '' }}>
+                                                        Lainnya</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label
+                                                    class="block text-xs font-medium text-gray-600 mb-1">URL/Username</label>
+                                                <input type="text" name="social_media[{{ $index }}][value]"
+                                                    value="{{ old("social_media.{$index}.value", $social['value'] ?? '') }}"
+                                                    class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#d4b896]"
+                                                    placeholder="@username atau https://..." required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="text-center py-8 text-gray-400 text-sm">
+                                    Belum ada media sosial. Klik tombol "Tambah" untuk menambahkan.
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -200,6 +232,7 @@
 
     <script>
         let bankCounter = {{ count($profile->banks ?? []) }};
+        let socialMediaCounter = {{ count($profile->social_media ?? []) }};
 
         function addBankAccount() {
             const container = document.getElementById('bankAccounts');
@@ -260,6 +293,73 @@
                 const banks = container.querySelectorAll('.bank-account');
                 banks.forEach((bank, index) => {
                     bank.querySelector('span.text-sm').textContent = `Rekening #${index + 1}`;
+                });
+            }
+        }
+
+        function addSocialMedia() {
+            const container = document.getElementById('socialMediaList');
+            const emptyMessage = container.querySelector('.text-center');
+            if (emptyMessage) {
+                emptyMessage.remove();
+            }
+
+            const socialDiv = document.createElement('div');
+            socialDiv.className = 'social-media-item bg-gray-50 rounded-lg p-4';
+            socialDiv.innerHTML = `
+                <div class="flex items-start justify-between mb-3">
+                    <span class="text-sm font-medium text-gray-700">Media Sosial #${socialMediaCounter + 1}</span>
+                    <button type="button" onclick="removeSocialMedia(this)"
+                        class="text-red-500 hover:text-red-600">
+                        <span class="material-symbols-outlined text-sm">delete</span>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Platform</label>
+                        <select name="social_media[${socialMediaCounter}][platform]"
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#d4b896]"
+                            required>
+                            <option value="">Pilih Platform</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="YouTube">YouTube</option>
+                            <option value="Twitter">Twitter</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Website">Website</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">URL/Username</label>
+                        <input type="text" name="social_media[${socialMediaCounter}][value]"
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#d4b896]"
+                            placeholder="@username atau https://..." required>
+                    </div>
+                </div>
+            `;
+            container.appendChild(socialDiv);
+            socialMediaCounter++;
+        }
+
+        function removeSocialMedia(button) {
+            const socialDiv = button.closest('.social-media-item');
+            socialDiv.remove();
+
+            // Show empty message if no social media left
+            const container = document.getElementById('socialMediaList');
+            if (container.children.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-400 text-sm">
+                        Belum ada media sosial. Klik tombol "Tambah" untuk menambahkan.
+                    </div>
+                `;
+            } else {
+                // Update numbering
+                const socials = container.querySelectorAll('.social-media-item');
+                socials.forEach((social, index) => {
+                    social.querySelector('span.text-sm').textContent = `Media Sosial #${index + 1}`;
                 });
             }
         }

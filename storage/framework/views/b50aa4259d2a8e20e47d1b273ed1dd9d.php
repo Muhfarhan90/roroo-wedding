@@ -323,8 +323,10 @@
         <div style="display: table-cell; width: 50%; vertical-align: middle;">
             <div style="display: table; width: 100%;">
                 <div style="display: table-cell; width: 80px; vertical-align: middle;">
-                    <img src="<?php echo e(public_path('logo/logo-roroo-wedding.PNG')); ?>" alt="RORO MUA Logo"
-                        style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid #d4b896; object-fit: cover;">
+                    <?php if(isset($logoSrc) && $logoSrc): ?>
+                        <img src="<?php echo e($logoSrc); ?>" alt="RORO MUA Logo"
+                            style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid #d4b896; object-fit: cover;">
+                    <?php endif; ?>
                 </div>
                 <div style="display: table-cell; vertical-align: middle; padding-left: 15px;">
                     <h1 style="font-size: 48px; font-weight: bold; color: #555; margin: 0; line-height: 1;">FAKTUR</h1>
@@ -333,10 +335,17 @@
             </div>
         </div>
         <div style="display: table-cell; width: 50%; vertical-align: top; text-align: right;">
-            <h3 style="font-size: 16px; font-weight: bold; color: #333; margin: 0 0 5px 0;">RORO MUA</h3>
-            <p style="font-size: 9px; color: #666; margin: 2px 0;">Perumahan Kaliwulu blok AC no.1</p>
-            <p style="font-size: 9px; color: #666; margin: 2px 0;">Kec.Plered Kab Cirebon</p>
-            <p style="font-size: 9px; color: #666; margin: 2px 0;">(Depan Lapangan)</p>
+            <h3 style="font-size: 16px; font-weight: bold; color: #333; margin: 0 0 5px 0;">
+                <?php echo e($profile->business_name ?? 'RORO MUA'); ?></h3>
+            <?php if($profile && $profile->address): ?>
+                <?php $__currentLoopData = explode("\n", $profile->address); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $line): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <p style="font-size: 9px; color: #666; margin: 2px 0;"><?php echo e($line); ?></p>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php else: ?>
+                <p style="font-size: 9px; color: #666; margin: 2px 0;">Perumahan Kaliwulu blok AC no.1</p>
+                <p style="font-size: 9px; color: #666; margin: 2px 0;">Kec.Plered Kab Cirebon</p>
+                <p style="font-size: 9px; color: #666; margin: 2px 0;">(Depan Lapangan)</p>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -382,7 +391,7 @@
                 <p class="info-row" style="margin-bottom: 4px;">
                     <span style="color: #4b5563;">Jatuh Tempo:</span>
                     <?php if($isFullyPaid): ?>
-                        <span style="color: #16a34a; font-weight: 600;">Lunas ✓</span>
+                        <span style="color: #16a34a; font-weight: 600;">Lunas</span>
                     <?php else: ?>
                         <span
                             style="font-weight: 600; color: #111827;"><?php echo e(\Carbon\Carbon::parse($invoice->due_date)->format('M d, Y')); ?></span>
@@ -515,17 +524,35 @@
         </div>
     <?php endif; ?>
 
-    <!-- Bank Info -->
-    <div class="bank-info">
-        <div class="bank-title">Informasi Banking Bank</div>
-        <p style="font-size: 11px; color: #333; margin-bottom: 4px;">BCA: 774 539 3493 a/n Tatimatu Ghofaroh</p>
-        <p style="font-size: 11px; color: #333;">BRI: 0101 01030 547 563 a/n Tatimatu Ghofaroh</p>
+    <!-- Bank Info & Contact (Two Columns) -->
+    <div style="display: table; width: 100%; padding: 20px 0; margin: 20px 0; border-top: 1px solid #e5e7eb;">
+        <div style="display: table-cell; width: 50%; vertical-align: top; padding-right: 20px;">
+            <div style="font-size: 10px; font-weight: 600; color: #111827; margin-bottom: 8px;">Informasi Banking Bank</div>
+            <?php if($profile && $profile->banks && count($profile->banks) > 0): ?>
+                <?php $__currentLoopData = $profile->banks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bank): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <p style="font-size: 11px; color: #333; margin-bottom: 4px;"><?php echo e($bank['bank_name']); ?>: <?php echo e($bank['account_number']); ?> a/n <?php echo e($bank['account_holder']); ?></p>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php else: ?>
+                <p style="font-size: 11px; color: #333; margin-bottom: 4px;">BCA: 774 539 3493 a/n Tatimatu Ghofaroh</p>
+                <p style="font-size: 11px; color: #333;">BRI: 0101 01030 547 563 a/n Tatimatu Ghofaroh</p>
+            <?php endif; ?>
+        </div>
+        <div style="display: table-cell; width: 50%; vertical-align: top; text-align: right; padding-left: 20px;">
+            <div style="font-size: 10px; font-weight: 600; color: #111827; margin-bottom: 8px;">Hubungi Kami</div>
+            <?php if($profile && $profile->phone): ?>
+                <p style="font-size: 11px; color: #333; margin-bottom: 4px;">Telp: <?php echo e($profile->phone); ?></p>
+            <?php endif; ?>
+            <?php if($profile && $profile->email): ?>
+                <p style="font-size: 11px; color: #333; margin-bottom: 4px;">Email: <?php echo e($profile->email); ?></p>
+            <?php endif; ?>
+        </div>
     </div>
 
     <!-- Footer -->
     <div class="footer">
         <p>Dicetak pada: <?php echo e(now()->format('d F Y, H:i')); ?> WIB</p>
-        <p style="margin-top: 5px;">© 2026 ROROO MUA - Wedding Services</p>
+        <p style="margin-top: 5px;">© <?php echo e(date('Y')); ?> <?php echo e($profile->business_name ?? 'ROROO MUA'); ?> - Wedding
+            Services</p>
     </div>
 </body>
 

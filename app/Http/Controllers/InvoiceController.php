@@ -95,7 +95,8 @@ class InvoiceController extends Controller
     public function show($id)
     {
         $invoice = Invoice::with(['order.client'])->findOrFail($id);
-        return view('invoices.show', compact('invoice'));
+        $profile = \App\Models\Profile::first();
+        return view('invoices.show', compact('invoice', 'profile'));
     }
 
     public function store(Request $request)
@@ -162,9 +163,41 @@ class InvoiceController extends Controller
             $invoice->due_date = $request->due_date;
         }
 
-        $pdf = Pdf::loadView('invoices.pdf', compact('invoice'))
-            ->setPaper('a4', 'portrait');
+        // Load business profile - ensure it exists
+        $profile = \App\Models\Profile::first();
+        if (!$profile) {
+            // Create default profile if not exists
+            $profile = \App\Models\Profile::create([
+                'business_name' => 'ROROO MUA',
+                'owner_name' => 'Admin',
+                'email' => 'info@roromua.com',
+                'phone' => '08123456789',
+                'address' => "Perumahan Kaliwulu blok AC no.1\nKec.Plered Kab Cirebon\n(Depan Lapangan)",
+                'banks' => [],
+                'social_media' => [],
+            ]);
+        }
 
-        return $pdf->download('Invoice-' . $invoice->invoice_number . '.pdf');
+        // Cache logo base64 to improve performance
+        $logoPath = public_path('logo/logo-roroo-wedding.PNG');
+        $logoData = '';
+        if (file_exists($logoPath)) {
+            $cacheKey = 'logo_base64_' . md5_file($logoPath);
+            $logoData = cache()->remember($cacheKey, 3600, function () use ($logoPath) {
+                return base64_encode(file_get_contents($logoPath));
+            });
+        }
+        $logoSrc = $logoData ? 'data:image/png;base64,' . $logoData : '';
+
+        $pdf = Pdf::loadView('invoices.pdf', compact('invoice', 'logoSrc', 'profile'))
+            ->setPaper('a4', 'portrait')
+            ->setOption('enable_php', true)
+            ->setOption('isRemoteEnabled', false)
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isFontSubsettingEnabled', true)
+            ->setOption('dpi', 96);
+
+        $filename = 'Invoice-' . $invoice->invoice_number . '-' . time() . '.pdf';
+        return $pdf->download($filename);
     }
 }

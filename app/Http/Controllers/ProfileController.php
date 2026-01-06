@@ -20,13 +20,7 @@ class ProfileController extends Controller
                 'phone' => '08123456789',
                 'address' => 'Alamat Lengkap',
                 'banks' => [],
-                'social_media' => [
-                    'instagram' => '',
-                    'facebook' => '',
-                    'tiktok' => '',
-                    'whatsapp' => '',
-                    'website' => '',
-                ],
+                'social_media' => [],
                 'description' => 'Deskripsi bisnis',
             ]);
         }
@@ -44,10 +38,12 @@ class ProfileController extends Controller
             'address' => 'required|string',
             'description' => 'nullable|string',
             'banks' => 'nullable|array',
-            'banks.*.bank_name' => 'required|string',
-            'banks.*.account_number' => 'required|string',
-            'banks.*.account_holder' => 'required|string',
+            'banks.*.bank_name' => 'required_with:banks|string',
+            'banks.*.account_number' => 'required_with:banks|string',
+            'banks.*.account_holder' => 'required_with:banks|string',
             'social_media' => 'nullable|array',
+            'social_media.*.platform' => 'required_with:social_media|string',
+            'social_media.*.value' => 'required_with:social_media|string',
         ]);
 
         $profile = Profile::first();
