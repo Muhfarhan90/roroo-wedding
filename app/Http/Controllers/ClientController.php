@@ -20,8 +20,7 @@ class ClientController extends Controller
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('bride_name', 'like', "%{$search}%")
-                    ->orWhere('groom_name', 'like', "%{$search}%")
+                $q->where('client_name', 'like', "%{$search}%")
                     ->orWhere('bride_phone', 'like', "%{$search}%")
                     ->orWhere('groom_phone', 'like', "%{$search}%");
             });
@@ -64,8 +63,7 @@ class ClientController extends Controller
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('bride_name', 'like', "%{$search}%")
-                    ->orWhere('groom_name', 'like', "%{$search}%");
+                $q->where('client_name', 'like', "%{$search}%");
             });
         }
 
@@ -99,8 +97,7 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'bride_name' => 'required|string|max:255',
-            'groom_name' => 'required|string|max:255',
+            'client_name' => 'required|string|max:255',
             'bride_phone' => 'required|string|max:20',
             'groom_phone' => 'required|string|max:20',
             'bride_address' => 'nullable|string',
@@ -138,8 +135,7 @@ class ClientController extends Controller
     public function update(Request $request, Client $client)
     {
         $validated = $request->validate([
-            'bride_name' => 'required|string|max:255',
-            'groom_name' => 'required|string|max:255',
+            'client_name' => 'required|string|max:255',
             'bride_phone' => 'required|string|max:20',
             'groom_phone' => 'required|string|max:20',
             'bride_address' => 'nullable|string',

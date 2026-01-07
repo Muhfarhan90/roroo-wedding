@@ -308,8 +308,8 @@
         <div class="info-grid">
             <div class="info-col-2">
                 <div class="info-item">
-                    <div class="info-label">Kontak Person</div>
-                    <div class="info-value"><strong>{{ $order->client->bride_name }}</strong></div>
+                    <div class="info-label">Nama Pengantin</div>
+                    <div class="info-value"><strong>{{ $order->client->client_name }}</strong></div>
                 </div>
 
                 <div class="info-item">
@@ -323,22 +323,12 @@
                 </div>
 
                 <div class="info-item">
-                    <div class="info-label">Pengantin Pria</div>
-                    <div class="info-value"><strong>{{ $order->client->groom_name }}</strong></div>
-                </div>
-
-                <div class="info-item">
                     <div class="info-label">Orang Tua Pengantin Pria</div>
                     <div class="info-value">{{ $order->client->groom_parents ?? '-' }}</div>
                 </div>
             </div>
 
             <div class="info-col-2">
-                <div class="info-item">
-                    <div class="info-label">Pengantin Wanita</div>
-                    <div class="info-value"><strong>{{ $order->client->bride_name }}</strong></div>
-                </div>
-
                 <div class="info-item">
                     <div class="info-label">Orang Tua Pengantin Wanita</div>
                     <div class="info-value">{{ $order->client->bride_parents ?? '-' }}</div>

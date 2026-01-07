@@ -119,8 +119,7 @@
                                     </div>
                                     <div>
                                         <h3 class="text-lg font-bold text-black">Order #{{ $order->order_number }}</h3>
-                                        <p class="text-sm text-gray-600">{{ $order->client->bride_name }} &
-                                            {{ $order->client->groom_name }}</p>
+                                        <p class="text-sm text-gray-600">{{ $order->client->client_name }}</p>
                                     </div>
                                 </div>
                                 <a href="{{ route('orders.show', $order) }}"
@@ -165,7 +164,7 @@
                                     <!-- Bride Contact -->
                                     <div class="mb-2">
                                         <p class="text-xs text-gray-600 mb-1">HP Pengantin Wanita -
-                                            {{ $order->client->bride_name }}</p>
+                                            HP Mempelai Wanita</p>
                                         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $order->client->bride_phone) }}"
                                             target="_blank"
                                             class="inline-flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-lg text-sm hover:bg-green-100 transition-colors">
@@ -193,7 +192,7 @@
                                 <div class="grid grid-cols-2 gap-4 pt-3 border-t border-gray-100">
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">Nama Pengantin Wanita</p>
-                                        <p class="text-sm font-semibold">{{ $order->client->bride_name }}</p>
+                                        <p class="text-sm font-semibold">HP Mempelai Wanita</p>
                                         @if ($order->client->bride_address)
                                             <p class="text-xs text-gray-600 mt-1">Alamat Pengantin Wanita</p>
                                             <p class="text-xs text-gray-700">{{ $order->client->bride_address }}</p>
@@ -201,7 +200,7 @@
                                     </div>
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">Nama Pengantin Pria</p>
-                                        <p class="text-sm font-semibold">{{ $order->client->groom_name }}</p>
+                                        <p class="text-sm font-semibold">HP Mempelai Pria</p>
                                         @if ($order->client->groom_address)
                                             <p class="text-xs text-gray-600 mt-1">Alamat Pengantin Pria</p>
                                             <p class="text-xs text-gray-700">{{ $order->client->groom_address }}</p>
@@ -244,7 +243,7 @@
                                         </h4>
                                         <div class="bg-gray-50 rounded-lg p-4 space-y-2">
                                             <p class="text-sm"><span class="font-semibold">Pengantin:</span>
-                                                {{ $order->client->bride_name }} & {{ $order->client->groom_name }}</p>
+                                                {{ $order->client->client_name }}</p>
                                             <p class="text-sm"><span class="font-semibold">Lokasi:</span>
                                                 {{ $order->client->event_location ?? 'Tidak ada' }}</p>
                                             <p class="text-sm"><span class="font-semibold">Tanggal Akad:</span>

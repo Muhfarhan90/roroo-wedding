@@ -42,7 +42,7 @@
                             @foreach ($clients as $client)
                                 <option value="{{ $client->id }}" data-location="{{ $client->event_location }}"
                                     {{ old('client_id') == $client->id ? 'selected' : '' }}>
-                                    {{ $client->bride_name }} & {{ $client->groom_name }}
+                                    {{ $client->client_name }}
                                 </option>
                             @endforeach
                         </select>
@@ -297,12 +297,12 @@
             <form id="addClientForm" class="p-6">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Nama Pengantin Wanita -->
-                    <div>
+                    <!-- Nama Pengantin -->
+                    <div class="md:col-span-2">
                         <label class="block text-sm font-semibold text-black mb-2">
-                            Nama Pengantin Wanita <span class="text-red-500">*</span>
+                            Nama Pengantin <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="bride_name" required placeholder="e.g., Jane Doe"
+                        <input type="text" name="client_name" required placeholder="e.g., Roro & Jonggrang"
                             class="w-full px-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors">
                     </div>
 
@@ -312,15 +312,6 @@
                             Nomor HP Pengantin Wanita <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="bride_phone" required placeholder="e.g., 081234567890"
-                            class="w-full px-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors">
-                    </div>
-
-                    <!-- Nama Pengantin Pria -->
-                    <div>
-                        <label class="block text-sm font-semibold text-black mb-2">
-                            Nama Pengantin Pria <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" name="groom_name" required placeholder="e.g., John Smith"
                             class="w-full px-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors">
                     </div>
 
@@ -455,16 +446,23 @@
             <form id="addClientForm" class="p-6">
                 @csrf
                 <div class="space-y-4">
-                    <!-- Informasi Mempelai Wanita -->
+                    <!-- Nama Pengantin -->
                     <div class="bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-semibold text-black mb-3">Informasi Mempelai Wanita</h4>
+                        <h4 class="font-semibold text-black mb-3">Nama Pengantin</h4>
                         <div class="space-y-3">
                             <div>
                                 <label class="block text-sm font-medium mb-1 text-black">Nama Lengkap <span
                                         class="text-red-600">*</span></label>
-                                <input type="text" name="bride_name" required
+                                <input type="text" name="client_name" required
                                     class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Informasi Mempelai Wanita -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-black mb-3">Informasi Mempelai Wanita</h4>
+                        <div class="space-y-3">
                             <div>
                                 <label class="block text-sm font-medium mb-1 text-black">Nomor Telepon <span
                                         class="text-red-600">*</span></label>
@@ -488,12 +486,6 @@
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <h4 class="font-semibold text-black mb-3">Informasi Mempelai Pria</h4>
                         <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Nama Lengkap <span
-                                        class="text-red-600">*</span></label>
-                                <input type="text" name="groom_name" required
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
-                            </div>
                             <div>
                                 <label class="block text-sm font-medium mb-1 text-black">Nomor Telepon <span
                                         class="text-red-600">*</span></label>
@@ -601,7 +593,7 @@
                     // Add new client to select dropdown
                     const select = document.getElementById('client_id');
                     const option = new Option(
-                        `${data.client.bride_name} & ${data.client.groom_name}`,
+                        data.client.client_name,
                         data.client.id,
                         true,
                         true
@@ -657,10 +649,9 @@
             event.preventDefault();
 
             const formData = {
-                bride_name: document.getElementById('new_bride_name').value,
-                bride_phone: document.getElementById('new_bride_phone').value,
-                groom_name: document.getElementById('new_groom_name').value,
-                groom_phone: document.getElementById('new_groom_phone').value,
+                client_name: document.querySelector('[name="client_name"]').value,
+                bride_phone: document.querySelector('[name="bride_phone"]').value,
+                groom_phone: document.querySelector('[name="groom_phone"]').value,
                 bride_address: document.getElementById('new_bride_address').value,
                 email: document.getElementById('new_email').value,
                 venue: document.getElementById('new_venue').value,
@@ -692,7 +683,7 @@
                         const clientSelect = document.getElementById('client_id');
                         const option = document.createElement('option');
                         option.value = data.client.id;
-                        option.textContent = `${data.client.bride_name} & ${data.client.groom_name}`;
+                        option.textContent = data.client.client_name;
                         option.setAttribute('data-location', data.client.event_location || '');
                         option.selected = true;
                         clientSelect.appendChild(option);
@@ -919,7 +910,8 @@
                 // Validasi ukuran file
                 if (file.size > maxSize) {
                     alert(
-                        `Ukuran file terlalu besar! Maksimal 5120 KB (5 MB).\nUkuran file Anda: ${(file.size / 1024).toFixed(0)} KB`);
+                        `Ukuran file terlalu besar! Maksimal 5120 KB (5 MB).\nUkuran file Anda: ${(file.size / 1024).toFixed(0)} KB`
+                        );
                     input.value = ''; // Reset input
                     preview.classList.add('hidden');
                     filenameSpan.textContent = 'No file chosen';

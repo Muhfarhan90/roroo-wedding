@@ -59,7 +59,7 @@
                                 onchange="this.form.submit()">
                                 <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Urutkan
                                 </option>
-                                <option value="bride_name" {{ request('sort') == 'bride_name' ? 'selected' : '' }}>Nama
+                                <option value="client_name" {{ request('sort') == 'client_name' ? 'selected' : '' }}>Nama
                                 </option>
                                 <option value="akad_date" {{ request('sort') == 'akad_date' ? 'selected' : '' }}>Akad
                                 </option>
@@ -169,15 +169,13 @@
                                         {{ $loop->iteration + ($clients->currentPage() - 1) * $clients->perPage() }}</div>
                                 </td>
                                 <td class="px-2 sm:px-6 py-2 sm:py-4">
-                                    <div class="text-xs sm:text-sm font-medium text-black">{{ $client->bride_name }} &
-                                        {{ $client->groom_name }}</div>
+                                    <div class="text-xs sm:text-sm font-medium text-black">{{ $client->client_name }}</div>
                                 </td>
 
                                 <td class="px-2 sm:px-6 py-2 sm:py-4">
                                     <div class="flex flex-col gap-1 sm:gap-2">
                                         <div class="text-[10px] sm:text-xs text-gray-500 hidden sm:block">HP Pengantin
-                                            Wanita -
-                                            {{ explode(' ', $client->bride_name)[0] }}</div>
+                                            Wanita</div>
                                         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $client->bride_phone) }}"
                                             target="_blank"
                                             class="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 bg-green-50 text-green-700 rounded-lg text-xs sm:text-sm hover:bg-green-100 transition-colors w-fit">
@@ -189,8 +187,7 @@
                                 <td class="px-2 sm:px-6 py-2 sm:py-4">
                                     <div class="flex flex-col gap-1 sm:gap-2">
                                         <div class="text-[10px] sm:text-xs text-gray-500 hidden sm:block">HP Pengantin Pria
-                                            -
-                                            {{ explode(' ', $client->groom_name)[0] }}</div>
+                                        </div>
                                         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $client->groom_phone) }}"
                                             target="_blank"
                                             class="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 bg-green-50 text-green-700 rounded-lg text-xs sm:text-sm hover:bg-green-100 transition-colors w-fit">

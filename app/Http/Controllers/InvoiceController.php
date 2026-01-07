@@ -24,8 +24,7 @@ class InvoiceController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('invoice_number', 'like', "%{$search}%")
                     ->orWhereHas('order.client', function ($q) use ($search) {
-                        $q->where('bride_name', 'like', "%{$search}%")
-                            ->orWhere('groom_name', 'like', "%{$search}%");
+                        $q->where('client_name', 'like', "%{$search}%");
                     });
             });
         }
@@ -44,7 +43,7 @@ class InvoiceController extends Controller
         if ($sortBy === 'client_name') {
             $query->join('orders', 'invoices.order_id', '=', 'orders.id')
                 ->join('clients', 'orders.client_id', '=', 'clients.id')
-                ->orderBy('clients.bride_name', 'asc')
+                ->orderBy('clients.client_name', 'asc')
                 ->select('invoices.*');
         } elseif ($sortBy === 'issue_date') {
             $query->orderBy('issue_date', 'asc');
@@ -68,7 +67,7 @@ class InvoiceController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('invoice_number', 'like', "%{$search}%")
                     ->orWhereHas('order.client', function ($q) use ($search) {
-                        $q->where('bride_name', 'like', "%{$search}%");
+                        $q->where('client_name', 'like', "%{$search}%");
                     });
             });
         }
@@ -160,7 +159,7 @@ class InvoiceController extends Controller
                 $query->select('id', 'client_id', 'order_number', 'total_amount', 'items', 'payment_history', 'decorations');
             },
             'order.client' => function ($query) {
-                $query->select('id', 'bride_name', 'groom_name', 'bride_phone', 'groom_phone', 'akad_date', 'reception_date', 'event_location');
+                $query->select('id', 'client_name', 'bride_phone', 'groom_phone', 'akad_date', 'reception_date', 'event_location');
             }
         ])->findOrFail($encryptedId);
 

@@ -25,28 +25,15 @@
             @csrf
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-                <!-- Nama Pengantin Wanita -->
-                <div>
-                    <label for="bride_name" class="block text-xs sm:text-sm font-semibold text-black mb-1 sm:mb-2">
-                        Nama Pengantin Wanita <span class="text-red-500">*</span>
+                <!-- Nama Pengantin -->
+                <div class="md:col-span-2">
+                    <label for="client_name" class="block text-xs sm:text-sm font-semibold text-black mb-1 sm:mb-2">
+                        Nama Pengantin <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="bride_name" name="bride_name" value="{{ old('bride_name') }}"
-                        placeholder="e.g., Jane Doe" required
-                        class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors @error('bride_name') border-red-500 @enderror">
-                    @error('bride_name')
-                        <p class="mt-1 text-xs sm:text-sm text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Nama Pengantin Pria -->
-                <div>
-                    <label for="groom_name" class="block text-xs sm:text-sm font-semibold text-black mb-1 sm:mb-2">
-                        Nama Pengantin Pria <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="groom_name" name="groom_name" value="{{ old('groom_name') }}"
-                        placeholder="e.g., John Smith" required
-                        class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors @error('groom_name') border-red-500 @enderror">
-                    @error('groom_name')
+                    <input type="text" id="client_name" name="client_name" value="{{ old('client_name') }}"
+                        placeholder="e.g., Roro & Jonggrang" required
+                        class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors @error('client_name') border-red-500 @enderror">
+                    @error('client_name')
                         <p class="mt-1 text-xs sm:text-sm text-red-500">{{ $message }}</p>
                     @enderror
                 </div>

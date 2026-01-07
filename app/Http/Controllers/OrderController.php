@@ -122,9 +122,9 @@ class OrderController extends Controller
         // Sort
         if ($request->filled('sort')) {
             switch ($request->sort) {
-                case 'bride_name':
+                case 'client_name':
                     $query->join('clients', 'orders.client_id', '=', 'clients.id')
-                        ->orderBy('clients.bride_name', 'asc')
+                        ->orderBy('clients.client_name', 'asc')
                         ->select('orders.*');
                     break;
                 case 'akad_date':
@@ -188,7 +188,7 @@ class OrderController extends Controller
 
     public function create()
     {
-        $clients = Client::orderBy('bride_name')->get();
+        $clients = Client::orderBy('client_name')->get();
         return view('orders.create', compact('clients'));
     }
 
@@ -290,7 +290,7 @@ class OrderController extends Controller
 
     public function edit(Order $order)
     {
-        $clients = Client::orderBy('bride_name')->get();
+        $clients = Client::orderBy('client_name')->get();
         $order->load('client');
         return view('orders.edit', compact('order', 'clients'));
     }
@@ -470,7 +470,7 @@ class OrderController extends Controller
     public function downloadPdf(Order $order)
     {
         // Load dengan eager loading minimal
-        $order->load(['client:id,bride_name,groom_name,bride_phone,groom_phone,akad_date,akad_time,reception_date,reception_time,event_location']);
+        $order->load(['client:id,client_name,bride_phone,groom_phone,akad_date,akad_time,reception_date,reception_time,event_location']);
 
         // Load profile untuk business information dengan caching
         $profile = cache()->remember('business_profile', 3600, function () {

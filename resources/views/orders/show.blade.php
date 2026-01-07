@@ -15,7 +15,7 @@
                     </a>
                     <h1 class="text-2xl md:text-3xl font-bold mb-2 text-black">Pesanan #{{ $order->order_number }}</h1>
                     <p class="text-sm md:text-base text-gray-600">Tampilkan detail pesanan untuk:
-                        {{ $order->client->bride_name }} & {{ $order->client->groom_name }}</p>
+                        {{ $order->client->client_name }}</p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-2">
                     <a href="{{ route('orders.edit', $order) }}"
@@ -275,7 +275,7 @@
                             <div>
                                 <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">HP Pengantin Wanita</h3>
                                 <a href="https://wa.me/{{ $order->client->bride_phone }}"
-                                    class="text-sm text-black hover:text-[#8b7355]">{{ $order->client->bride_name }} -
+                                    class="text-sm text-black hover:text-[#8b7355]">HP Mempelai Wanita -
                                     {{ $order->client->bride_phone }}</a>
                             </div>
 
@@ -283,7 +283,7 @@
                             <div>
                                 <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">HP Pengantin Pria</h3>
                                 <a href="https://wa.me/{{ $order->client->groom_phone }}"
-                                    class="text-sm text-black hover:text-[#8b7355]">{{ $order->client->groom_name }} -
+                                    class="text-sm text-black hover:text-[#8b7355]">HP Mempelai Pria -
                                     {{ $order->client->groom_phone }}</a>
                             </div>
 

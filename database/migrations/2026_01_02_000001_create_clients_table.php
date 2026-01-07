@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('bride_name');
-            $table->string('groom_name');
+            $table->string('client_name');
             $table->string('bride_phone');
             $table->string('groom_phone');
             $table->text('bride_address')->nullable();
@@ -23,7 +22,6 @@ return new class extends Migration
             $table->string('groom_parents')->nullable();
             $table->date('akad_date')->nullable();
             $table->time('akad_time')->nullable();
-            $table->time('akad_end_time')->nullable();
             $table->date('reception_date')->nullable();
             $table->time('reception_time')->nullable();
             $table->time('reception_end_time')->nullable();

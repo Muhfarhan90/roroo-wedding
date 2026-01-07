@@ -71,7 +71,7 @@
                                 onchange="this.form.submit()">
                                 <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Urutkan
                                 </option>
-                                <option value="bride_name" {{ request('sort') == 'bride_name' ? 'selected' : '' }}>Nama
+                                <option value="client_name" {{ request('sort') == 'client_name' ? 'selected' : '' }}>Nama
                                 </option>
                                 <option value="akad_date" {{ request('sort') == 'akad_date' ? 'selected' : '' }}>Akad
                                 </option>
@@ -188,9 +188,8 @@
                                     <div class="text-xs sm:text-sm font-medium text-black">{{ $order->order_number }}</div>
                                 </td>
                                 <td class="px-2 sm:px-6 py-2 sm:py-4">
-                                    <div class="text-xs sm:text-sm font-medium text-black">{{ $order->client->bride_name }}
-                                        &
-                                        {{ $order->client->groom_name }}</div>
+                                    <div class="text-xs sm:text-sm font-medium text-black">
+                                        {{ $order->client->client_name }}</div>
                                 </td>
                                 <td class="px-2 sm:px-6 py-2 sm:py-4">
                                     <div class="text-xs sm:text-sm text-black">
