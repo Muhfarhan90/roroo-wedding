@@ -183,44 +183,12 @@ class InvoiceController extends Controller
         });
 
         // Cache logo base64 with longer TTL
-        $logoPath = public_path('logo/logo-roroo-wedding.PNG');
+        $logoPath = public_path('logo/logo-roroo-wedding.png');
         $logoSrc = '';
         if (file_exists($logoPath)) {
             $cacheKey = 'logo_base64_' . md5_file($logoPath);
             $logoData = cache()->remember($cacheKey, 86400, function () use ($logoPath) {
-                // Resize logo to reduce size
                 $imageData = file_get_contents($logoPath);
-                $image = imagecreatefromstring($imageData);
-
-                if ($image !== false) {
-                    $width = imagesx($image);
-                    $height = imagesy($image);
-
-                    // Resize to max 150px (untuk logo yang lebih kecil)
-                    $maxSize = 150;
-                    if ($width > $maxSize || $height > $maxSize) {
-                        $ratio = min($maxSize / $width, $maxSize / $height);
-                        $newWidth = intval($width * $ratio);
-                        $newHeight = intval($height * $ratio);
-
-                        $newImage = imagecreatetruecolor($newWidth, $newHeight);
-                        imagealphablending($newImage, false);
-                        imagesavealpha($newImage, true);
-
-                        imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-
-                        ob_start();
-                        imagepng($newImage, null, 6); // Kompresi PNG level 6
-                        $resizedData = ob_get_clean();
-
-                        imagedestroy($image);
-                        imagedestroy($newImage);
-
-                        return base64_encode($resizedData);
-                    }
-                    imagedestroy($image);
-                }
-
                 return base64_encode($imageData);
             });
             $logoSrc = 'data:image/png;base64,' . $logoData;
