@@ -20,7 +20,6 @@ class Client extends Model
         'groom_parents',
         'akad_date',
         'akad_time',
-        'akad_end_time',
         'reception_date',
         'reception_time',
         'reception_end_time',

@@ -387,15 +387,6 @@
                             class="w-full px-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors">
                     </div>
 
-                    <!-- Jam Kelar Akad -->
-                    <div>
-                        <label class="block text-sm font-semibold text-black mb-2">
-                            Jam Kelar Akad
-                        </label>
-                        <input type="time" name="akad_end_time"
-                            class="w-full px-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors">
-                    </div>
-
                     <!-- Tanggal Resepsi -->
                     <div>
                         <label class="block text-sm font-semibold text-black mb-2">
@@ -784,20 +775,20 @@
                         <input type="text" data-id="${itemCounter}" data-field="name" data-mobile="true"
                             placeholder="Paket Riau Pengantin"
                             class="w-full px-3 py-2 border border-gray-200 rounded focus:border-[#d4b896] focus:outline-none text-sm"
-                            onchange="updateItem(${itemCounter})">
+                            oninput="updateItem(${itemCounter})" onchange="updateItem(${itemCounter})">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Jml</label>
                             <input type="number" data-id="${itemCounter}" data-field="quantity" data-mobile="true" value="1" min="1"
                                 class="w-full px-3 py-2 border border-gray-200 rounded focus:border-[#d4b896] focus:outline-none text-sm"
-                                onchange="updateItem(${itemCounter})">
+                                oninput="updateItem(${itemCounter})" onchange="updateItem(${itemCounter})">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Harga</label>
                             <input type="number" data-id="${itemCounter}" data-field="price" data-mobile="true" value="0" min="0" step="0.01"
                                 class="w-full px-3 py-2 border border-gray-200 rounded focus:border-[#d4b896] focus:outline-none text-sm"
-                                onchange="updateItem(${itemCounter})" placeholder="0">
+                                oninput="updateItem(${itemCounter})" onchange="updateItem(${itemCounter})" placeholder="0">
                         </div>
                     </div>
                     <div>
@@ -823,19 +814,30 @@
             const desktopRow = document.querySelector(`#item-row-${id}`);
             const mobileCard = document.querySelector(`#item-card-${id}`);
 
-            let name, quantity, price;
-            let isDesktopActive = false;
+            let name = '',
+                quantity = 1,
+                price = 0;
 
-            // Determine which view is active and get values from it
-            if (desktopRow && window.getComputedStyle(desktopRow).display !== 'none') {
-                isDesktopActive = true;
-                name = desktopRow.querySelector('[data-field="name"]').value;
-                quantity = parseFloat(desktopRow.querySelector('[data-field="quantity"]').value) || 1;
-                price = parseFloat(desktopRow.querySelector('[data-field="price"]').value) || 0;
-            } else if (mobileCard && window.getComputedStyle(mobileCard).display !== 'none') {
-                name = mobileCard.querySelector('[data-field="name"]').value;
-                quantity = parseFloat(mobileCard.querySelector('[data-field="quantity"]').value) || 1;
-                price = parseFloat(mobileCard.querySelector('[data-field="price"]').value) || 0;
+            // Try to get values from mobile view first (for mobile devices)
+            if (mobileCard) {
+                const mobileNameInput = mobileCard.querySelector('[data-field="name"][data-mobile="true"]');
+                const mobileQtyInput = mobileCard.querySelector('[data-field="quantity"][data-mobile="true"]');
+                const mobilePriceInput = mobileCard.querySelector('[data-field="price"][data-mobile="true"]');
+
+                if (mobileNameInput) name = mobileNameInput.value;
+                if (mobileQtyInput) quantity = parseFloat(mobileQtyInput.value) || 1;
+                if (mobilePriceInput) price = parseFloat(mobilePriceInput.value) || 0;
+            }
+
+            // If no mobile values found, try desktop view
+            if (desktopRow && !name && price === 0) {
+                const desktopNameInput = desktopRow.querySelector('[data-field="name"]:not([data-mobile])');
+                const desktopQtyInput = desktopRow.querySelector('[data-field="quantity"]:not([data-mobile])');
+                const desktopPriceInput = desktopRow.querySelector('[data-field="price"]:not([data-mobile])');
+
+                if (desktopNameInput) name = desktopNameInput.value;
+                if (desktopQtyInput) quantity = parseFloat(desktopQtyInput.value) || 1;
+                if (desktopPriceInput) price = parseFloat(desktopPriceInput.value) || 0;
             }
 
             const total = quantity * price;
@@ -853,12 +855,14 @@
             }
 
             // Update totals only (don't touch the inputs being typed in)
-            if (desktopRow) {
-                document.getElementById(`total-${id}`).value = `Rp ${total.toLocaleString('id-ID')}`;
+            const desktopTotal = document.getElementById(`total-${id}`);
+            if (desktopTotal) {
+                desktopTotal.value = `Rp ${total.toLocaleString('id-ID')}`;
             }
 
-            if (mobileCard) {
-                document.getElementById(`total-mobile-${id}`).value = `Rp ${total.toLocaleString('id-ID')}`;
+            const mobileTotal = document.getElementById(`total-mobile-${id}`);
+            if (mobileTotal) {
+                mobileTotal.value = `Rp ${total.toLocaleString('id-ID')}`;
             }
 
             calculateTotal();
@@ -907,22 +911,107 @@
         function previewImage(input, previewId, filenameId) {
             const preview = document.getElementById(previewId);
             const filenameSpan = document.getElementById(filenameId);
+            const maxSize = 5120 * 1024; // 5120 KB = 5 MB
 
             if (input.files && input.files[0]) {
+                const file = input.files[0];
+
+                // Validasi ukuran file
+                if (file.size > maxSize) {
+                    alert(
+                        `Ukuran file terlalu besar! Maksimal 5120 KB (5 MB).\nUkuran file Anda: ${(file.size / 1024).toFixed(0)} KB`);
+                    input.value = ''; // Reset input
+                    preview.classList.add('hidden');
+                    filenameSpan.textContent = 'No file chosen';
+                    return;
+                }
+
+                // Validasi tipe file
+                if (!file.type.match('image.*')) {
+                    alert('File harus berupa gambar (JPG, PNG, GIF, WEBP)');
+                    input.value = '';
+                    preview.classList.add('hidden');
+                    filenameSpan.textContent = 'No file chosen';
+                    return;
+                }
+
                 const reader = new FileReader();
 
                 reader.onload = function(e) {
-                    const img = preview.querySelector('img');
+                    const img = new Image();
+                    img.onload = function() {
+                        // Kompresi gambar jika lebih dari 1MB
+                        if (file.size > 1024 * 1024) {
+                            compressImage(img, file, input, preview, filenameSpan, previewId);
+                        } else {
+                            // Tampilkan preview tanpa kompresi
+                            const previewImg = preview.querySelector('img');
+                            previewImg.src = e.target.result;
+                            preview.classList.remove('hidden');
+                            filenameSpan.textContent = file.name;
+                        }
+                    };
                     img.src = e.target.result;
-                    preview.classList.remove('hidden');
                 }
 
-                reader.readAsDataURL(input.files[0]);
-                filenameSpan.textContent = input.files[0].name;
+                reader.readAsDataURL(file);
             } else {
                 preview.classList.add('hidden');
                 filenameSpan.textContent = 'No file chosen';
             }
+        }
+
+        function compressImage(img, originalFile, input, preview, filenameSpan, previewId) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Tentukan ukuran maksimal (max width/height 1920px)
+            const maxWidth = 1920;
+            const maxHeight = 1920;
+            let width = img.width;
+            let height = img.height;
+
+            // Hitung ukuran baru dengan mempertahankan aspek rasio
+            if (width > height) {
+                if (width > maxWidth) {
+                    height *= maxWidth / width;
+                    width = maxWidth;
+                }
+            } else {
+                if (height > maxHeight) {
+                    width *= maxHeight / height;
+                    height = maxHeight;
+                }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Kompresi dengan kualitas 0.8 (80%)
+            canvas.toBlob(function(blob) {
+                // Buat File baru dari blob
+                const compressedFile = new File([blob], originalFile.name, {
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                });
+
+                // Update input file dengan file yang sudah dikompresi
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(compressedFile);
+                input.files = dataTransfer.files;
+
+                // Tampilkan preview
+                const previewImg = preview.querySelector('img');
+                previewImg.src = canvas.toDataURL('image/jpeg', 0.8);
+                preview.classList.remove('hidden');
+
+                // Update filename dengan info kompresi
+                const originalSizeKB = (originalFile.size / 1024).toFixed(0);
+                const compressedSizeKB = (compressedFile.size / 1024).toFixed(0);
+                filenameSpan.textContent = `${originalFile.name} (${originalSizeKB}KB → ${compressedSizeKB}KB)`;
+                filenameSpan.classList.add('text-green-600');
+            }, 'image/jpeg', 0.8);
         }
 
         // Add first row on load

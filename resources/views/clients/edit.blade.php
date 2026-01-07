@@ -153,19 +153,6 @@
                     @enderror
                 </div>
 
-                <!-- Jam Kelar Akad -->
-                <div>
-                    <label for="akad_end_time" class="block text-sm font-semibold text-black mb-2">
-                        Jam Kelar Akad
-                    </label>
-                    <input type="time" id="akad_end_time" name="akad_end_time"
-                        value="{{ old('akad_end_time', $client->akad_end_time) }}"
-                        class="w-full px-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors @error('akad_end_time') border-red-500 @enderror">
-                    @error('akad_end_time')
-                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
                 <!-- Tanggal Resepsi -->
                 <div>
                     <label for="reception_date" class="block text-sm font-semibold text-black mb-2">

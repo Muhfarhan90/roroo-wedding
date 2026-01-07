@@ -154,20 +154,24 @@ class InvoiceController extends Controller
 
     public function downloadPdf($encryptedId, Request $request)
     {
-        $invoice = Invoice::findOrFail($encryptedId);
-        $invoice->load('order.client');
+        // Load invoice with minimal eager loading
+        $invoice = Invoice::with([
+            'order' => function ($query) {
+                $query->select('id', 'client_id', 'order_number', 'total_amount', 'items', 'payment_history', 'decorations');
+            },
+            'order.client' => function ($query) {
+                $query->select('id', 'bride_name', 'groom_name', 'bride_phone', 'groom_phone', 'akad_date', 'reception_date', 'event_location');
+            }
+        ])->findOrFail($encryptedId);
 
         // Check if custom due_date is provided
         if ($request->has('due_date') && $request->due_date) {
-            // Temporarily override due_date for PDF generation
             $invoice->due_date = $request->due_date;
         }
 
-        // Load business profile - ensure it exists
-        $profile = \App\Models\Profile::first();
-        if (!$profile) {
-            // Create default profile if not exists
-            $profile = \App\Models\Profile::create([
+        // Get business profile with caching
+        $profile = cache()->remember('business_profile', 3600, function () {
+            return \App\Models\Profile::first() ?? \App\Models\Profile::create([
                 'business_name' => 'ROROO MUA',
                 'owner_name' => 'Admin',
                 'email' => 'info@roromua.com',
@@ -176,28 +180,62 @@ class InvoiceController extends Controller
                 'banks' => [],
                 'social_media' => [],
             ]);
-        }
+        });
 
-        // Cache logo base64 to improve performance
+        // Cache logo base64 with longer TTL
         $logoPath = public_path('logo/logo-roroo-wedding.PNG');
-        $logoData = '';
+        $logoSrc = '';
         if (file_exists($logoPath)) {
             $cacheKey = 'logo_base64_' . md5_file($logoPath);
-            $logoData = cache()->remember($cacheKey, 3600, function () use ($logoPath) {
-                return base64_encode(file_get_contents($logoPath));
+            $logoData = cache()->remember($cacheKey, 86400, function () use ($logoPath) {
+                // Resize logo to reduce size
+                $imageData = file_get_contents($logoPath);
+                $image = imagecreatefromstring($imageData);
+
+                if ($image !== false) {
+                    $width = imagesx($image);
+                    $height = imagesy($image);
+
+                    // Resize to max 150px (untuk logo yang lebih kecil)
+                    $maxSize = 150;
+                    if ($width > $maxSize || $height > $maxSize) {
+                        $ratio = min($maxSize / $width, $maxSize / $height);
+                        $newWidth = intval($width * $ratio);
+                        $newHeight = intval($height * $ratio);
+
+                        $newImage = imagecreatetruecolor($newWidth, $newHeight);
+                        imagealphablending($newImage, false);
+                        imagesavealpha($newImage, true);
+
+                        imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+                        ob_start();
+                        imagepng($newImage, null, 6); // Kompresi PNG level 6
+                        $resizedData = ob_get_clean();
+
+                        imagedestroy($image);
+                        imagedestroy($newImage);
+
+                        return base64_encode($resizedData);
+                    }
+                    imagedestroy($image);
+                }
+
+                return base64_encode($imageData);
             });
+            $logoSrc = 'data:image/png;base64,' . $logoData;
         }
-        $logoSrc = $logoData ? 'data:image/png;base64,' . $logoData : '';
 
         $pdf = Pdf::loadView('invoices.pdf', compact('invoice', 'logoSrc', 'profile'))
             ->setPaper('a4', 'portrait')
-            ->setOption('enable_php', true)
+            ->setOption('enable_php', false)
             ->setOption('isRemoteEnabled', false)
             ->setOption('isHtml5ParserEnabled', true)
             ->setOption('isFontSubsettingEnabled', true)
-            ->setOption('dpi', 96);
+            ->setOption('chroot', public_path())
+            ->setOption('dpi', 72); // Turunkan dari 96 ke 72 untuk file lebih kecil
 
-        $filename = 'Invoice-' . $invoice->invoice_number . '-' . time() . '.pdf';
+        $filename = 'Invoice-' . $invoice->invoice_number . '.pdf';
         return $pdf->download($filename);
     }
 }

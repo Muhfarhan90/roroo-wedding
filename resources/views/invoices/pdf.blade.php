@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Invoice {{ $invoice->invoice_number }}</title>
     <style>
         * {
@@ -13,88 +14,88 @@
 
         body {
             font-family: 'DejaVu Sans', sans-serif;
-            font-size: 12px;
-            line-height: 1.6;
+            font-size: 11px;
+            line-height: 1.4;
             color: #333;
             background: white;
-            padding: 30px 40px;
+            padding: 20px 30px;
         }
 
         /* Header */
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .logo {
-            width: 100px;
+            width: 70px;
             height: auto;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .header h1 {
-            font-size: 22px;
+            font-size: 20px;
             color: #8b7355;
-            margin: 0 0 5px 0;
+            margin: 0 0 4px 0;
             font-weight: bold;
         }
 
         .header-meta {
-            font-size: 11px;
+            font-size: 10px;
             color: #666;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
         /* Section Titles */
         .section-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: #8b7355;
             border-bottom: 2px solid #d4b896;
-            padding-bottom: 5px;
-            margin: 20px 0 15px 0;
+            padding-bottom: 4px;
+            margin: 15px 0 10px 0;
         }
 
         /* Info Section - Two Column Layout */
         .info-section {
             display: table;
             width: 100%;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .column-left {
             display: table-cell;
             width: 50%;
             vertical-align: top;
-            padding-right: 30px;
+            padding-right: 20px;
         }
 
         .column-right {
             display: table-cell;
             width: 50%;
             vertical-align: top;
-            padding-left: 30px;
+            padding-left: 20px;
         }
 
         .info-title {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             color: #e8b896;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .client-name {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: #000;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .info-row {
-            font-size: 11px;
+            font-size: 10px;
             color: #4b5563;
-            margin-bottom: 4px;
-            line-height: 1.5;
+            margin-bottom: 3px;
+            line-height: 1.4;
         }
 
         .info-row strong {
@@ -458,46 +459,28 @@
         @endphp
 
         <div class="summary-container">
-            <div class="summary-row subtotal">
-                <div class="summary-label">Subtotal</div>
-                <div class="summary-value">Rp {{ number_format($invoice->order->total_amount, 0, ',', '.') }}</div>
-            </div>
-
-            @foreach ($paymentHistory as $index => $payment)
-                <div class="summary-row"
-                    style="@if ($loop->last) border-bottom: 2px solid #e8b896; padding-bottom: 10px; @endif">
-                    <div class="summary-label">{{ $payment['dp_number'] ?? 'DP ' . ($index + 1) }}</div>
-                    <div class="summary-value">Rp {{ number_format($payment['amount'] ?? 0, 0, ',', '.') }}</div>
-                </div>
-            @endforeach
-
+            <!-- Jumlah Total -->
             <div class="summary-row total">
                 <div class="summary-label">Jumlah Total</div>
                 <div class="summary-value">Rp {{ number_format($invoice->total_amount, 0, ',', '.') }}</div>
             </div>
-        </div>
-    </div>
 
-    <!-- Total Dibayar - Full Width -->
-    <div style="background: #f0fdf4; padding: 12px 16px; margin-bottom: 8px; border-radius: 4px;">
-        <div class="summary-container">
-            <div style="display: table; width: 100%;">
-                <div style="display: table-cell; text-align: left; font-size: 11px; color: #374151;">Total Dibayar</div>
-                <div style="display: table-cell; text-align: right; font-size: 11px; font-weight: 600; color: #16a34a;">
-                    Rp {{ number_format($totalPaid, 0, ',', '.') }}</div>
-            </div>
-        </div>
-    </div>
+            <!-- DP1/DP2/DP3 -->
+            @foreach ($paymentHistory as $index => $payment)
+                <div class="summary-row"
+                    style="background: #f0fdf4; padding: 12px 16px; margin: 8px 0; border-radius: 4px;">
+                    <div class="summary-label" style="color: #374151;">
+                        {{ $payment['dp_number'] ?? 'DP ' . ($index + 1) }}</div>
+                    <div class="summary-value" style="color: #16a34a; font-weight: 600;">Rp
+                        {{ number_format($payment['amount'] ?? 0, 0, ',', '.') }}</div>
+                </div>
+            @endforeach
 
-    <!-- Sisa Tagihan - Full Width -->
-    <div style="background: #fff3e0; border: 1px solid #ffb74d; padding: 12px 16px; border-radius: 4px;">
-        <div class="summary-container">
-            <div style="display: table; width: 100%;">
-                <div style="display: table-cell; text-align: left; font-size: 11px; color: #111827; font-weight: 600;">
-                    Sisa Tagihan</div>
-                <div
-                    style="display: table-cell; text-align: right; font-size: 11px; font-weight: bold; color: #f57c00;">
-                    Rp {{ number_format($invoice->total_amount - $totalPaid, 0, ',', '.') }}</div>
+            <!-- Sisa Tagihan -->
+            <div class="summary-row remaining">
+                <div class="summary-label">Sisa Tagihan</div>
+                <div class="summary-value">Rp {{ number_format($invoice->total_amount - $totalPaid, 0, ',', '.') }}
+                </div>
             </div>
         </div>
     </div>

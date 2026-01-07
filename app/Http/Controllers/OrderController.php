@@ -469,15 +469,21 @@ class OrderController extends Controller
 
     public function downloadPdf(Order $order)
     {
-        // Load profile for business information
-        $profile = \App\Models\Profile::first();
+        // Load dengan eager loading minimal
+        $order->load(['client:id,bride_name,groom_name,bride_phone,groom_phone,akad_date,akad_time,reception_date,reception_time,event_location']);
+
+        // Load profile untuk business information dengan caching
+        $profile = cache()->remember('business_profile', 3600, function () {
+            return \App\Models\Profile::first();
+        });
 
         $pdf = Pdf::loadView('orders.pdf', compact('order', 'profile'))
             ->setPaper('a4', 'portrait')
             ->setOptions([
-                'dpi' => 96,
+                'dpi' => 72, // Turunkan dari 96 untuk file lebih kecil
                 'isRemoteEnabled' => false,
                 'enable_font_subsetting' => true,
+                'enable_php' => false,
             ]);
 
         return $pdf->download('Order-' . $order->order_number . '.pdf');

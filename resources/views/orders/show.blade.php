@@ -15,7 +15,7 @@
                     </a>
                     <h1 class="text-2xl md:text-3xl font-bold mb-2 text-black">Pesanan #{{ $order->order_number }}</h1>
                     <p class="text-sm md:text-base text-gray-600">Tampilkan detail pesanan untuk:
-                        {{ $order->client->bride_name }} && {{ $order->client->groom_name }}</p>
+                        {{ $order->client->bride_name }} & {{ $order->client->groom_name }}</p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-2">
                     <a href="{{ route('orders.edit', $order) }}"
@@ -312,11 +312,7 @@
                                     <span class="text-sm text-black">
                                         {{ $order->client->akad_date ? $order->client->akad_date->format('d F Y') : '-' }}
                                         @if ($order->client->akad_time)
-                                            - {{ date('H:i', strtotime($order->client->akad_time)) }}
-                                            @if ($order->client->akad_end_time)
-                                                s/d {{ date('H:i', strtotime($order->client->akad_end_time)) }}
-                                            @endif
-                                            WIB
+                                            - {{ date('H:i', strtotime($order->client->akad_time)) }} WIB
                                         @endif
                                     </span>
                                 </div>
