@@ -179,10 +179,10 @@
                                         <!-- Bride Info -->
                                         <div>
                                             <p class="text-xs text-gray-600 mb-1">Orang Tua Pengantin Wanita</p>
-                                            <p class="text-sm font-semibold text-gray-700 mb-2">
+                                            <p class="text-sm font-semibold mb-2">
                                                 {{ $order->client->bride_parents ?? '-' }}</p>
                                             <p class="text-xs text-gray-600 mb-1">Alamat Pengantin Wanita</p>
-                                            <p class="text-sm text-gray-700 font-semibold">
+                                            <p class="text-sm font-semibold">
                                                 {{ $order->client->bride_address ?? '-' }}</p>
                                         </div>
 
@@ -193,7 +193,7 @@
                                                 {{ $order->client->groom_parents ?? '-' }}
                                             </p>
                                             <p class="text-xs text-gray-600 mb-1">Alamat Pengantin Pria</p>
-                                            <p class="text-sm text-gray-700 font-semibold">
+                                            <p class="text-sm font-semibold">
                                                 {{ $order->client->groom_address ?? '-' }}
                                             </p>
                                         </div>
