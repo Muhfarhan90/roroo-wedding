@@ -314,63 +314,66 @@
 
                 <div class="info-item">
                     <div class="info-label">HP Pengantin Wanita</div>
-                    <div class="info-value">{{ $order->client->bride_phone ?? '-' }}</div>
+                    <div class="info-value"><strong>{{ $order->client->bride_phone ?? '-' }}</strong></div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">HP Pengantin Pria</div>
-                    <div class="info-value">{{ $order->client->groom_phone ?? '-' }}</div>
+                    <div class="info-value"><strong>{{ $order->client->groom_phone ?? '-' }}</strong></div>
                 </div>
 
                 <div class="info-item">
-                    <div class="info-label">Orang Tua Pengantin Pria</div>
-                    <div class="info-value">{{ $order->client->groom_parents ?? '-' }}</div>
+                    <div class="info-label">Alamat Pengantin Wanita</div>
+                    <div class="info-value"><strong>{{ $order->client->bride_address ?? '-' }}</strong></div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">Alamat Pengantin Pria</div>
-                    <div class="info-value">{{ $order->client->groom_address ?? '-' }}</div>
+                    <div class="info-value"><strong>{{ $order->client->groom_address ?? '-' }}</strong></div>
                 </div>
             </div>
 
             <div class="info-col-2">
                 <div class="info-item">
+                    <div class="info-label">Orang Tua Pengantin Pria</div>
+                    <div class="info-value"><strong>{{ $order->client->groom_parents ?? '-' }}</strong></div>
+                </div>
+                <div class="info-item">
                     <div class="info-label">Orang Tua Pengantin Wanita</div>
-                    <div class="info-value">{{ $order->client->bride_parents ?? '-' }}</div>
+                    <div class="info-value"><strong>{{ $order->client->bride_parents ?? '-' }}</strong></div>
                 </div>
 
-                <div class="info-item">
-                    <div class="info-label">Alamat Pengantin Wanita</div>
-                    <div class="info-value">{{ $order->client->bride_address ?? '-' }}</div>
-                </div>
+
 
                 <div class="info-item">
                     <div class="info-label">Tanggal Akad</div>
-                    <div class="info-value">
-                        {{ $order->client->akad_date ? $order->client->akad_date->format('d F Y') : '-' }}
-                        @if ($order->client->akad_time)
-                            - {{ date('H:i', strtotime($order->client->akad_time)) }} s/d
-                            {{ $order->client->akad_time ? date('H:i', strtotime($order->client->akad_time)) : '00:00' }}
-                            WIB
-                        @endif
+                    <div class="info-value"><strong>
+                            {{ $order->client->akad_date ? $order->client->akad_date->format('d F Y') : '-' }}
+                            @if ($order->client->akad_time)
+                                - {{ date('H:i', strtotime($order->client->akad_time)) }} s/d
+                                {{ $order->client->akad_time ? date('H:i', strtotime($order->client->akad_time)) : '00:00' }}
+                                WIB
+                            @endif
+                        </strong>
                     </div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">Tanggal Resepsi</div>
-                    <div class="info-value">
-                        {{ $order->client->reception_date ? $order->client->reception_date->format('d F Y') : '-' }}
-                        @if ($order->client->reception_time)
-                            - {{ date('H:i', strtotime($order->client->reception_time)) }} s/d
-                            {{ $order->client->reception_end_time ? date('H:i', strtotime($order->client->reception_end_time)) : '00:00' }}
-                            WIB
-                        @endif
+                    <div class="info-value"><strong>
+                            {{ $order->client->reception_date ? $order->client->reception_date->format('d F Y') : '-' }}
+                            @if ($order->client->reception_time)
+                                - {{ date('H:i', strtotime($order->client->reception_time)) }} s/d
+                                {{ $order->client->reception_end_time ? date('H:i', strtotime($order->client->reception_end_time)) : '00:00' }}
+                                WIB
+                            @endif
+                        </strong>
                     </div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">Lokasi Acara</div>
-                    <div class="info-value">{{ $order->client->event_location ?? '-' }}</div>
+                    <div class="info-value"><strong>{{ $order->client->event_location ?? '-' }}</strong></div>
                 </div>
             </div>
         </div>
@@ -385,10 +388,10 @@
         <table>
             <thead>
                 <tr>
-                    <th style="width: 50%">ITEM / PAKET</th>
-                    <th class="text-center" style="width: 15%">JUMLAH</th>
-                    <th class="text-right" style="width: 17%">HARGA</th>
-                    <th class="text-right" style="width: 18%">TOTAL</th>
+                    <th style="width: 45%">ITEM / PAKET</th>
+                    <th class="text-center" style="width: 12%">JUMLAH</th>
+                    <th class="text-right" style="width: 21%">HARGA</th>
+                    <th class="text-right" style="width: 22%">TOTAL</th>
                 </tr>
             </thead>
             <tbody>
@@ -398,8 +401,10 @@
                             <tr>
                                 <td>{{ $item['name'] }}</td>
                                 <td class="text-center">{{ $item['quantity'] ?? 1 }}</td>
-                                <td class="text-right">Rp {{ number_format($item['price'] ?? 0, 0, ',', '.') }}</td>
-                                <td class="text-right">Rp {{ number_format($item['total'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right" style="white-space: nowrap;">Rp
+                                    {{ number_format($item['price'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right" style="white-space: nowrap;">Rp
+                                    {{ number_format($item['total'] ?? 0, 0, ',', '.') }}</td>
                             </tr>
                         @endif
                     @endforeach
@@ -411,10 +416,10 @@
                             <tr>
                                 <td>{{ $decoration['name'] }}</td>
                                 <td class="text-center">1</td>
-                                <td class="text-right">Rp {{ number_format($decoration['price'] ?? 0, 0, ',', '.') }}
-                                </td>
-                                <td class="text-right">Rp {{ number_format($decoration['price'] ?? 0, 0, ',', '.') }}
-                                </td>
+                                <td class="text-right" style="white-space: nowrap;">Rp
+                                    {{ number_format($decoration['price'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right" style="white-space: nowrap;">Rp
+                                    {{ number_format($decoration['price'] ?? 0, 0, ',', '.') }}</td>
                             </tr>
                         @endif
                     @endforeach
@@ -422,7 +427,8 @@
 
                 <tr class="total-row">
                     <td colspan="3" class="text-right">Total</td>
-                    <td class="text-right">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                    <td class="text-right" style="white-space: nowrap;">Rp
+                        {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                 </tr>
             </tbody>
         </table>
@@ -464,8 +470,18 @@
             }
 
             foreach ($order->decorations as $key => $value) {
+                // Skip numeric keys (array indices from decoration items)
+                if (is_numeric($key)) {
+                    continue;
+                }
+
                 // Skip empty values
                 if (empty($value)) {
+                    continue;
+                }
+
+                // Skip array values (decoration items with name/price - already shown in Item Pesanan table)
+                if (is_array($value)) {
                     continue;
                 }
 
@@ -512,20 +528,34 @@
 
             <!-- Text Options -->
             @if (count($textOptions) > 0)
-                <div class="custom-grid" style="margin-bottom: 15px;">
-                    @php
-                        $optionsArray = array_chunk($textOptions, ceil(count($textOptions) / 2), true);
-                    @endphp
-                    @foreach ($optionsArray as $columnOptions)
-                        <div style="display: table-cell; width: 50%; padding: 0 8px; vertical-align: top;">
-                            @foreach ($columnOptions as $label => $value)
+                <div style="display: table; width: 100%; margin-bottom: 15px;">
+                    <div style="display: table-cell; width: 50%; padding-right: 10px; vertical-align: top;">
+                        @php
+                            $itemsPerColumn = ceil(count($textOptions) / 2);
+                            $counter = 0;
+                        @endphp
+                        @foreach ($textOptions as $label => $value)
+                            @if ($counter < $itemsPerColumn)
                                 <div style="margin-bottom: 10px;">
                                     <div class="custom-label">{{ $label }}</div>
                                     <div class="custom-value">{{ $value }}</div>
                                 </div>
-                            @endforeach
-                        </div>
-                    @endforeach
+                            @endif
+                            @php $counter++; @endphp
+                        @endforeach
+                    </div>
+                    <div style="display: table-cell; width: 50%; padding-left: 10px; vertical-align: top;">
+                        @php $counter = 0; @endphp
+                        @foreach ($textOptions as $label => $value)
+                            @if ($counter >= $itemsPerColumn)
+                                <div style="margin-bottom: 10px;">
+                                    <div class="custom-label">{{ $label }}</div>
+                                    <div class="custom-value">{{ $value }}</div>
+                                </div>
+                            @endif
+                            @php $counter++; @endphp
+                        @endforeach
+                    </div>
                 </div>
             @endif
 

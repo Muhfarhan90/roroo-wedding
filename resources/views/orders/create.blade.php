@@ -705,7 +705,7 @@
         function previewImage(input, previewId, filenameId) {
             const preview = document.getElementById(previewId);
             const filenameSpan = document.getElementById(filenameId);
-            const maxSize = 5120 * 1024; // 5120 KB = 5 MB
+            const maxSize = 20480 * 1024; // 20480 KB = 20 MB (dinaikkan untuk support foto besar)
 
             if (input.files && input.files[0]) {
                 const file = input.files[0];
@@ -713,7 +713,7 @@
                 // Validasi ukuran file
                 if (file.size > maxSize) {
                     alert(
-                        `Ukuran file terlalu besar! Maksimal 5120 KB (5 MB).\nUkuran file Anda: ${(file.size / 1024).toFixed(0)} KB`
+                        `Ukuran file terlalu besar! Maksimal 20 MB.\nUkuran file Anda: ${(file.size / 1024 / 1024).toFixed(1)} MB`
                     );
                     input.value = ''; // Reset input
                     preview.classList.add('hidden');
@@ -735,16 +735,8 @@
                 reader.onload = function(e) {
                     const img = new Image();
                     img.onload = function() {
-                        // Kompresi gambar jika lebih dari 1MB
-                        if (file.size > 1024 * 1024) {
-                            compressImage(img, file, input, preview, filenameSpan, previewId);
-                        } else {
-                            // Tampilkan preview tanpa kompresi
-                            const previewImg = preview.querySelector('img');
-                            previewImg.src = e.target.result;
-                            preview.classList.remove('hidden');
-                            filenameSpan.textContent = file.name;
-                        }
+                        // SELALU kompresi semua foto untuk menghemat storage server
+                        compressImage(img, file, input, preview, filenameSpan, previewId);
                     };
                     img.src = e.target.result;
                 }

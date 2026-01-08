@@ -509,8 +509,8 @@ class OrderController extends Controller
 
     public function downloadPdf(Order $order)
     {
-        // Load dengan eager loading minimal
-        $order->load(['client:id,client_name,bride_phone,groom_phone,akad_date,akad_time,reception_date,reception_time,event_location']);
+        // Load dengan eager loading - include semua field yang diperlukan
+        $order->load(['client:id,client_name,bride_phone,groom_phone,bride_parents,groom_parents,bride_address,groom_address,akad_date,akad_time,reception_date,reception_time,reception_end_time,event_location']);
 
         // Load profile untuk business information dengan caching
         $profile = cache()->remember('business_profile', 3600, function () {

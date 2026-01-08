@@ -179,19 +179,22 @@
                                         <!-- Bride Info -->
                                         <div>
                                             <p class="text-xs text-gray-600 mb-1">Orang Tua Pengantin Wanita</p>
-                                            <p class="text-sm text-gray-700 mb-2">
+                                            <p class="text-sm font-semibold text-gray-700 mb-2">
                                                 {{ $order->client->bride_parents ?? '-' }}</p>
                                             <p class="text-xs text-gray-600 mb-1">Alamat Pengantin Wanita</p>
-                                            <p class="text-sm text-gray-700">{{ $order->client->bride_address ?? '-' }}</p>
+                                            <p class="text-sm text-gray-700 font-semibold">
+                                                {{ $order->client->bride_address ?? '-' }}</p>
                                         </div>
 
                                         <!-- Groom Info -->
                                         <div>
                                             <p class="text-xs text-gray-600 mb-1">Orang Tua Pengantin Pria</p>
-                                            <p class="text-sm font-medium mb-2">{{ $order->client->groom_parents ?? '-' }}
+                                            <p class="text-sm font-semibold mb-2">
+                                                {{ $order->client->groom_parents ?? '-' }}
                                             </p>
                                             <p class="text-xs text-gray-600 mb-1">Alamat Pengantin Pria</p>
-                                            <p class="text-sm text-gray-700">{{ $order->client->groom_address ?? '-' }}
+                                            <p class="text-sm text-gray-700 font-semibold">
+                                                {{ $order->client->groom_address ?? '-' }}
                                             </p>
                                         </div>
                                     </div>
@@ -242,12 +245,10 @@
                                                 <img src="{{ asset('storage/' . $order->decorations['photo_pelaminan']) }}"
                                                     alt="Model Pelaminan"
                                                     class="w-full h-48 object-cover rounded-lg border border-gray-200">
-                                                @if (isset($order->decorations['kursi_pelaminan']))
-                                                    <p class="text-xs text-gray-600 mt-2">
-                                                        {{ $order->decorations['kursi_pelaminan'] }}</p>
-                                                @endif
                                             </div>
-                                        @elseif (isset($order->decorations['kursi_pelaminan']))
+                                        @endif
+
+                                        @if (isset($order->decorations['kursi_pelaminan']) && !empty($order->decorations['kursi_pelaminan']))
                                             <div class="bg-gray-50 rounded-lg p-3">
                                                 <p class="text-xs text-gray-500 mb-1">Kursi Pelaminan</p>
                                                 <p class="text-sm font-medium">
@@ -261,16 +262,14 @@
                                                 <img src="{{ asset('storage/' . $order->decorations['photo_kain_tenda']) }}"
                                                     alt="Warna Kain Tenda"
                                                     class="w-full h-48 object-cover rounded-lg border border-gray-200">
-                                                @if (isset($order->decorations['warna_kain_tenda']))
-                                                    <p class="text-xs text-gray-600 mt-2">
-                                                        {{ $order->decorations['warna_kain_tenda'] }}</p>
-                                                @endif
                                             </div>
-                                        @elseif (isset($order->decorations['warna_kain_tenda']))
+                                        @endif
+
+                                        @if (isset($order->decorations['warna_tenda']) && !empty($order->decorations['warna_tenda']))
                                             <div class="bg-gray-50 rounded-lg p-3">
-                                                <p class="text-xs text-gray-500 mb-1">Warna Kain Tenda</p>
+                                                <p class="text-xs text-gray-500 mb-1">Warna Tenda</p>
                                                 <p class="text-sm font-medium">
-                                                    {{ $order->decorations['warna_kain_tenda'] }}</p>
+                                                    {{ $order->decorations['warna_tenda'] }}</p>
                                             </div>
                                         @endif
 
@@ -314,7 +313,7 @@
                                         @endphp
 
                                         @foreach ($order->decorations as $key => $value)
-                                            @if (!in_array($key, $displayedFields) && is_string($value) && !empty($value))
+                                            @if (!is_numeric($key) && !in_array($key, $displayedFields) && is_string($value) && !empty($value))
                                                 <div class="bg-gray-50 rounded-lg p-3">
                                                     <p class="text-xs text-gray-500 mb-1">
                                                         {{ ucwords(str_replace('_', ' ', $key)) }}</p>
@@ -333,7 +332,8 @@
                                         <span class="material-symbols-outlined text-[#8b6f47]">description</span>
                                         Catatan
                                     </h4>
-                                    <p class="text-sm text-gray-700 bg-yellow-50 p-3 rounded-lg whitespace-pre-line">
+                                    <p
+                                        class="text-sm text-gray-700 font-medium bg-yellow-50 p-3 rounded-lg whitespace-pre-line">
                                         {{ $order->notes }}</p>
                                 </div>
                             @endif
@@ -410,7 +410,7 @@
                                                     <div class="flex items-center justify-between text-xs">
                                                         <div>
                                                             <span
-                                                                class="font-medium">{{ $payment['type'] ?? 'DP' }}</span>
+                                                                class="font-medium">{{ $payment['dp_number'] ?? 'DP' }}</span>
                                                             @if (isset($payment['paid_at']))
                                                                 <span class="text-gray-500">•
                                                                     {{ \Carbon\Carbon::parse($payment['paid_at'])->format('d M Y') }}</span>

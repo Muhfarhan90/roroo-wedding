@@ -155,9 +155,6 @@
                                 class="px-2 sm:px-6 py-2 sm:py-4 text-center text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                 No</th>
                             <th
-                                class="px-2 sm:px-6 py-2 sm:py-4 text-center text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
-                                Kode</th>
-                            <th
                                 class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
                                 Mempelai</th>
                             <th
@@ -183,9 +180,6 @@
                                 <td class="px-2 sm:px-6 py-2 sm:py-4 text-center">
                                     <div class="text-xs sm:text-sm text-black">
                                         {{ $loop->iteration + ($orders->currentPage() - 1) * $orders->perPage() }}</div>
-                                </td>
-                                <td class="px-2 sm:px-6 py-2 sm:py-4">
-                                    <div class="text-xs sm:text-sm font-medium text-black">{{ $order->order_number }}</div>
                                 </td>
                                 <td class="px-2 sm:px-6 py-2 sm:py-4">
                                     <div class="text-xs sm:text-sm font-medium text-black">
@@ -229,21 +223,19 @@
                                         <a href="{{ route('orders.edit', $order) }}"
                                                 class="p-1 sm:p-2 text-gray-600 hover:text-[#d4b896] transition-colors"
                                                 title="Edit">
-                                                <span
-                                                    class="material-symbols-outlined text-lg sm:text-2xl\">edit</span>
+                                                <span class="material-symbols-outlined text-lg sm:text-2xl">edit</span>
                                         </a>
-                                        <form action="{{ route('orders.destroy', $order) }}\"
-                                                    method=\"POST\" class=\"inline\"
-                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus pesanan ini?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="p-1 sm:p-2 text-gray-600 hover:text-red-600 transition-colors"
-                                                        title="Hapus">
-                                                        <span
-                                                            class="material-symbols-outlined text-lg sm:text-2xl">delete</span>
-                                                    </button>
-                                                    </form>
+                                        <form action="{{ route('orders.destroy', $order) }}" method="POST"
+                                            class="inline"
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus pesanan ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="p-1 sm:p-2 text-gray-600 hover:text-red-600 transition-colors"
+                                                title="Hapus">
+                                                <span class="material-symbols-outlined text-lg sm:text-2xl">delete</span>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
