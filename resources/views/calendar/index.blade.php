@@ -70,7 +70,7 @@
                             <div class="flex items-center gap-2">
                                 <!-- Total Events Badge -->
                                 <div
-                                    class="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-semibold">
+                                    class="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg text-sm font-semibold">
                                     {{ $appointments->flatten()->count() }} Acara
                                 </div>
                                 <div class="flex items-center gap-1">
