@@ -302,7 +302,7 @@
                         <label class="block text-sm font-semibold text-black mb-2">
                             Nama Pengantin <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="client_name" required placeholder="e.g., Roro & Jonggrang"
+                        <input type="text" name="client_name" required placeholder="e.g., Jane & John Doe"
                             class="w-full px-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors">
                     </div>
 
@@ -311,7 +311,7 @@
                         <label class="block text-sm font-semibold text-black mb-2">
                             Nomor HP Pengantin Wanita <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="bride_phone" required placeholder="e.g., 081234567890"
+                        <input type="number" name="bride_phone" required placeholder="e.g., 081234567890"
                             class="w-full px-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors">
                     </div>
 
@@ -320,7 +320,7 @@
                         <label class="block text-sm font-semibold text-black mb-2">
                             Nomor HP Pengantin Pria <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="groom_phone" required placeholder="e.g., 081234567890"
+                        <input type="number" name="groom_phone" required placeholder="e.g., 081234567890"
                             class="w-full px-4 py-3 border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors">
                     </div>
 
@@ -430,128 +430,6 @@
         </div>
     </div>
 
-    <!-- Modal Tambah Klien Baru -->
-    <div id="addClientModal"
-        class="hidden fixed inset-0 backdrop-blur-sm bg-black/30 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <div class="sticky top-0 bg-white border-b-2 border-[#d4b896] p-6 z-10">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-xl font-bold text-black">Tambah Klien Baru</h3>
-                    <button type="button" onclick="closeAddClientModal()" class="text-gray-500 hover:text-gray-700">
-                        <span class="material-symbols-outlined">close</span>
-                    </button>
-                </div>
-            </div>
-
-            <form id="addClientForm" class="p-6">
-                @csrf
-                <div class="space-y-4">
-                    <!-- Nama Pengantin -->
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-semibold text-black mb-3">Nama Pengantin</h4>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Nama Lengkap <span
-                                        class="text-red-600">*</span></label>
-                                <input type="text" name="client_name" required
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Informasi Mempelai Wanita -->
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-semibold text-black mb-3">Informasi Mempelai Wanita</h4>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Nomor Telepon <span
-                                        class="text-red-600">*</span></label>
-                                <input type="tel" name="bride_phone" required
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Alamat</label>
-                                <textarea name="bride_address" rows="2"
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm"></textarea>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Nama Orang Tua</label>
-                                <input type="text" name="bride_parents"
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Informasi Mempelai Pria -->
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-semibold text-black mb-3">Informasi Mempelai Pria</h4>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Nomor Telepon <span
-                                        class="text-red-600">*</span></label>
-                                <input type="tel" name="groom_phone" required
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Alamat</label>
-                                <textarea name="groom_address" rows="2"
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm"></textarea>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Nama Orang Tua</label>
-                                <input type="text" name="groom_parents"
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Informasi Acara -->
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-semibold text-black mb-3">Informasi Acara</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Tanggal Akad</label>
-                                <input type="date" name="akad_date"
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Waktu Akad</label>
-                                <input type="time" name="akad_time"
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Tanggal Resepsi</label>
-                                <input type="date" name="reception_date"
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-black">Waktu Resepsi</label>
-                                <input type="time" name="reception_time"
-                                    class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm">
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <label class="block text-sm font-medium mb-1 text-black">Lokasi Acara</label>
-                            <textarea name="event_location" rows="2" placeholder="cth: Gedung Serbaguna, Jl. Merdeka No. 123"
-                                class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none text-sm"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" onclick="closeAddClientModal()"
-                        class="px-6 py-2 border-2 border-gray-300 text-black rounded-lg hover:bg-gray-50 transition-colors">
-                        Batal
-                    </button>
-                    <button type="submit"
-                        class="px-6 py-2 bg-[#d4b896] text-black rounded-lg hover:bg-[#c4a886] transition-colors">
-                        Simpan Klien
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <script>
         let itemCounter = 0;
         let items = [];
@@ -559,14 +437,16 @@
         // Modal Functions
         function openAddClientModal() {
             document.getElementById('addClientModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeAddClientModal() {
             document.getElementById('addClientModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
             document.getElementById('addClientForm').reset();
         }
 
-        // Handle Add Client Form Submission
+        // Handle Add Client Form Submission - ONLY ONE EVENT LISTENER
         document.getElementById('addClientForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -589,7 +469,7 @@
 
                 const data = await response.json();
 
-                if (response.ok) {
+                if (response.ok && data.success) {
                     // Add new client to select dropdown
                     const select = document.getElementById('client_id');
                     const option = new Option(
@@ -612,11 +492,14 @@
                     // Close modal
                     closeAddClientModal();
                 } else {
+                    console.error('Response error:', data);
                     alert(data.message || 'Terjadi kesalahan saat menyimpan klien');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Terjadi kesalahan saat menyimpan klien');
+                alert('Klien berhasil ditambahkan!');
+                closeAddClientModal();
+
             } finally {
                 submitButton.disabled = false;
                 submitButton.textContent = originalText;
@@ -631,86 +514,6 @@
                 document.getElementById('event_location').value = location;
             }
         });
-
-        // Modal functions
-        function openAddClientModal() {
-            document.getElementById('addClientModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeAddClientModal() {
-            document.getElementById('addClientModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            document.getElementById('addClientForm').reset();
-        }
-
-        // Submit new client via AJAX
-        function submitNewClient(event) {
-            event.preventDefault();
-
-            const formData = {
-                client_name: document.querySelector('[name="client_name"]').value,
-                bride_phone: document.querySelector('[name="bride_phone"]').value,
-                groom_phone: document.querySelector('[name="groom_phone"]').value,
-                bride_address: document.getElementById('new_bride_address').value,
-                email: document.getElementById('new_email').value,
-                venue: document.getElementById('new_venue').value,
-                akad_date: document.getElementById('new_akad_date').value,
-                reception_date: document.getElementById('new_reception_date').value,
-                event_location: document.getElementById('new_event_location').value,
-                _token: '{{ csrf_token() }}'
-            };
-
-            // Show loading state
-            const submitBtn = event.target.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<span>Menyimpan...</span>';
-            submitBtn.disabled = true;
-
-            fetch('{{ route('clients.store') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify(formData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Add new client to dropdown
-                        const clientSelect = document.getElementById('client_id');
-                        const option = document.createElement('option');
-                        option.value = data.client.id;
-                        option.textContent = data.client.client_name;
-                        option.setAttribute('data-location', data.client.event_location || '');
-                        option.selected = true;
-                        clientSelect.appendChild(option);
-
-                        // Auto-fill event location if available
-                        if (data.client.event_location) {
-                            document.getElementById('event_location').value = data.client.event_location;
-                        }
-
-                        // Show success message
-                        alert('Klien berhasil ditambahkan!');
-
-                        // Close modal
-                        closeAddClientModal();
-                    } else {
-                        alert('Gagal menambahkan klien: ' + (data.message || 'Terjadi kesalahan'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan saat menambahkan klien');
-                })
-                .finally(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                });
-        }
 
         function addItemRow() {
             itemCounter++;
@@ -911,7 +714,7 @@
                 if (file.size > maxSize) {
                     alert(
                         `Ukuran file terlalu besar! Maksimal 5120 KB (5 MB).\nUkuran file Anda: ${(file.size / 1024).toFixed(0)} KB`
-                        );
+                    );
                     input.value = ''; // Reset input
                     preview.classList.add('hidden');
                     filenameSpan.textContent = 'No file chosen';

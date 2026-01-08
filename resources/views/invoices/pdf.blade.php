@@ -354,20 +354,15 @@
     <div class="info-section">
         <div class="column-left">
             <p class="info-title">DITERBITKAN KEPADA</p>
-            <p class="client-name">{{ $invoice->order->client->bride_name }} & {{ $invoice->order->client->groom_name }}
-            </p>
+            <p class="client-name">{{ $invoice->order->client->client_name }}</p>
 
-            <p class="info-row"><strong>HP Pengantin Wanita:</strong> {{ $invoice->order->client->bride_phone }}</p>
-            @if ($invoice->order->client->groom_phone)
-                <p class="info-row"><strong>HP Pengantin Pria:</strong> {{ $invoice->order->client->groom_phone }}</p>
-            @endif
             <p class="info-row"><strong>Tanggal Akad:</strong>
                 {{ $invoice->order->client->akad_date ? \Carbon\Carbon::parse($invoice->order->client->akad_date)->format('d F Y') : '-' }}
             </p>
             <p class="info-row"><strong>Tanggal Resepsi:</strong>
                 {{ $invoice->order->client->reception_date ? \Carbon\Carbon::parse($invoice->order->client->reception_date)->format('d F Y') : '-' }}
             </p>
-            <p class="info-row"><strong>Alamat Venue:</strong> {{ $invoice->order->client->event_location ?? '-' }}</p>
+            <p class="info-row"><strong>Lokasi Acara:</strong> {{ $invoice->order->client->event_location ?? '-' }}</p>
         </div>
 
         <div class="column-right">
@@ -504,7 +499,7 @@
     <!-- Bank Info & Contact (Two Columns) -->
     <div style="display: table; width: 100%; padding: 20px 0; margin: 20px 0; border-top: 1px solid #e5e7eb;">
         <div style="display: table-cell; width: 50%; vertical-align: top; padding-right: 20px;">
-            <div style="font-size: 10px; font-weight: 600; color: #111827; margin-bottom: 8px;">Informasi Banking Bank
+            <div style="font-size: 10px; font-weight: 600; color: #111827; margin-bottom: 8px;">Informasi Bank
             </div>
             @if ($profile && $profile->banks && count($profile->banks) > 0)
                 @foreach ($profile->banks as $bank)

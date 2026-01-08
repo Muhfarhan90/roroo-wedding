@@ -33,7 +33,7 @@
                             @foreach ($clients as $client)
                                 <option value="{{ $client->id }}" data-location="{{ $client->event_location }}"
                                     {{ $order->client_id == $client->id ? 'selected' : '' }}>
-                                    {{ $client->bride_name }} & {{ $client->groom_name }}
+                                    {{ $client->client_name }}
                                 </option>
                             @endforeach
                         </select>

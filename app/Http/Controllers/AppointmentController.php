@@ -18,7 +18,7 @@ class AppointmentController extends Controller
         $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth();
 
         // Get all appointments for the month
-        $appointments = Appointment::with('client')
+        $appointments = Appointment::with(['client', 'order'])
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->orderBy('date')
             ->orderBy('start_time')
@@ -28,14 +28,14 @@ class AppointmentController extends Controller
             });
 
         // Get upcoming appointments (from today onwards)
-        $upcomingAppointments = Appointment::with('client')
+        $upcomingAppointments = Appointment::with(['client', 'order'])
             ->where('date', '>=', now()->toDateString())
             ->orderBy('date')
             ->orderBy('start_time')
             ->take(10)
             ->get();
 
-        $clients = Client::orderBy('bride_name')->get();
+        $clients = Client::orderBy('client_name')->get();
 
         return view('calendar.index', compact('appointments', 'upcomingAppointments', 'clients', 'month', 'year', 'startOfMonth', 'endOfMonth'));
     }
@@ -88,10 +88,21 @@ class AppointmentController extends Controller
 
     public function show($encryptedId)
     {
-        $appointment = Appointment::with('client')->findOrFail($encryptedId);
+        // Load appointment dengan order dan client
+        $appointment = Appointment::with(['client', 'order'])
+            ->findOrFail($encryptedId);
 
         // Format date to Y-m-d for HTML5 date input
         $appointment->date = $appointment->date->format('Y-m-d');
+
+        // Debug log
+        \Log::info('Appointment data:', [
+            'id' => $appointment->id,
+            'order_id' => $appointment->order_id,
+            'client_id' => $appointment->client_id,
+            'has_order' => $appointment->order !== null,
+            'order_data' => $appointment->order ? $appointment->order->toArray() : null
+        ]);
 
         return response()->json($appointment);
     }

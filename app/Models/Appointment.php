@@ -12,11 +12,13 @@ class Appointment extends Model
 
     protected $fillable = [
         'client_id',
+        'order_id',
         'title',
         'description',
         'date',
         'start_time',
         'end_time',
+        'location',
         'color',
     ];
 
@@ -29,6 +31,11 @@ class Appointment extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 
     public function getClientNameAttribute()

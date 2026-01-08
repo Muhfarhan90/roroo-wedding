@@ -135,7 +135,7 @@
                             </th>
                             <th
                                 class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
-                                Client
+                                Mempelai
                             </th>
                             <th
                                 class="px-2 sm:px-6 py-2 sm:py-4 text-left text-[10px] sm:text-xs font-semibold text-[#d4b896] uppercase tracking-wider">
@@ -184,8 +184,7 @@
                                 </td>
                                 <td class="px-2 sm:px-6 py-2 sm:py-4">
                                     <div class="text-xs sm:text-sm font-medium text-black">
-                                        {{ $invoice->order->client->bride_name }} &
-                                        {{ $invoice->order->client->groom_name }}</div>
+                                        {{ $invoice->order->client->client_name }}</div>
                                     <div class="text-[10px] sm:text-xs text-gray-500 mt-1">
                                         {{ $invoice->order->order_number }}</div>
                                 </td>

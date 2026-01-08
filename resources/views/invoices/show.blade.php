@@ -86,22 +86,14 @@
                         <div class="grid grid-cols-2 gap-6 mb-6">
                             <div>
                                 <p class="text-sm font-medium text-[#e8b896] mb-2">DITERBITKAN KEPADA</p>
-                                <p class="font-semibold text-gray-900">{{ $invoice->order->client->bride_name }} &
-                                    {{ $invoice->order->client->groom_name }}</p>
-
-                                <p class="text-sm text-gray-600"><strong>HP Pengantin Wanita:</strong>
-                                    {{ $invoice->order->client->bride_phone }}</p>
-                                @if ($invoice->order->client->groom_phone)
-                                    <p class="text-sm text-gray-600"><strong>HP Pengantin Pria:</strong>
-                                        {{ $invoice->order->client->groom_phone }}</p>
-                                @endif
+                                <p class="font-semibold text-gray-900">{{ $invoice->order->client->client_name }}</p>
                                 <p class="text-sm text-gray-600"><strong>Tanggal Akad:</strong>
                                     {{ $invoice->order->client->akad_date ? \Carbon\Carbon::parse($invoice->order->client->akad_date)->format('d F Y') : '-' }}
                                 </p>
                                 <p class="text-sm text-gray-600"><strong>Tanggal Resepsi:</strong>
                                     {{ $invoice->order->client->reception_date ? \Carbon\Carbon::parse($invoice->order->client->reception_date)->format('d F Y') : '-' }}
                                 </p>
-                                <p class="text-sm text-gray-600"><strong>Alamat Venue:</strong>
+                                <p class="text-sm text-gray-600"><strong>Lokasi Acara:</strong>
                                     {{ $invoice->order->client->event_location ?? '-' }}</p>
                             </div>
                             <div class="text-right">
@@ -196,47 +188,32 @@
 
                             <div class="flex justify-end mb-4">
                                 <div class="w-80">
-                                    <div class="flex justify-between text-sm py-2">
-                                        <span class="text-gray-600">Subtotal</span>
-                                        <span class="text-gray-900 font-semibold">Rp
-                                            {{ number_format($invoice->order->total_amount, 0, ',', '.') }}</span>
-                                    </div>
-
-                                    @foreach ($paymentHistory as $payment)
-                                        <div
-                                            class="flex justify-between text-sm py-2 @if ($loop->last) border-b-2 border-[#e8b896] @endif">
-                                            <span class="text-gray-600">{{ $payment['dp_number'] ?? 'DP' }}</span>
-                                            <span class="text-gray-900 font-semibold">Rp
-                                                {{ number_format($payment['amount'] ?? 0, 0, ',', '.') }}</span>
-                                        </div>
-                                    @endforeach
-
+                                    <!-- Jumlah Total -->
                                     <div class="flex justify-between text-base font-bold py-3 border-b-2 border-gray-800">
                                         <span class="text-gray-900">Jumlah Total</span>
                                         <span class="text-gray-900">Rp
                                             {{ number_format($invoice->total_amount, 0, ',', '.') }}</span>
                                     </div>
-                                </div>
-                            </div>
 
-                            <!-- Total Dibayar - Full Width -->
-                            <div class="bg-green-50 px-4 py-3 mb-2 rounded">
-                                <div class="flex justify-end">
-                                    <div class="w-80 flex justify-between">
-                                        <span class="text-gray-700 text-sm">Total Dibayar</span>
-                                        <span class="text-green-600 font-semibold text-sm">Rp
-                                            {{ number_format($totalPaid, 0, ',', '.') }}</span>
-                                    </div>
-                                </div>
-                            </div>
+                                    <!-- DP/Pembayaran -->
+                                    @foreach ($paymentHistory as $payment)
+                                        <div class="bg-green-50 px-4 py-3 my-2 rounded">
+                                            <div class="flex justify-between">
+                                                <span
+                                                    class="text-gray-700 text-sm">{{ $payment['dp_number'] ?? 'DP' }}</span>
+                                                <span class="text-green-600 font-semibold text-sm">Rp
+                                                    {{ number_format($payment['amount'] ?? 0, 0, ',', '.') }}</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
 
-                            <!-- Sisa Tagihan - Full Width -->
-                            <div class="bg-[#fff3e0] border border-[#ffb74d] px-4 py-3 rounded">
-                                <div class="flex justify-end">
-                                    <div class="w-80 flex justify-between">
-                                        <span class="text-gray-900 font-semibold text-sm">Sisa Tagihan</span>
-                                        <span class="text-[#f57c00] font-bold text-sm">Rp
-                                            {{ number_format($invoice->total_amount - $totalPaid, 0, ',', '.') }}</span>
+                                    <!-- Sisa Tagihan -->
+                                    <div class="bg-[#fff3e0] border border-[#ffb74d] px-4 py-3 rounded mt-2">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-900 font-semibold text-sm">Sisa Tagihan</span>
+                                            <span class="text-[#f57c00] font-bold text-sm">Rp
+                                                {{ number_format($invoice->total_amount - $totalPaid, 0, ',', '.') }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -266,7 +243,7 @@
                         <div class="mt-8 pt-6 border-t border-gray-200">
                             <div class="flex justify-between items-start text-xs text-gray-600">
                                 <div>
-                                    <p class="font-semibold mb-2">Informasi Banking Bank</p>
+                                    <p class="font-semibold mb-2">Informasi Bank</p>
                                     @if ($profile && $profile->banks && count($profile->banks) > 0)
                                         @foreach ($profile->banks as $bank)
                                             <p>{{ $bank['bank_name'] }}: {{ $bank['account_number'] }} a/n

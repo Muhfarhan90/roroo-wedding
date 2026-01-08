@@ -200,6 +200,9 @@ class OrderController extends Controller
             'total_amount' => 'required|numeric|min:0',
             'payment_status' => 'required|string',
             'decorations' => 'nullable|array',
+            'decorations.kursi_pelaminan' => 'nullable|string|max:255',
+            'decorations.warna_kain_tenda' => 'nullable|string|max:255',
+            'decorations.warna_tenda' => 'nullable|string|max:255',
             'decorations.photo_pelaminan' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'decorations.photo_kain_tenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'decorations.foto_gaun_1' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
@@ -219,10 +222,19 @@ class OrderController extends Controller
             $validated['items'] = [];
         }
 
-        // Handle file uploads for decorations
-        $decorations = $validated['decorations'] ?? [];
+        // Handle decorations - merge text fields with file uploads
+        $decorations = [];
 
-        // Photo pelaminan
+        // Add text fields from form
+        if (isset($validated['decorations'])) {
+            foreach ($validated['decorations'] as $key => $value) {
+                if (is_string($value) && !empty($value)) {
+                    $decorations[$key] = $value;
+                }
+            }
+        }
+
+        // Handle file uploads for decorations
         if ($request->hasFile('decorations')) {
             $files = $request->file('decorations');
 
@@ -278,6 +290,30 @@ class OrderController extends Controller
 
         $order = Order::create($validated);
 
+        // Auto create appointment based on order (akad date & time)
+        $client = Client::find($validated['client_id']);
+        if ($client && $client->akad_date) {
+            // Determine color based on order total
+            $color = '#9333ea'; // purple default
+            if ($order->total_amount > 50000000) {
+                $color = '#ec4899'; // pink
+            } elseif ($order->total_amount > 30000000) {
+                $color = '#a855f7'; // lighter purple
+            }
+
+            \App\Models\Appointment::create([
+                'title' => $client->client_name,
+                'date' => $client->akad_date,
+                'start_time' => $client->akad_start_time ?? '08:00:00',
+                'end_time' => $client->akad_end_time ?? '12:00:00',
+                'location' => $client->event_location,
+                'description' => 'Auto created from order #' . $order->id,
+                'color' => $color,
+                'client_id' => $client->id,
+                'order_id' => $order->id,
+            ]);
+        }
+
         return redirect()->route('orders.show', $order)
             ->with('success', 'Pesanan berhasil dibuat!');
     }
@@ -303,6 +339,9 @@ class OrderController extends Controller
             'total_amount' => 'required|numeric|min:0',
             'payment_status' => 'required|string',
             'decorations' => 'nullable|array',
+            'decorations.kursi_pelaminan' => 'nullable|string|max:255',
+            'decorations.warna_kain_tenda' => 'nullable|string|max:255',
+            'decorations.warna_tenda' => 'nullable|string|max:255',
             'decorations.photo_pelaminan' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'decorations.photo_kain_tenda' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'decorations.foto_gaun_1' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
@@ -318,14 +357,14 @@ class OrderController extends Controller
             $validated['items'] = [];
         }
 
-        // Handle file uploads for decorations
+        // Start with existing decorations
         $decorations = $order->decorations ?? [];
 
-        // Merge with existing text decorations from form
+        // Merge with text fields from form
         if (isset($validated['decorations'])) {
             foreach ($validated['decorations'] as $key => $value) {
                 // Only merge non-file fields (text inputs)
-                if (!is_object($value)) {
+                if (is_string($value) && !empty($value)) {
                     $decorations[$key] = $value;
                 }
             }
@@ -390,6 +429,7 @@ class OrderController extends Controller
             'payment_method' => 'required|string',
             'notes' => 'nullable|string',
             'dp_number' => 'required|string',
+            'payment_date' => 'required|date',
         ]);
 
         // Get existing payment history or initialize as empty array
@@ -401,7 +441,7 @@ class OrderController extends Controller
             'amount' => $validated['amount'],
             'payment_method' => $validated['payment_method'],
             'notes' => $validated['notes'] ?? null,
-            'paid_at' => now()->format('Y-m-d H:i:s'),
+            'paid_at' => $validated['payment_date'] . ' ' . now()->format('H:i:s'),
         ];
 
         $order->payment_history = $paymentHistory;

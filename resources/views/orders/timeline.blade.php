@@ -132,24 +132,6 @@
 
                         <!-- Card Body -->
                         <div class="p-4">
-                            <!-- Event Time -->
-                            <div class="flex items-center gap-2 mb-4 pb-4 border-b border-gray-100">
-                                <span class="material-symbols-outlined text-pink-500">favorite</span>
-                                <div>
-                                    <p class="text-xs text-gray-500 font-semibold">Akad Nikah</p>
-                                    <p class="text-sm font-bold text-[#8b6f47]">
-                                        {{ $order->client->akad_time ? \Carbon\Carbon::parse($order->client->akad_time)->format('H:i') : '00:00' }}
-                                        WIB
-                                    </p>
-                                </div>
-                                <span
-                                    class="px-3 py-1 text-xs font-semibold rounded-full ml-auto
-                                    @if ($order->payment_status === 'lunas') bg-green-100 text-green-700
-                                    @else bg-yellow-100 text-yellow-700 @endif">
-                                    {{ $order->payment_status === 'lunas' ? 'Lunas' : 'Belum Lunas' }}
-                                </span>
-                            </div>
-
                             <!-- Client Details -->
                             <div class="space-y-3">
                                 <div class="flex items-center gap-2">
@@ -163,8 +145,7 @@
 
                                     <!-- Bride Contact -->
                                     <div class="mb-2">
-                                        <p class="text-xs text-gray-600 mb-1">HP Pengantin Wanita -
-                                            HP Mempelai Wanita</p>
+                                        <p class="text-xs text-gray-600 mb-1">HP Pengantin Wanita</p>
                                         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $order->client->bride_phone) }}"
                                             target="_blank"
                                             class="inline-flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-lg text-sm hover:bg-green-100 transition-colors">
@@ -176,8 +157,7 @@
 
                                     <!-- Groom Contact -->
                                     <div>
-                                        <p class="text-xs text-gray-600 mb-1">HP Pengantin Pria -
-                                            {{ $order->client->groom_name }}</p>
+                                        <p class="text-xs text-gray-600 mb-1">HP Pengantin Pria</p>
                                         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $order->client->groom_phone) }}"
                                             target="_blank"
                                             class="inline-flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-lg text-sm hover:bg-green-100 transition-colors">
@@ -189,249 +169,264 @@
                                 </div>
 
                                 <!-- Names & Addresses -->
-                                <div class="grid grid-cols-2 gap-4 pt-3 border-t border-gray-100">
+                                <div class="pt-3 border-t border-gray-100 space-y-3">
                                     <div>
-                                        <p class="text-xs text-gray-500 mb-1">Nama Pengantin Wanita</p>
-                                        <p class="text-sm font-semibold">HP Mempelai Wanita</p>
-                                        @if ($order->client->bride_address)
-                                            <p class="text-xs text-gray-600 mt-1">Alamat Pengantin Wanita</p>
-                                            <p class="text-xs text-gray-700">{{ $order->client->bride_address }}</p>
-                                        @endif
+                                        <p class="text-xs text-gray-500 mb-1">Nama Pengantin</p>
+                                        <p class="text-sm font-semibold">{{ $order->client->client_name }}</p>
                                     </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <!-- Bride Info -->
+                                        <div>
+                                            <p class="text-xs text-gray-600 mb-1">Orang Tua Pengantin Wanita</p>
+                                            <p class="text-sm text-gray-700 mb-2">
+                                                {{ $order->client->bride_parents ?? '-' }}</p>
+                                            <p class="text-xs text-gray-600 mb-1">Alamat Pengantin Wanita</p>
+                                            <p class="text-sm text-gray-700">{{ $order->client->bride_address ?? '-' }}</p>
+                                        </div>
+
+                                        <!-- Groom Info -->
+                                        <div>
+                                            <p class="text-xs text-gray-600 mb-1">Orang Tua Pengantin Pria</p>
+                                            <p class="text-sm font-medium mb-2">{{ $order->client->groom_parents ?? '-' }}
+                                            </p>
+                                            <p class="text-xs text-gray-600 mb-1">Alamat Pengantin Pria</p>
+                                            <p class="text-sm text-gray-700">{{ $order->client->groom_address ?? '-' }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4 pt-3 border-t border-gray-100">
+                                        <div>
+                                            <p class="text-xs text-gray-500 mb-1">Tanggal Akad</p>
+                                            <p class="text-sm font-semibold">
+                                                {{ $order->client->akad_date ? \Carbon\Carbon::parse($order->client->akad_date)->format('d F Y') : '-' }}
+                                            </p>
+                                            <p class="text-xs text-gray-600 mt-1">
+                                                {{ $order->client->akad_time ? \Carbon\Carbon::parse($order->client->akad_time)->format('H:i') : '00:00' }}
+                                                WIB
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500 mb-1">Tanggal Resepsi</p>
+                                            <p class="text-sm font-semibold">
+                                                {{ $order->client->reception_date ? \Carbon\Carbon::parse($order->client->reception_date)->format('d F Y') : '-' }}
+                                            </p>
+                                            <p class="text-xs text-gray-600 mt-1">
+                                                {{ $order->client->reception_time ? \Carbon\Carbon::parse($order->client->reception_time)->format('H:i') : '00:00' }}
+                                                -
+                                                {{ $order->client->reception_end_time ? \Carbon\Carbon::parse($order->client->reception_end_time)->format('H:i') : '00:00' }}
+                                                WIB
+                                            </p>
+                                        </div>
+                                    </div>
+
                                     <div>
-                                        <p class="text-xs text-gray-500 mb-1">Nama Pengantin Pria</p>
-                                        <p class="text-sm font-semibold">HP Mempelai Pria</p>
-                                        @if ($order->client->groom_address)
-                                            <p class="text-xs text-gray-600 mt-1">Alamat Pengantin Pria</p>
-                                            <p class="text-xs text-gray-700">{{ $order->client->groom_address }}</p>
-                                        @endif
+                                        <p class="text-xs text-gray-500 mb-1">Lokasi Acara</p>
+                                        <p class="text-sm font-semibold">{{ $order->client->event_location ?? '-' }}</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- View Full Details Button -->
-                            <button onclick="openDetailModal{{ $index }}()"
-                                class="w-full mt-4 px-4 py-2 bg-[#d4b896] text-black rounded-lg hover:bg-[#c4a886] transition-colors font-medium text-sm">
-                                Lihat Detail Lengkap (Items, Kustom, Pembayaran)
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Detail Modal -->
-                    <div id="detailModal{{ $index }}"
-                        class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
-                        <div class="min-h-screen px-4 py-8 flex items-center justify-center">
-                            <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-                                onclick="event.stopPropagation()">
-                                <!-- Modal Header -->
-                                <div
-                                    class="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between z-10">
-                                    <h3 class="text-xl font-bold">Order #{{ $order->order_number }}</h3>
-                                    <button onclick="closeDetailModal{{ $index }}()"
-                                        class="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                                        <span class="material-symbols-outlined">close</span>
-                                    </button>
-                                </div>
-
-                                <!-- Modal Body -->
-                                <div class="p-6 space-y-6">
-                                    <!-- Client Info -->
-                                    <div>
-                                        <h4 class="font-semibold text-sm mb-3 flex items-center gap-2">
-                                            <span class="material-symbols-outlined text-[#8b6f47]">groups</span>
-                                            Detail Klien & Acara
-                                        </h4>
-                                        <div class="bg-gray-50 rounded-lg p-4 space-y-2">
-                                            <p class="text-sm"><span class="font-semibold">Pengantin:</span>
-                                                {{ $order->client->client_name }}</p>
-                                            <p class="text-sm"><span class="font-semibold">Lokasi:</span>
-                                                {{ $order->client->event_location ?? 'Tidak ada' }}</p>
-                                            <p class="text-sm"><span class="font-semibold">Tanggal Akad:</span>
-                                                {{ $order->client->akad_date ? \Carbon\Carbon::parse($order->client->akad_date)->format('d F Y') : '-' }}
-                                            </p>
-                                            <p class="text-sm"><span class="font-semibold">Tanggal Resepsi:</span>
-                                                {{ $order->client->reception_date ? \Carbon\Carbon::parse($order->client->reception_date)->format('d F Y') : '-' }}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Items -->
-                                    @if ($order->items && count($order->items) > 0)
-                                        <div>
-                                            <h4 class="font-semibold text-sm mb-3 flex items-center gap-2">
-                                                <span class="material-symbols-outlined text-[#8b6f47]">inventory_2</span>
-                                                Item Pesanan
-                                            </h4>
-                                            <div class="space-y-2">
-                                                @foreach ($order->items as $item)
-                                                    <div
-                                                        class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                                        <div class="flex-1">
-                                                            <p class="text-sm font-medium">{{ $item['name'] ?? 'Item' }}
-                                                            </p>
-                                                            <p class="text-xs text-gray-500">Qty:
-                                                                {{ $item['quantity'] ?? 1 }}</p>
-                                                        </div>
-                                                        <p class="text-sm font-bold">Rp
-                                                            {{ number_format($item['price'] ?? 0, 0, ',', '.') }}</p>
-                                                    </div>
-                                                @endforeach
+                            <!-- Pilihan Kustom -->
+                            @if ($order->decorations)
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <h4 class="font-semibold text-sm mb-3 flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-[#8b6f47]">palette</span>
+                                        Pilihan Kustom
+                                    </h4>
+                                    <div class="space-y-3">
+                                        @if (isset($order->decorations['photo_pelaminan']) && is_string($order->decorations['photo_pelaminan']))
+                                            <div class="bg-gray-50 rounded-lg p-3">
+                                                <p class="text-xs text-gray-500 mb-2">Foto Model Pelaminan</p>
+                                                <img src="{{ asset('storage/' . $order->decorations['photo_pelaminan']) }}"
+                                                    alt="Model Pelaminan"
+                                                    class="w-full h-48 object-cover rounded-lg border border-gray-200">
+                                                @if (isset($order->decorations['kursi_pelaminan']))
+                                                    <p class="text-xs text-gray-600 mt-2">
+                                                        {{ $order->decorations['kursi_pelaminan'] }}</p>
+                                                @endif
                                             </div>
-                                        </div>
-                                    @endif
+                                        @elseif (isset($order->decorations['kursi_pelaminan']))
+                                            <div class="bg-gray-50 rounded-lg p-3">
+                                                <p class="text-xs text-gray-500 mb-1">Kursi Pelaminan</p>
+                                                <p class="text-sm font-medium">
+                                                    {{ $order->decorations['kursi_pelaminan'] }}</p>
+                                            </div>
+                                        @endif
 
-                                    <!-- Custom Decorations -->
-                                    @if ($order->decorations)
-                                        <div>
-                                            <h4 class="font-semibold text-sm mb-3 flex items-center gap-2">
-                                                <span class="material-symbols-outlined text-[#8b6f47]">palette</span>
-                                                Pilihan Kustom
-                                            </h4>
-                                            <div class="space-y-3">
-                                                @if (isset($order->decorations['photo_pelaminan']) && is_string($order->decorations['photo_pelaminan']))
-                                                    <div>
-                                                        <p class="text-xs text-gray-500 mb-1">Foto Model Pelaminan</p>
-                                                        <img src="{{ asset('storage/' . $order->decorations['photo_pelaminan']) }}"
-                                                            alt="Pelaminan" class="w-full h-32 object-cover rounded-lg">
-                                                        @if (isset($order->decorations['kursi_pelaminan']))
-                                                            <p class="text-xs text-gray-600 mt-1">
-                                                                {{ $order->decorations['kursi_pelaminan'] }}</p>
+                                        @if (isset($order->decorations['photo_kain_tenda']) && is_string($order->decorations['photo_kain_tenda']))
+                                            <div class="bg-gray-50 rounded-lg p-3">
+                                                <p class="text-xs text-gray-500 mb-2">Foto Warna Kain Tenda</p>
+                                                <img src="{{ asset('storage/' . $order->decorations['photo_kain_tenda']) }}"
+                                                    alt="Warna Kain Tenda"
+                                                    class="w-full h-48 object-cover rounded-lg border border-gray-200">
+                                                @if (isset($order->decorations['warna_kain_tenda']))
+                                                    <p class="text-xs text-gray-600 mt-2">
+                                                        {{ $order->decorations['warna_kain_tenda'] }}</p>
+                                                @endif
+                                            </div>
+                                        @elseif (isset($order->decorations['warna_kain_tenda']))
+                                            <div class="bg-gray-50 rounded-lg p-3">
+                                                <p class="text-xs text-gray-500 mb-1">Warna Kain Tenda</p>
+                                                <p class="text-sm font-medium">
+                                                    {{ $order->decorations['warna_kain_tenda'] }}</p>
+                                            </div>
+                                        @endif
+
+                                        @if (isset($order->decorations['foto_gaun_1']) ||
+                                                isset($order->decorations['foto_gaun_2']) ||
+                                                isset($order->decorations['foto_gaun_3']))
+                                            <div class="bg-gray-50 rounded-lg p-3">
+                                                <p class="text-xs text-gray-500 mb-2">Foto Gaun</p>
+                                                <div class="grid grid-cols-3 gap-2">
+                                                    @for ($i = 1; $i <= 3; $i++)
+                                                        @if (isset($order->decorations["foto_gaun_{$i}"]) && is_string($order->decorations["foto_gaun_{$i}"]))
+                                                            <img src="{{ asset('storage/' . $order->decorations["foto_gaun_{$i}"]) }}"
+                                                                alt="Gaun {{ $i }}"
+                                                                class="w-full h-24 object-cover rounded-lg border border-gray-200">
                                                         @endif
-                                                    </div>
-                                                @endif
-
-                                                @if (isset($order->decorations['photo_kain_tenda']) && is_string($order->decorations['photo_kain_tenda']))
-                                                    <div>
-                                                        <p class="text-xs text-gray-500 mb-1">Foto Warna Kain Tenda</p>
-                                                        <img src="{{ asset('storage/' . $order->decorations['photo_kain_tenda']) }}"
-                                                            alt="Kain Tenda" class="w-full h-32 object-cover rounded-lg">
-                                                    </div>
-                                                @endif
-
-                                                @if (isset($order->decorations['foto_gaun_1']) ||
-                                                        isset($order->decorations['foto_gaun_2']) ||
-                                                        isset($order->decorations['foto_gaun_3']))
-                                                    <div>
-                                                        <p class="text-xs text-gray-500 mb-1">Foto Gaun</p>
-                                                        <div class="grid grid-cols-3 gap-2">
-                                                            @for ($i = 1; $i <= 3; $i++)
-                                                                @if (isset($order->decorations["foto_gaun_{$i}"]) && is_string($order->decorations["foto_gaun_{$i}"]))
-                                                                    <img src="{{ asset('storage/' . $order->decorations["foto_gaun_{$i}"]) }}"
-                                                                        alt="Gaun {{ $i }}"
-                                                                        class="w-full h-24 object-cover rounded-lg">
-                                                                @endif
-                                                            @endfor
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                    <!-- Notes -->
-                                    @if ($order->notes)
-                                        <div>
-                                            <h4 class="font-semibold text-sm mb-2 flex items-center gap-2">
-                                                <span class="material-symbols-outlined text-[#8b6f47]">description</span>
-                                                Catatan
-                                            </h4>
-                                            <p class="text-sm text-gray-700 bg-yellow-50 p-3 rounded-lg">
-                                                {{ $order->notes }}</p>
-                                        </div>
-                                    @endif
-
-                                    <!-- Total -->
-                                    <div class="border-t pt-4">
-                                        <div class="flex items-center justify-between text-lg font-bold">
-                                            <span>Total</span>
-                                            <span class="text-[#8b6f47]">Rp
-                                                {{ number_format($order->total_amount, 0, ',', '.') }}</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Payment Status -->
-                                    <div>
-                                        <h4 class="font-semibold text-sm mb-3 flex items-center gap-2">
-                                            <span class="material-symbols-outlined text-[#8b6f47]">
-                                                {{ $order->payment_status === 'lunas' ? 'check_circle' : 'schedule' }}
-                                            </span>
-                                            Status:
-                                            <span
-                                                class="px-3 py-1 text-xs font-semibold rounded-full
-                                                @if ($order->payment_status === 'lunas') bg-green-100 text-green-700
-                                                @else bg-yellow-100 text-yellow-700 @endif">
-                                                {{ $order->payment_status === 'lunas' ? 'Lunas' : 'Belum Lunas' }}
-                                            </span>
-                                        </h4>
-
-                                        @if ($order->payment_history && count($order->payment_history) > 0)
-                                            <div class="space-y-2">
-                                                <p class="text-xs text-gray-500 font-semibold mb-2">Riwayat Pembayaran:</p>
-                                                @php
-                                                    $totalPaid = 0;
-                                                @endphp
-                                                @foreach ($order->payment_history as $payment)
-                                                    @php
-                                                        $totalPaid += floatval($payment['amount'] ?? 0);
-                                                    @endphp
-                                                    <div
-                                                        class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                                                        <div>
-                                                            <p class="text-sm font-medium">
-                                                                {{ $payment['dp_number'] ?? 'DP' }}</p>
-                                                            <p class="text-xs text-gray-500">
-                                                                {{ isset($payment['paid_at']) ? \Carbon\Carbon::parse($payment['paid_at'])->format('d M Y') : '-' }}
-                                                            </p>
-                                                            @if (isset($payment['payment_method']))
-                                                                <p class="text-xs text-gray-600">
-                                                                    {{ $payment['payment_method'] }}</p>
-                                                            @endif
-                                                        </div>
-                                                        <p class="text-sm font-bold text-green-700">Rp
-                                                            {{ number_format($payment['amount'] ?? 0, 0, ',', '.') }}</p>
-                                                    </div>
-                                                @endforeach
-
-                                                <!-- Summary -->
-                                                <div class="mt-4 p-4 bg-gray-50 rounded-lg space-y-2">
-                                                    <div class="flex justify-between text-sm">
-                                                        <span class="text-gray-600">Total Dibayar:</span>
-                                                        <span class="font-bold text-green-700">Rp
-                                                            {{ number_format($totalPaid, 0, ',', '.') }}</span>
-                                                    </div>
-                                                    @if ($order->payment_status !== 'lunas')
-                                                        <div class="flex justify-between text-sm">
-                                                            <span class="text-gray-600">Sisa:</span>
-                                                            <span class="font-bold text-red-700">Rp
-                                                                {{ number_format($order->remaining_amount, 0, ',', '.') }}</span>
-                                                        </div>
-                                                    @endif
+                                                    @endfor
                                                 </div>
                                             </div>
                                         @endif
+
+                                        @if (isset($order->decorations['warna_tenda']))
+                                            <div class="bg-gray-50 rounded-lg p-3">
+                                                <p class="text-xs text-gray-500 mb-1">Warna Tenda</p>
+                                                <p class="text-sm font-medium">{{ $order->decorations['warna_tenda'] }}
+                                                </p>
+                                            </div>
+                                        @endif
+
+                                        @php
+                                            // Field yang sudah ditampilkan
+                                            $displayedFields = [
+                                                'photo_pelaminan',
+                                                'kursi_pelaminan',
+                                                'photo_kain_tenda',
+                                                'warna_kain_tenda',
+                                                'foto_gaun_1',
+                                                'foto_gaun_2',
+                                                'foto_gaun_3',
+                                                'warna_tenda',
+                                            ];
+                                        @endphp
+
+                                        @foreach ($order->decorations as $key => $value)
+                                            @if (!in_array($key, $displayedFields) && is_string($value) && !empty($value))
+                                                <div class="bg-gray-50 rounded-lg p-3">
+                                                    <p class="text-xs text-gray-500 mb-1">
+                                                        {{ ucwords(str_replace('_', ' ', $key)) }}</p>
+                                                    <p class="text-sm font-medium">{{ $value }}</p>
+                                                </div>
+                                            @endif
+                                        @endforeach
                                     </div>
+                                </div>
+                            @endif
+
+                            <!-- Catatan -->
+                            @if ($order->notes)
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <h4 class="font-semibold text-sm mb-2 flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-[#8b6f47]">description</span>
+                                        Catatan
+                                    </h4>
+                                    <p class="text-sm text-gray-700 bg-yellow-50 p-3 rounded-lg whitespace-pre-line">
+                                        {{ $order->notes }}</p>
+                                </div>
+                            @endif
+
+                            <!-- Item Pesanan -->
+                            @if ($order->items && count($order->items) > 0)
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <h4 class="font-semibold text-sm mb-3 flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-[#8b6f47]">inventory_2</span>
+                                        Item Pesanan
+                                    </h4>
+                                    <div class="space-y-2">
+                                        @foreach ($order->items as $item)
+                                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                <div class="flex-1">
+                                                    <p class="text-sm font-medium">{{ $item['name'] ?? 'Item' }}</p>
+                                                    <p class="text-xs text-gray-500">Qty: {{ $item['quantity'] ?? 1 }}</p>
+                                                </div>
+                                                <p class="text-sm font-bold">Rp
+                                                    {{ number_format($item['price'] ?? 0, 0, ',', '.') }}</p>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Total & Status Pembayaran -->
+                            <div class="mt-4 pt-4 border-t border-gray-100">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-lg font-bold">Total</span>
+                                    <span class="text-lg font-bold text-[#8b6f47]">Rp
+                                        {{ number_format($order->total_amount, 0, ',', '.') }}</span>
+                                </div>
+
+                                <!-- Status Pembayaran -->
+                                <div class="mt-3 bg-gray-50 rounded-lg p-3">
+                                    <h5 class="font-semibold text-sm mb-2 flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-[#8b6f47]">payments</span>
+                                        Status Pembayaran
+                                    </h5>
+
+                                    @php
+                                        $paymentHistory = $order->payment_history ?? [];
+                                        $totalPaid = array_sum(array_column($paymentHistory, 'amount'));
+                                        $remaining = $order->total_amount - $totalPaid;
+                                    @endphp
+
+                                    <div class="flex items-center gap-2 mb-2">
+                                        @if ($order->payment_status === 'lunas')
+                                            <span
+                                                class="material-symbols-outlined text-sm text-green-700">check_circle</span>
+                                            <span class="text-xs font-semibold text-green-700">Lunas</span>
+                                        @else
+                                            <span class="material-symbols-outlined text-sm text-yellow-700">schedule</span>
+                                            <span class="text-xs font-semibold text-yellow-700">Belum Lunas</span>
+                                        @endif
+                                    </div>
+
+                                    @if ($order->payment_status !== 'lunas')
+                                        <div class="space-y-1 text-xs mb-2">
+                                            <div class="flex justify-between">
+                                                <span class="text-gray-600">Sisa pembayaran:</span>
+                                                <span class="font-bold text-red-600">Rp
+                                                    {{ number_format($remaining, 0, ',', '.') }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if (count($paymentHistory) > 0)
+                                        <div class="mt-3 pt-3 border-t border-gray-200">
+                                            <p class="text-xs font-semibold text-gray-700 mb-2">Riwayat Pembayaran</p>
+                                            <div class="space-y-2">
+                                                @foreach ($paymentHistory as $payment)
+                                                    <div class="flex items-center justify-between text-xs">
+                                                        <div>
+                                                            <span
+                                                                class="font-medium">{{ $payment['type'] ?? 'DP' }}</span>
+                                                            @if (isset($payment['paid_at']))
+                                                                <span class="text-gray-500">•
+                                                                    {{ \Carbon\Carbon::parse($payment['paid_at'])->format('d M Y') }}</span>
+                                                            @endif
+                                                        </div>
+                                                        <span class="font-bold text-green-600">Rp
+                                                            {{ number_format($payment['amount'] ?? 0, 0, ',', '.') }}</span>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <script>
-                        function openDetailModal{{ $index }}() {
-                            document.getElementById('detailModal{{ $index }}').classList.remove('hidden');
-                            document.body.style.overflow = 'hidden';
-                        }
-
-                        function closeDetailModal{{ $index }}() {
-                            document.getElementById('detailModal{{ $index }}').classList.add('hidden');
-                            document.body.style.overflow = 'auto';
-                        }
-
-                        document.getElementById('detailModal{{ $index }}').addEventListener('click', function(e) {
-                            if (e.target === this) {
-                                closeDetailModal{{ $index }}();
-                            }
-                        });
-                    </script>
                 @endforeach
             </div>
         @else

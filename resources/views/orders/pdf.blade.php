@@ -326,12 +326,22 @@
                     <div class="info-label">Orang Tua Pengantin Pria</div>
                     <div class="info-value">{{ $order->client->groom_parents ?? '-' }}</div>
                 </div>
+
+                <div class="info-item">
+                    <div class="info-label">Alamat Pengantin Pria</div>
+                    <div class="info-value">{{ $order->client->groom_address ?? '-' }}</div>
+                </div>
             </div>
 
             <div class="info-col-2">
                 <div class="info-item">
                     <div class="info-label">Orang Tua Pengantin Wanita</div>
                     <div class="info-value">{{ $order->client->bride_parents ?? '-' }}</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">Alamat Pengantin Wanita</div>
+                    <div class="info-value">{{ $order->client->bride_address ?? '-' }}</div>
                 </div>
 
                 <div class="info-item">
@@ -613,7 +623,7 @@
     <!-- Footer -->
     <div class="footer">
         <p>Dokumen ini dibuat secara otomatis pada {{ now()->format('d F Y, H:i') }} WIB</p>
-        <p style="margin-top: 5px;">about:<strong
+        <p style="margin-top: 5px;">&copy;<strong
                 style="color: #8b7355;">{{ $profile->business_name ?? 'ROROO MUA' }}</strong></p>
     </div>
 </body>

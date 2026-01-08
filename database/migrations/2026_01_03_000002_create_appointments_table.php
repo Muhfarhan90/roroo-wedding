@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('order_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
+            $table->string('location')->nullable();
             $table->string('color')->default('#9333ea'); // purple default
             $table->timestamps();
         });
