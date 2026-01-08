@@ -290,14 +290,6 @@
                                             </div>
                                         @endif
 
-                                        @if (isset($order->decorations['warna_tenda']))
-                                            <div class="bg-gray-50 rounded-lg p-3">
-                                                <p class="text-xs text-gray-500 mb-1">Warna Tenda</p>
-                                                <p class="text-sm font-medium">{{ $order->decorations['warna_tenda'] }}
-                                                </p>
-                                            </div>
-                                        @endif
-
                                         @php
                                             // Field yang sudah ditampilkan
                                             $displayedFields = [
