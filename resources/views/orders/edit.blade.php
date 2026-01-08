@@ -442,25 +442,102 @@
         function updateFileName(input, spanId, previewId) {
             const span = document.getElementById(spanId);
             const preview = document.getElementById(previewId);
+            const maxSize = 20480 * 1024; // 20480 KB = 20 MB
 
             if (input.files && input.files[0]) {
-                span.textContent = input.files[0].name;
+                const file = input.files[0];
 
-                // Show preview for new image
+                // Validasi ukuran file
+                if (file.size > maxSize) {
+                    alert(
+                        `Ukuran file terlalu besar! Maksimal 20 MB.\nUkuran file Anda: ${(file.size / 1024 / 1024).toFixed(1)} MB`
+                    );
+                    input.value = ''; // Reset input
+                    span.textContent = 'No file chosen';
+                    return;
+                }
+
+                // Validasi tipe file
+                if (!file.type.match('image.*')) {
+                    alert('File harus berupa gambar (JPG, PNG, GIF, WEBP)');
+                    input.value = '';
+                    span.textContent = 'No file chosen';
+                    return;
+                }
+
+                span.textContent = file.name;
+
+                // Show preview for new image with compression
                 if (preview) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        preview.src = e.target.result;
-                        const container = preview.closest('div');
-                        if (container && container.classList.contains('hidden')) {
-                            container.classList.remove('hidden');
-                        }
+                        const img = new Image();
+                        img.onload = function() {
+                            // SELALU kompresi semua foto untuk menghemat storage server
+                            compressImageEdit(img, file, input, preview, span);
+                        };
+                        img.src = e.target.result;
                     };
-                    reader.readAsDataURL(input.files[0]);
+                    reader.readAsDataURL(file);
                 }
             } else {
                 span.textContent = 'No file chosen';
             }
+        }
+
+        function compressImageEdit(img, originalFile, input, preview, filenameSpan) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Tentukan ukuran maksimal (max width/height 1920px)
+            const maxWidth = 1920;
+            const maxHeight = 1920;
+            let width = img.width;
+            let height = img.height;
+
+            // Hitung ukuran baru dengan mempertahankan aspek rasio
+            if (width > height) {
+                if (width > maxWidth) {
+                    height *= maxWidth / width;
+                    width = maxWidth;
+                }
+            } else {
+                if (height > maxHeight) {
+                    width *= maxHeight / height;
+                    height = maxHeight;
+                }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Kompresi dengan kualitas 0.8 (80%)
+            canvas.toBlob(function(blob) {
+                // Buat File baru dari blob
+                const compressedFile = new File([blob], originalFile.name, {
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                });
+
+                // Update input file dengan file yang sudah dikompresi
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(compressedFile);
+                input.files = dataTransfer.files;
+
+                // Tampilkan preview
+                preview.src = canvas.toDataURL('image/jpeg', 0.8);
+                const container = preview.closest('div');
+                if (container && container.classList.contains('hidden')) {
+                    container.classList.remove('hidden');
+                }
+
+                // Update filename dengan info kompresi
+                const originalSizeKB = (originalFile.size / 1024).toFixed(0);
+                const compressedSizeKB = (compressedFile.size / 1024).toFixed(0);
+                filenameSpan.textContent = `${originalFile.name} (${originalSizeKB}KB → ${compressedSizeKB}KB)`;
+                filenameSpan.classList.add('text-green-600');
+            }, 'image/jpeg', 0.8);
         }
 
         // Load existing items on page load
