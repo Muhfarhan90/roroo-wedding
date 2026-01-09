@@ -9,10 +9,11 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'system-ui', sans-serif;
         }
 
         body {
-            font-family: 'DejaVu Sans', sans-serif;
+            font-family: 'system-ui', sans-serif;
             font-size: 11px;
             line-height: 1.5;
             color: #333;
@@ -25,7 +26,7 @@
             width: 100%;
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 3px solid #8b7355;
+            border-bottom: 3px solid #d4b896;
         }
 
         .header-left {
@@ -56,7 +57,7 @@
         }
 
         .header-subtitle {
-            font-size: 10px;
+            font-size: 11px;
             color: #666;
         }
 
@@ -69,12 +70,12 @@
         .order-number {
             font-size: 13px;
             font-weight: bold;
-            color: #333;
+            color: #8b7355;
             margin-bottom: 3px;
         }
 
         .order-date {
-            font-size: 10px;
+            font-size: 11px;
             color: #666;
         }
 
@@ -82,34 +83,38 @@
         .section {
             margin-bottom: 20px;
             page-break-inside: avoid;
+            border: 2px solid #d4b896;
+            border-radius: 8px;
+            padding: 15px;
+            background: #fff;
         }
 
         .section-header {
-            background: #f5f5f5;
-            padding: 8px 12px;
-            border-left: 4px solid #8b7355;
-            margin-bottom: 12px;
+            padding: 10px 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #d4b896;
         }
 
         .section-title {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             color: #8b7355;
-            text-transform: uppercase;
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
         }
 
         /* Info Grid */
         .info-grid {
             display: table;
             width: 100%;
-            margin-bottom: 10px;
+            margin-bottom: 0;
         }
 
         .info-col-2 {
             display: table-cell;
             width: 50%;
             vertical-align: top;
-            padding: 0 8px;
+            padding: 0 10px;
         }
 
         .info-col-2:first-child {
@@ -121,25 +126,24 @@
         }
 
         .info-item {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .info-label {
-            font-size: 9px;
+            font-family: 'DejaVu Sans', sans-serif;
+            font-size: 11px;
             font-weight: bold;
             color: #666;
-            text-transform: uppercase;
-            margin-bottom: 3px;
+            text-transform: capitalize;
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
         }
 
         .info-value {
+            font-family: 'system-ui', sans-serif;
             font-size: 11px;
-            color: #333;
-            line-height: 1.4;
-        }
-
-        .info-value strong {
             color: #000;
+            line-height: 1.5;
             font-weight: bold;
         }
 
@@ -147,30 +151,33 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 10px 0;
+            margin: 0;
         }
 
         table thead {
-            background: #8b7355;
-            color: white;
+            background: transparent;
         }
 
         table th {
-            padding: 8px 10px;
+            padding: 10px 8px;
             text-align: left;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: bold;
-            text-transform: uppercase;
+            text-transform: capitalize;
+            color: #8b7355;
+            border-top: 2px solid #d4b896;
+            border-bottom: 2px solid #d4b896;
+            letter-spacing: 0.3px;
         }
 
         table td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #e5e5e5;
+            padding: 10px 8px;
+            border-bottom: 1px solid #d4b896;
             font-size: 11px;
         }
 
         table tbody tr:last-child td {
-            border-bottom: 2px solid #8b7355;
+            border-bottom: 2px solid #d4b896;
         }
 
         .text-center {
@@ -182,43 +189,52 @@
         }
 
         .total-row {
-            background: #f9f9f9;
+            background: #fafaf9;
             font-weight: bold;
+            color: #000;
+        }
+
+        .remaining-amount {
+            font-size: 15px;
+            font-weight: bold;
+            color: #ea580c;
         }
 
         /* Status Badge */
         .status-box {
-            background: #f5f5f5;
+            background: #f0fdf4;
             padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid #86efac;
+            margin-bottom: 12px;
         }
 
         .status-badge {
             display: inline-block;
-            padding: 5px 12px;
-            border-radius: 3px;
-            font-size: 10px;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: bold;
-            text-transform: uppercase;
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
         }
 
         .badge-lunas {
-            background: #d4edda;
-            color: #155724;
+            background: #16a34a;
+            color: #fff;
         }
 
         .badge-belum {
-            background: #fff3cd;
-            color: #856404;
+            background: #f59e0b;
+            color: #fff;
         }
 
         /* Payment Summary */
         .payment-box {
-            background: #f9f9f9;
+            background: #fffbeb;
             padding: 12px;
-            border-radius: 4px;
-            border: 1px solid #e5e5e5;
+            border-radius: 6px;
+            border: 1px solid #fde68a;
         }
 
         /* Custom Items */
@@ -235,27 +251,29 @@
         }
 
         .custom-label {
-            font-size: 9px;
+            font-size: 11px;
             font-weight: bold;
             color: #8b7355;
-            text-transform: uppercase;
+            text-transform: capitalize;
             margin-bottom: 5px;
+            letter-spacing: 0.5px;
         }
 
         .custom-value {
             font-size: 11px;
             color: #333;
+            font-weight: 600;
         }
 
         /* Notes */
         .notes-box {
-            background: #fffbf0;
-            border-left: 3px solid #f0ad4e;
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+            border-radius: 6px;
             padding: 12px;
-            font-size: 10px;
-            color: #666;
+            font-size: 11px;
+            color: #78716c;
             line-height: 1.6;
-            font-style: italic;
         }
 
         /* Footer */
@@ -309,132 +327,75 @@
             <div class="info-col-2">
                 <div class="info-item">
                     <div class="info-label">Nama Pengantin</div>
-                    <div class="info-value"><strong>{{ $order->client->client_name }}</strong></div>
+                    <div class="info-value">{{ $order->client->client_name }}</div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">HP Pengantin Wanita</div>
-                    <div class="info-value"><strong>{{ $order->client->bride_phone ?? '-' }}</strong></div>
+                    <div class="info-value">{{ $order->client->bride_phone ?? '-' }}</div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">HP Pengantin Pria</div>
-                    <div class="info-value"><strong>{{ $order->client->groom_phone ?? '-' }}</strong></div>
+                    <div class="info-value">{{ $order->client->groom_phone ?? '-' }}</div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">Alamat Pengantin Wanita</div>
-                    <div class="info-value"><strong>{{ $order->client->bride_address ?? '-' }}</strong></div>
+                    <div class="info-value">{{ $order->client->bride_address ?? '-' }}</div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">Alamat Pengantin Pria</div>
-                    <div class="info-value"><strong>{{ $order->client->groom_address ?? '-' }}</strong></div>
+                    <div class="info-value">{{ $order->client->groom_address ?? '-' }}</div>
                 </div>
             </div>
 
             <div class="info-col-2">
                 <div class="info-item">
                     <div class="info-label">Orang Tua Pengantin Pria</div>
-                    <div class="info-value"><strong>{{ $order->client->groom_parents ?? '-' }}</strong></div>
+                    <div class="info-value">{{ $order->client->groom_parents ?? '-' }}</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Orang Tua Pengantin Wanita</div>
-                    <div class="info-value"><strong>{{ $order->client->bride_parents ?? '-' }}</strong></div>
+                    <div class="info-value">{{ $order->client->bride_parents ?? '-' }}</div>
                 </div>
 
 
 
                 <div class="info-item">
                     <div class="info-label">Tanggal Akad</div>
-                    <div class="info-value"><strong>
-                            {{ $order->client->akad_date ? $order->client->akad_date->format('d F Y') : '-' }}
-                            @if ($order->client->akad_time)
-                                - {{ date('H:i', strtotime($order->client->akad_time)) }} s/d
-                                {{ $order->client->akad_time ? date('H:i', strtotime($order->client->akad_time)) : '00:00' }}
-                                WIB
-                            @endif
-                        </strong>
+                    <div class="info-value">
+                        {{ $order->client->akad_date ? $order->client->akad_date->format('d F Y') : '-' }}
+                        @if ($order->client->akad_time)
+                            - {{ date('H:i', strtotime($order->client->akad_time)) }} s/d
+                            {{ $order->client->akad_time ? date('H:i', strtotime($order->client->akad_time)) : '00:00' }}
+                            WIB
+                        @endif
                     </div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">Tanggal Resepsi</div>
-                    <div class="info-value"><strong>
-                            {{ $order->client->reception_date ? $order->client->reception_date->format('d F Y') : '-' }}
-                            @if ($order->client->reception_time)
-                                - {{ date('H:i', strtotime($order->client->reception_time)) }} s/d
-                                {{ $order->client->reception_end_time ? date('H:i', strtotime($order->client->reception_end_time)) : '00:00' }}
-                                WIB
-                            @endif
-                        </strong>
+                    <div class="info-value">
+                        {{ $order->client->reception_date ? $order->client->reception_date->format('d F Y') : '-' }}
+                        @if ($order->client->reception_time)
+                            - {{ date('H:i', strtotime($order->client->reception_time)) }} s/d
+                            {{ $order->client->reception_end_time ? date('H:i', strtotime($order->client->reception_end_time)) : '00:00' }}
+                            WIB
+                        @endif
                     </div>
                 </div>
 
                 <div class="info-item">
                     <div class="info-label">Lokasi Acara</div>
-                    <div class="info-value"><strong>{{ $order->client->event_location ?? '-' }}</strong></div>
+                    <div class="info-value">{{ $order->client->event_location ?? '-' }}</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Section 2: Item Pesanan -->
-    <div class="section">
-        <div class="section-header">
-            <div class="section-title">Item Pesanan</div>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 45%">ITEM / PAKET</th>
-                    <th class="text-center" style="width: 12%">JUMLAH</th>
-                    <th class="text-right" style="width: 21%">HARGA</th>
-                    <th class="text-right" style="width: 22%">TOTAL</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (is_array($order->items) && count($order->items) > 0)
-                    @foreach ($order->items as $item)
-                        @if (!empty($item['name']) && $item['name'] !== 'N/A')
-                            <tr>
-                                <td>{{ $item['name'] }}</td>
-                                <td class="text-center">{{ $item['quantity'] ?? 1 }}</td>
-                                <td class="text-right" style="white-space: nowrap;">Rp
-                                    {{ number_format($item['price'] ?? 0, 0, ',', '.') }}</td>
-                                <td class="text-right" style="white-space: nowrap;">Rp
-                                    {{ number_format($item['total'] ?? 0, 0, ',', '.') }}</td>
-                            </tr>
-                        @endif
-                    @endforeach
-                @endif
-
-                @if (is_array($order->decorations) && count($order->decorations) > 0)
-                    @foreach ($order->decorations as $key => $decoration)
-                        @if (is_array($decoration) && isset($decoration['name']) && !empty($decoration['name']) && $decoration['name'] !== 'N/A')
-                            <tr>
-                                <td>{{ $decoration['name'] }}</td>
-                                <td class="text-center">1</td>
-                                <td class="text-right" style="white-space: nowrap;">Rp
-                                    {{ number_format($decoration['price'] ?? 0, 0, ',', '.') }}</td>
-                                <td class="text-right" style="white-space: nowrap;">Rp
-                                    {{ number_format($decoration['price'] ?? 0, 0, ',', '.') }}</td>
-                            </tr>
-                        @endif
-                    @endforeach
-                @endif
-
-                <tr class="total-row">
-                    <td colspan="3" class="text-right">Total</td>
-                    <td class="text-right" style="white-space: nowrap;">Rp
-                        {{ number_format($order->total_amount, 0, ',', '.') }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Section 3: Pilihan Kustom -->
+    <!-- Section 2: Pilihan Kustom -->
     @php
         $hasCustomOptions = false;
         $textOptions = [];
@@ -592,35 +553,101 @@
         </div>
     @endif
 
-    <!-- Section 4: Status Pembayaran -->
+
+    <!-- Section 3: Catatan Khusus (Optional) -->
+    @if ($order->notes)
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">Catatan Khusus</div>
+            </div>
+            <div class="notes-box">
+                {{ $order->notes }}
+            </div>
+        </div>
+    @endif
+
+    <!-- Section 4: Item Pesanan -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-title">Item Pesanan</div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 45%">ITEM / PAKET</th>
+                    <th class="text-center" style="width: 12%">JUMLAH</th>
+                    <th class="text-right" style="width: 21%">HARGA</th>
+                    <th class="text-right" style="width: 22%">TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (is_array($order->items) && count($order->items) > 0)
+                    @foreach ($order->items as $item)
+                        @if (!empty($item['name']) && $item['name'] !== 'N/A')
+                            <tr>
+                                <td>{{ $item['name'] }}</td>
+                                <td class="text-center">{{ $item['quantity'] ?? 1 }}</td>
+                                <td class="text-right" style="white-space: nowrap;">Rp
+                                    {{ number_format($item['price'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right" style="white-space: nowrap;">Rp
+                                    {{ number_format($item['total'] ?? 0, 0, ',', '.') }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endif
+
+                @if (is_array($order->decorations) && count($order->decorations) > 0)
+                    @foreach ($order->decorations as $key => $decoration)
+                        @if (is_array($decoration) && isset($decoration['name']) && !empty($decoration['name']) && $decoration['name'] !== 'N/A')
+                            <tr>
+                                <td>{{ $decoration['name'] }}</td>
+                                <td class="text-center">1</td>
+                                <td class="text-right" style="white-space: nowrap;">Rp
+                                    {{ number_format($decoration['price'] ?? 0, 0, ',', '.') }}</td>
+                                <td class="text-right" style="white-space: nowrap;">Rp
+                                    {{ number_format($decoration['price'] ?? 0, 0, ',', '.') }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endif
+
+                <tr class="total-row">
+                    <td colspan="3" class="text-right">Total</td>
+                    <td class="text-right" style="white-space: nowrap;">Rp
+                        {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Section 5: Status Pembayaran -->
     <div class="section">
         <div class="section-header">
             <div class="section-title">Status Pembayaran</div>
         </div>
 
         <div class="status-box">
-            <div class="info-label" style="margin-bottom: 5px;">STATUS</div>
+            <div class="info-label" style="margin-bottom: 5px;">Status</div>
             <span class="status-badge {{ $order->payment_status == 'Lunas' ? 'badge-lunas' : 'badge-belum' }}">
-                {{ $order->payment_status == 'Lunas' ? 'LUNAS' : 'BELUM LUNAS' }}
+                {{ $order->payment_status == 'Lunas' ? 'Lunas' : 'Belum Lunas' }}
             </span>
         </div>
-
         <div class="payment-box" style="margin-bottom: 12px;">
-            <div class="info-label" style="margin-bottom: 5px;">SISA PEMBAYARAN</div>
-            <div style="font-size: 16px; font-weight: bold; color: #8b7355;">
+            <div class="info-label" style="margin-bottom: 5px;">Sisa Pembayaran</div>
+            <div class="remaining-amount">
                 Rp {{ number_format($order->remaining_amount, 0, ',', '.') }}
             </div>
         </div>
-
         @if (is_array($order->payment_history) && count($order->payment_history) > 0)
-            <div class="info-label" style="margin-bottom: 8px;">RIWAYAT PEMBAYARAN</div>
+            <div class="info-label" style="margin-bottom: 8px; text-transform: capitalize;">Riwayat Pembayaran</div>
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 25%">PEMBAYARAN</th>
-                        <th class="text-center" style="width: 25%">TANGGAL</th>
-                        <th class="text-right" style="width: 30%">JUMLAH</th>
-                        <th class="text-center" style="width: 20%">METODE</th>
+                        <th style="width: 25%">Pembayaran</th>
+                        <th class="text-center" style="width: 25%">Tanggal</th>
+                        <th class="text-right" style="width: 30%">Jumlah</th>
+                        <th class="text-center" style="width: 20%">Metode</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -638,17 +665,6 @@
         @endif
     </div>
 
-    <!-- Section 5: Catatan Khusus (Optional) -->
-    @if ($order->notes)
-        <div class="section">
-            <div class="section-header">
-                <div class="section-title">Catatan Khusus</div>
-            </div>
-            <div class="notes-box">
-                {{ $order->notes }}
-            </div>
-        </div>
-    @endif
 
     <!-- Footer -->
     <div class="footer">

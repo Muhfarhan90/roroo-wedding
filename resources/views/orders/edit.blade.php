@@ -243,12 +243,58 @@
                     </div>
                 </div>
 
-                <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <p class="text-sm text-blue-800">
-                        <strong>💡 Info:</strong> Untuk menambah pembayaran DP, silakan ke halaman detail order dan gunakan
-                        tombol "Tambah Pembayaran".
-                    </p>
-                </div>
+                @php
+                    $paymentHistory = $order->payment_history ?? [];
+                @endphp
+
+                @if (count($paymentHistory) > 0)
+                    <div class="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                        <h3 class="text-sm font-bold text-gray-900 mb-4">Edit Riwayat Pembayaran</h3>
+                        <div class="space-y-4">
+                            @foreach ($paymentHistory as $index => $payment)
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-lg border border-amber-300">
+                                    <div>
+                                        <label
+                                            class="block text-xs font-medium mb-1 text-gray-600">{{ $payment['dp_number'] ?? 'DP' }}</label>
+                                        <input type="text" name="dp_payments[{{ $index }}][dp_number]"
+                                            value="{{ old('dp_payments.' . $index . '.dp_number', $payment['dp_number'] ?? 'DP') }}"
+                                            class="w-full px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none"
+                                            placeholder="Contoh: DP1, DP2">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-1 text-gray-600">Nominal</label>
+                                        <input type="number" name="dp_payments[{{ $index }}][amount]"
+                                            value="{{ old('dp_payments.' . $index . '.amount', $payment['amount']) }}"
+                                            class="w-full px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none"
+                                            placeholder="Nominal pembayaran">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium mb-1 text-gray-600">Tanggal</label>
+                                        <input type="date" name="dp_payments[{{ $index }}][paid_at]"
+                                            value="{{ old('dp_payments.' . $index . '.paid_at', \Carbon\Carbon::parse($payment['paid_at'])->format('Y-m-d')) }}"
+                                            class="w-full px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none">
+                                    </div>
+                                    <input type="hidden" name="dp_payments[{{ $index }}][payment_method]"
+                                        value="{{ $payment['payment_method'] ?? 'Transfer' }}">
+                                    <input type="hidden" name="dp_payments[{{ $index }}][notes]"
+                                        value="{{ $payment['notes'] ?? '' }}">
+                                </div>
+                            @endforeach
+                        </div>
+                        <p class="text-xs text-amber-700 mt-3">
+                            💡 Edit label DP, nominal dan tanggal untuk setiap pembayaran. Untuk menambah pembayaran DP
+                            baru, gunakan tombol "Tambah Pembayaran" di halaman detail.
+                        </p>
+                    </div>
+                @else
+                    <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p class="text-sm text-blue-800">
+                            <strong>💡 Info:</strong> Untuk menambah pembayaran DP, silakan ke halaman detail order dan
+                            gunakan tombol "Tambah Pembayaran".
+                        </p>
+                    </div>
+                @endif
             </div>
 
             <!-- Action Buttons -->

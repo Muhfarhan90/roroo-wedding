@@ -120,8 +120,8 @@
 
                     <div class="overflow-x-auto">
                         <table class="w-full">
-                            <thead class="bg-gray-50 border-b-2 border-gray-200">
-                                <tr>
+                            <thead class="border-b border-[#d4b896]">
+                                <tr class="">
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">ITEM / PAKET</th>
                                     <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600">JML</th>
                                     <th class="px-4 py-3 text-right text-sm font-semibold text-gray-600">HARGA</th>
@@ -131,7 +131,7 @@
                             <tbody class="divide-y divide-gray-200">
                                 @if (is_array($order->items) && count($order->items) > 0)
                                     @foreach ($order->items as $item)
-                                        <tr>
+                                        <tr class="border-b border-[#d4b896]">
                                             <td class="px-4 py-3 text-sm">{{ $item['name'] ?? 'N/A' }}</td>
                                             <td class="px-4 py-3 text-sm text-center">{{ $item['quantity'] ?? 0 }}</td>
                                             <td class="px-4 py-3 text-sm text-right">Rp
@@ -150,7 +150,7 @@
                     </div>
 
                     <!-- Total -->
-                    <div class="mt-6 border-t-2 border-gray-200 pt-4">
+                    <div class="mt-6 border-t-2 border-[#d4b896] pt-4">
                         <div class="flex justify-end">
                             <div class="w-full md:w-1/2">
                                 <div class="flex justify-between items-center mb-2 text-lg">
@@ -240,12 +240,14 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <!-- Issue Date (Read Only) -->
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                        Tanggal Terbit
+                                    <label for="issue_date" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Tanggal Terbit <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" value="{{ now()->format('d F Y') }}"
-                                        class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg bg-gray-50 text-gray-600">
-                                    <p class="text-xs text-gray-500 mt-1">Otomatis menggunakan tanggal hari ini</p>
+                                    <input type="date" id="issue_date" name="issue_date"
+                                        value="{{ now()->format('Y-m-d') }}"
+                                        class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none transition-colors">
+                                    <p class="text-xs text-gray-500 mt-1">Default: Hari ini, bisa diubah sesuai kebutuhan
+                                    </p>
                                 </div>
 
                                 <!-- Due Date -->
@@ -324,67 +326,67 @@
 
                     <div class="space-y-3">
                         <!-- Order Number -->
-                        <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Order Number</h3>
-                            <p class="text-sm font-semibold text-black">{{ $order->order_number }}</p>
-                        </div>
+                        {{-- <div>
+                            <h3 class="text-sm font-semibold mb-1">Order Number</h3>
+                            <p class="text-sm font-semibold text-gray-500">{{ $order->order_number }}</p>
+                        </div> --}}
 
                         <!-- Tanggal Order -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Tanggal Order</h3>
-                            <p class="text-sm font-semibold text-black">{{ $order->created_at->format('d F Y') }}</p>
+                            <h3 class="text-sm font-semibold mb-1">Tanggal Booking</h3>
+                            <p class="text-sm font-semibold text-gray-500">{{ $order->created_at->format('d F Y') }}</p>
                         </div>
 
                         {{-- Nama Pengantin --}}
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Nama Pengantin</h3>
-                            <p class="text-sm font-semibold text-black">{{ $order->client->client_name }}</p>
+                            <h3 class="text-sm font-semibold mb-1">Nama Pengantin</h3>
+                            <p class="text-sm font-semibold text-gray-500">{{ $order->client->client_name }}</p>
                         </div>
 
                         <!-- HP Pengantin Wanita -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">HP Pengantin Wanita</h3>
+                            <h3 class="text-sm font-semibold mb-1">HP Pengantin Wanita</h3>
                             <a href="https://wa.me/{{ $order->client->bride_phone }}"
-                                class="text-sm font-semibold text-black hover:text-[#8b7355]">{{ $order->client->bride_phone }}</a>
+                                class="text-sm font-semibold text-gray-500 hover:text-[#8b7355]">{{ $order->client->bride_phone }}</a>
                         </div>
 
                         <!-- HP Pengantin Pria -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">HP Pengantin Pria</h3>
+                            <h3 class="text-sm font-semibold mb-1">HP Pengantin Pria</h3>
                             <a href="https://wa.me/{{ $order->client->groom_phone }}"
-                                class="text-sm font-semibold text-black hover:text-[#8b7355]">{{ $order->client->groom_phone }}</a>
+                                class="text-sm font-semibold text-gray-500 hover:text-[#8b7355]">{{ $order->client->groom_phone }}</a>
                         </div>
 
                         <!-- Alamat Pengantin Wanita -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Alamat Pengantin Wanita</h3>
-                            <p class="text-sm font-semibold text-black">{{ $order->client->bride_address ?? '-' }}</p>
+                            <h3 class="text-sm font-semibold mb-1">Alamat Pengantin Wanita</h3>
+                            <p class="text-sm font-semibold text-gray-500">{{ $order->client->bride_address ?? '-' }}</p>
                         </div>
 
                         <!-- Alamat Pengantin Pria -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Alamat Pengantin Pria</h3>
-                            <p class="text-sm font-semibold text-black">{{ $order->client->groom_address ?? '-' }}</p>
+                            <h3 class="text-sm font-semibold mb-1">Alamat Pengantin Pria</h3>
+                            <p class="text-sm font-semibold text-gray-500">{{ $order->client->groom_address ?? '-' }}</p>
                         </div>
 
                         <!-- Orang Tua Pengantin Wanita -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Orang Tua Pengantin Wanita</h3>
-                            <p class="text-sm font-semibold text-black">{{ $order->client->bride_parents ?? '-' }}</p>
+                            <h3 class="text-sm font-semibold mb-1">Orang Tua Pengantin Wanita</h3>
+                            <p class="text-sm font-semibold text-gray-500">{{ $order->client->bride_parents ?? '-' }}</p>
                         </div>
 
                         <!-- Orang Tua Pengantin Pria -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Orang Tua Pengantin Pria</h3>
-                            <p class="text-sm font-semibold text-black">{{ $order->client->groom_parents ?? '-' }}</p>
+                            <h3 class="text-sm font-semibold mb-1">Orang Tua Pengantin Pria</h3>
+                            <p class="text-sm font-semibold text-gray-500">{{ $order->client->groom_parents ?? '-' }}</p>
                         </div>
 
                         <!-- Tanggal Akad -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Tanggal Akad</h3>
+                            <h3 class="text-sm font-semibold mb-1">Tanggal Akad</h3>
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-[#d4b896] text-base">event</span>
-                                <span class="text-sm font-semibold text-black">
+                                <span class="text-sm font-semibold text-gray-500">
                                     {{ $order->client->akad_date ? $order->client->akad_date->format('d F Y') : '-' }}
                                     @if ($order->client->akad_time)
                                         - {{ date('H:i', strtotime($order->client->akad_time)) }} WIB
@@ -395,10 +397,10 @@
 
                         <!-- Tanggal Resepsi -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Tanggal Resepsi</h3>
+                            <h3 class="text-sm font-semibold mb-1">Tanggal Resepsi</h3>
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-[#d4b896] text-base">event</span>
-                                <span class="text-sm font-semibold text-black">
+                                <span class="text-sm font-semibold text-gray-500">
                                     {{ $order->client->reception_date ? $order->client->reception_date->format('d F Y') : '-' }}
                                     @if ($order->client->reception_time)
                                         - {{ date('H:i', strtotime($order->client->reception_time)) }}
@@ -413,8 +415,8 @@
 
                         <!-- Lokasi Acara -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Lokasi Acara</h3>
-                            <p class="text-sm font-semibold text-black">{{ $order->client->event_location ?? '-' }}</p>
+                            <h3 class="text-sm font-semibold mb-1">Lokasi Acara</h3>
+                            <p class="text-sm font-semibold text-gray-500">{{ $order->client->event_location ?? '-' }}</p>
                         </div>
                     </div>
                 </div>

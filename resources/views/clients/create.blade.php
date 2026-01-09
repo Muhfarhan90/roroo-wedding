@@ -31,7 +31,7 @@
                         Nama Pengantin <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="client_name" name="client_name" value="{{ old('client_name') }}"
-                        placeholder="e.g., Roro & Jonggrang" required
+                        placeholder="e.g., Jane & John Doe" required
                         class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#d4b896] rounded-lg focus:border-[#c4a886] focus:outline-none transition-colors @error('client_name') border-red-500 @enderror">
                     @error('client_name')
                         <p class="mt-1 text-xs sm:text-sm text-red-500">{{ $message }}</p>

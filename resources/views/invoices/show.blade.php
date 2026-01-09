@@ -62,7 +62,7 @@
                         <div class="flex justify-between items-start mb-6 pb-6 border-b border-[#e8d5c4]">
                             <div class="flex items-center gap-4">
                                 <img src="{{ asset('logo/logo-roroo-wedding.png') }}" alt="RORO MUA Logo"
-                                    class="w-20 h-20 rounded-full border-2 border-[#d4b896] object-cover">
+                                    class="w-20 h-20 rounded-full object-cover">
                                 <div>
                                     <h2 class="text-5xl font-bold text-gray-700">FAKTUR</h2>
                                     <p class="text-xs text-gray-500 mt-1">{{ $invoice->invoice_number }}</p>
@@ -85,23 +85,33 @@
                         <!-- Invoice Info -->
                         <div class="grid grid-cols-2 gap-6 mb-6">
                             <div>
-                                <p class="text-sm font-medium text-[#e8b896] mb-2">DITERBITKAN KEPADA</p>
-                                <p class="font-semibold text-gray-900">{{ $invoice->order->client->client_name }}</p>
-                                <p class="text-sm text-gray-600"><strong>Tanggal Akad:</strong>
-                                    {{ $invoice->order->client->akad_date ? \Carbon\Carbon::parse($invoice->order->client->akad_date)->format('d F Y') : '-' }}
+                                <p class="text-xs font-bold text-[#8b6f47] uppercase tracking-wide mb-3">DITERBITKAN KEPADA
                                 </p>
-                                <p class="text-sm text-gray-600"><strong>Tanggal Resepsi:</strong>
-                                    {{ $invoice->order->client->reception_date ? \Carbon\Carbon::parse($invoice->order->client->reception_date)->format('d F Y') : '-' }}
+                                <p class="text-sm font-bold text-gray-900 mb-2">{{ $invoice->order->client->client_name }}
                                 </p>
-                                <p class="text-sm text-gray-600"><strong>Lokasi Acara:</strong>
-                                    {{ $invoice->order->client->event_location ?? '-' }}</p>
+                                <p class="text-xs text-gray-600 mb-1">
+                                    <span class="text-gray-500">Tanggal Akad:</span>
+                                    <span
+                                        class="font-semibold text-gray-900">{{ $invoice->order->client->akad_date ? \Carbon\Carbon::parse($invoice->order->client->akad_date)->format('d F Y') : '-' }}</span>
+                                </p>
+                                <p class="text-xs text-gray-600 mb-1">
+                                    <span class="text-gray-500">Tanggal Resepsi:</span>
+                                    <span
+                                        class="font-semibold text-gray-900">{{ $invoice->order->client->reception_date ? \Carbon\Carbon::parse($invoice->order->client->reception_date)->format('d F Y') : '-' }}</span>
+                                </p>
+                                <p class="text-xs text-gray-600">
+                                    <span class="text-gray-500">Lokasi Acara:</span>
+                                    <span
+                                        class="font-semibold text-gray-900">{{ $invoice->order->client->event_location ?? '-' }}</span>
+                                </p>
                             </div>
                             <div class="text-right">
-                                <p class="text-sm font-medium text-[#e8b896] mb-2">DETAIL PEMBAYARAN</p>
+                                <p class="text-xs font-bold text-[#8b6f47] uppercase tracking-wide mb-3">DETAIL PEMBAYARAN
+                                </p>
                                 <div class="mb-1">
-                                    <span class="text-sm text-gray-600">Tanggal Terbit:</span>
+                                    <span class="text-xs text-gray-500">Tanggal Terbit:</span>
                                     <span
-                                        class="font-semibold text-gray-900">{{ \Carbon\Carbon::parse($invoice->issue_date)->format('M d, Y') }}</span>
+                                        class="text-xs font-bold text-gray-900">{{ \Carbon\Carbon::parse($invoice->issue_date)->format('M d, Y') }}</span>
                                 </div>
                                 @php
                                     $paymentHistoryCheck = $invoice->order->payment_history ?? [];
@@ -112,17 +122,18 @@
                                     $isFullyPaid = $totalPaidCheck >= $invoice->total_amount;
                                 @endphp
                                 <div class="mb-1">
-                                    <span class="text-sm text-gray-600">Jatuh Tempo:</span>
+                                    <span class="text-xs text-gray-500">Jatuh Tempo:</span>
                                     @if ($isFullyPaid)
-                                        <span id="previewDueDate" class="font-semibold text-green-600">Lunas ✓</span>
+                                        <span id="previewDueDate" class="text-xs font-bold text-green-600">Lunas ✓</span>
                                     @else
                                         <span id="previewDueDate"
-                                            class="font-semibold text-gray-900">{{ \Carbon\Carbon::parse($invoice->due_date)->format('M d, Y') }}</span>
+                                            class="text-xs font-bold text-gray-900">{{ \Carbon\Carbon::parse($invoice->due_date)->format('M d, Y') }}</span>
                                     @endif
                                 </div>
                                 <div>
-                                    <span class="text-sm text-gray-600">ID Pesanan:</span>
-                                    <span class="font-semibold text-gray-900">{{ $invoice->order->order_number }}</span>
+                                    <span class="text-xs text-gray-500">ID Pesanan:</span>
+                                    <span
+                                        class="text-xs font-bold text-gray-900">{{ $invoice->order->order_number }}</span>
                                 </div>
                             </div>
                         </div>
@@ -131,21 +142,21 @@
                         <div class="mb-6 overflow-x-auto">
                             <table class="w-full border-collapse">
                                 <thead>
-                                    <tr class="border-b-2 border-gray-200">
+                                    <tr class="border-t-2 border-b-2 border-[#d4b896] bg-white">
                                         <th
-                                            class="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-[#e8b896] uppercase">
+                                            class="px-3 py-2.5 text-left text-[10px] font-semibold text-[#8b6f47] uppercase tracking-wide">
                                             LAYANAN
                                         </th>
-                                        <th class="px-2 sm:px-4 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-medium text-[#e8b896] uppercase"
+                                        <th class="px-3 py-2.5 text-center text-[10px] font-semibold text-[#8b6f47] uppercase tracking-wide"
                                             style="width: 50px;">
                                             QTY
                                         </th>
-                                        <th class="px-2 sm:px-4 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-medium text-[#e8b896] uppercase"
-                                            style="width: 100px;">
+                                        <th class="px-3 py-2.5 text-right text-[10px] font-semibold text-[#8b6f47] uppercase tracking-wide"
+                                            style="width: 120px;">
                                             HARGA
                                         </th>
-                                        <th class="px-2 sm:px-4 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-medium text-[#e8b896] uppercase"
-                                            style="width: 100px;">
+                                        <th class="px-3 py-2.5 text-right text-[10px] font-semibold text-[#8b6f47] uppercase tracking-wide"
+                                            style="width: 120px;">
                                             TOTAL
                                         </th>
                                     </tr>
@@ -155,20 +166,13 @@
                                         $items = is_array($invoice->order->items) ? $invoice->order->items : [];
                                     @endphp
                                     @foreach ($items as $item)
-                                        <tr class="border-b border-gray-100">
-                                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700">
-                                                {{ $item['name'] }}</td>
-                                            <td
-                                                class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-center text-gray-700">
-                                                {{ $item['quantity'] }}
+                                        <tr class="border-b border-[#d4b896]">
+                                            <td class="px-3 py-2 text-sm text-gray-800">{{ $item['name'] }}</td>
+                                            <td class="px-3 py-2 text-sm text-center text-gray-800">{{ $item['quantity'] }}
                                             </td>
-                                            <td
-                                                class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-right text-gray-700">
-                                                Rp
+                                            <td class="px-3 py-2 text-sm text-right text-gray-800">Rp
                                                 {{ number_format($item['price'], 0, ',', '.') }}</td>
-                                            <td
-                                                class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-right font-semibold text-gray-900">
-                                                Rp
+                                            <td class="px-3 py-2 text-sm text-right font-semibold text-gray-900">Rp
                                                 {{ number_format($item['total'], 0, ',', '.') }}</td>
                                         </tr>
                                     @endforeach
@@ -177,7 +181,7 @@
                         </div>
 
                         <!-- Totals -->
-                        <div class="border-t-2 border-gray-200 pt-4">
+                        <div class="pt-4">
                             @php
                                 $paymentHistory = $invoice->order->payment_history ?? [];
                                 $totalPaid = 0;
@@ -189,29 +193,32 @@
                             <div class="flex justify-end mb-4">
                                 <div class="w-80">
                                     <!-- Jumlah Total -->
-                                    <div class="flex justify-between text-base font-bold py-3 border-b-2 border-gray-800">
-                                        <span class="text-gray-900">Jumlah Total</span>
-                                        <span class="text-gray-900">Rp
+                                    <div class="flex justify-between py-2 border-b-2 border-[#d4b896]">
+                                        <span class="text-sm font-bold text-gray-900">Jumlah Total</span>
+                                        <span class="text-sm font-bold text-gray-900">Rp
                                             {{ number_format($invoice->total_amount, 0, ',', '.') }}</span>
                                     </div>
 
-                                    <!-- DP/Pembayaran -->
-                                    @foreach ($paymentHistory as $payment)
-                                        <div class="bg-green-50 px-4 py-3 my-2 rounded">
-                                            <div class="flex justify-between">
-                                                <span
-                                                    class="text-gray-700 text-sm">{{ $payment['dp_number'] ?? 'DP' }}</span>
-                                                <span class="text-green-600 font-semibold text-sm">Rp
-                                                    {{ number_format($payment['amount'] ?? 0, 0, ',', '.') }}</span>
-                                            </div>
+                                    <!-- DP/Pembayaran Container -->
+                                    @if (count($paymentHistory) > 0)
+                                        <div class="bg-[#f0fdf4] border border-[#86efac] rounded px-3 py-2 my-3">
+                                            @foreach ($paymentHistory as $index => $payment)
+                                                <div
+                                                    class="flex justify-between py-1.5 {{ $index < count($paymentHistory) - 1 ? 'border-b border-[#d1fae5]' : '' }}">
+                                                    <span
+                                                        class="text-xs font-semibold text-[#166534]">{{ $payment['dp_number'] ?? 'DP' }}</span>
+                                                    <span class="text-xs font-bold text-[#16a34a]">Rp
+                                                        {{ number_format($payment['amount'] ?? 0, 0, ',', '.') }}</span>
+                                                </div>
+                                            @endforeach
                                         </div>
-                                    @endforeach
+                                    @endif
 
                                     <!-- Sisa Tagihan -->
-                                    <div class="bg-[#fff3e0] border border-[#ffb74d] px-4 py-3 rounded mt-2">
+                                    <div class="bg-[#fff3e0] border border-[#ffb74d] px-3 py-2 rounded">
                                         <div class="flex justify-between">
-                                            <span class="text-gray-900 font-semibold text-sm">Sisa Tagihan</span>
-                                            <span class="text-[#f57c00] font-bold text-sm">Rp
+                                            <span class="text-xs font-bold text-[#9a3412]">Sisa Tagihan</span>
+                                            <span class="text-xs font-bold text-[#ea580c]">Rp
                                                 {{ number_format($invoice->total_amount - $totalPaid, 0, ',', '.') }}</span>
                                         </div>
                                     </div>
@@ -220,8 +227,8 @@
                         </div>
 
                         <!-- Notes -->
-                        <div class="mt-6 pt-6 border-t-2 border-gray-200">
-                            <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">CATATAN / KETERANGAN
+                        <div class="mt-6 pt-6 border-t-2 border-[#d4b896]">
+                            <h4 class="text-xs font-bold text-[#8b6f47] uppercase tracking-wide mb-3">CATATAN / KETERANGAN
                             </h4>
                             <div class="text-sm text-gray-700 space-y-2">
                                 @php
@@ -229,40 +236,34 @@
                                     $lastPayment = count($paymentHistory) > 0 ? end($paymentHistory) : null;
                                 @endphp
                                 @if ($lastPayment)
-                                    <p><span class="font-semibold">Invoice untuk:</span> Pembayaran
-                                        {{ $lastPayment['dp_number'] ?? 'N/A' }} - {{ $invoice->order->order_number }}</p>
-                                    <p class="mt-4 text-gray-600 italic">Terima kasih telah memilih ROROO MUA untuk hari
-                                        istimewa Anda! Kami sangat menghargai kepercayaan Anda.</p>
+                                    <p class="text-xs"><span class="font-semibold text-gray-900">Invoice untuk:</span>
+                                        <span class="text-gray-700">Pembayaran {{ $lastPayment['dp_number'] ?? 'N/A' }} -
+                                            {{ $invoice->order->order_number }}</span>
+                                    </p>
+                                    <p class="text-xs text-gray-600 italic mt-2">Terima kasih telah memilih ROROO MUA untuk
+                                        hari istimewa Anda! Kami sangat menghargai kepercayaan Anda.</p>
                                 @else
-                                    <p class="text-gray-500">-</p>
+                                    <p class="text-xs text-gray-500">-</p>
                                 @endif
                             </div>
                         </div>
 
                         <!-- Footer -->
-                        <div class="mt-8 pt-6 border-t border-gray-200">
-                            <div class="flex justify-between items-start text-xs text-gray-600">
+                        <div class="mt-8 pt-6 border-t border-[#d4b896]">
+                            <div class="flex justify-start items-start text-xs text-gray-600">
                                 <div>
-                                    <p class="font-semibold mb-2">Informasi Bank</p>
+                                    <p class="font-bold text-gray-900 mb-2">Informasi Bank</p>
                                     @if ($profile && $profile->banks && count($profile->banks) > 0)
                                         @foreach ($profile->banks as $bank)
-                                            <p>{{ $bank['bank_name'] }}: {{ $bank['account_number'] }} a/n
-                                                {{ $bank['account_holder'] }}</p>
+                                            <p class="text-xs text-gray-700">{{ $bank['bank_name'] }}:
+                                                {{ $bank['account_number'] }} a/n {{ $bank['account_holder'] }}</p>
                                         @endforeach
                                     @else
-                                        <p>BCA: 774 539 3493 a/n Tatimatu Ghofaroh</p>
-                                        <p>BRI: 0101 01030 547 563 a/n Tatimatu Ghofaroh</p>
+                                        <p class="text-xs text-gray-700">BCA: 774 539 3493 a/n Tatimatu Ghofaroh</p>
+                                        <p class="text-xs text-gray-700">BRI: 0101 01030 547 563 a/n Tatimatu Ghofaroh</p>
                                     @endif
                                 </div>
-                                <div class="text-right">
-                                    <p class="font-semibold mb-2">Hubungi Kami</p>
-                                    @if ($profile && $profile->phone)
-                                        <p>Telp: {{ $profile->phone }}</p>
-                                    @endif
-                                    @if ($profile && $profile->email)
-                                        <p>Emai: {{ $profile->email }}</p>
-                                    @endif
-                                </div>
+
                             </div>
                         </div>
                     </div>

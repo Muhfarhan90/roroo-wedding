@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\Order;
 use App\Models\Client;
 use App\Models\Invoice;
@@ -213,6 +214,7 @@ class OrderController extends Controller
             'dp_type' => 'nullable|string',
             'payment_method' => 'nullable|string',
             'payment_notes' => 'nullable|string',
+            'payment_date' => 'nullable|date',
         ]);
 
         // Decode items JSON string to array
@@ -272,12 +274,13 @@ class OrderController extends Controller
         // Add initial payment if provided - default to DP1 if no dp_type specified
         if (!empty($validated['paid_amount']) && $validated['paid_amount'] > 0) {
             $dpType = !empty($validated['dp_type']) ? $validated['dp_type'] : 'DP1';
+            $paymentDate = !empty($validated['payment_date']) ? $validated['payment_date'] : now()->format('Y-m-d');
             $paymentHistory[] = [
                 'dp_number' => $dpType,
                 'amount' => $validated['paid_amount'],
                 'payment_method' => $validated['payment_method'] ?? 'Transfer Bank',
                 'notes' => $validated['payment_notes'] ?? null,
-                'paid_at' => now()->format('Y-m-d H:i:s'),
+                'paid_at' => $paymentDate . ' ' . now()->format('H:i:s'),
             ];
         }
 
@@ -286,33 +289,9 @@ class OrderController extends Controller
         $validated['remaining_amount'] = $validated['total_amount'] - $totalPaid;
 
         // Remove fields that are not in the orders table
-        unset($validated['paid_amount'], $validated['dp_type'], $validated['payment_method'], $validated['payment_notes']);
+        unset($validated['paid_amount'], $validated['dp_type'], $validated['payment_method'], $validated['payment_notes'], $validated['payment_date']);
 
         $order = Order::create($validated);
-
-        // Auto create appointment based on order (akad date & time)
-        $client = Client::find($validated['client_id']);
-        if ($client && $client->akad_date) {
-            // Determine color based on order total
-            $color = '#9333ea'; // purple default
-            if ($order->total_amount > 50000000) {
-                $color = '#ec4899'; // pink
-            } elseif ($order->total_amount > 30000000) {
-                $color = '#a855f7'; // lighter purple
-            }
-
-            \App\Models\Appointment::create([
-                'title' => $client->client_name,
-                'date' => $client->akad_date,
-                'start_time' => $client->akad_start_time ?? '08:00:00',
-                'end_time' => $client->akad_end_time ?? '12:00:00',
-                'location' => $client->event_location,
-                'description' => 'Auto created from order #' . $order->id,
-                'color' => $color,
-                'client_id' => $client->id,
-                'order_id' => $order->id,
-            ]);
-        }
 
         return redirect()->route('orders.show', $order)
             ->with('success', 'Pesanan berhasil dibuat!');
@@ -348,6 +327,12 @@ class OrderController extends Controller
             'decorations.foto_gaun_2' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'decorations.foto_gaun_3' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'notes' => 'nullable|string',
+            'dp_payments' => 'nullable|array',
+            'dp_payments.*.dp_number' => 'nullable|string',
+            'dp_payments.*.amount' => 'nullable|numeric|min:0',
+            'dp_payments.*.paid_at' => 'nullable|date',
+            'dp_payments.*.payment_method' => 'nullable|string',
+            'dp_payments.*.notes' => 'nullable|string',
         ]);
 
         // Decode items JSON string to array
@@ -400,13 +385,46 @@ class OrderController extends Controller
 
         $validated['decorations'] = $decorations;
 
-        // Recalculate remaining amount based on payment history
+        // Update all DP payments if provided
         $paymentHistory = $order->payment_history ?? [];
+        if (!empty($validated['dp_payments'])) {
+            foreach ($validated['dp_payments'] as $index => $dpData) {
+                if (isset($paymentHistory[$index])) {
+                    // Update dp_number if provided
+                    if (!empty($dpData['dp_number'])) {
+                        $paymentHistory[$index]['dp_number'] = $dpData['dp_number'];
+                    }
+                    // Update amount if provided
+                    if (!empty($dpData['amount'])) {
+                        $paymentHistory[$index]['amount'] = $dpData['amount'];
+                    }
+                    // Update date if provided
+                    if (!empty($dpData['paid_at'])) {
+                        $currentTime = isset($paymentHistory[$index]['paid_at']) ? \Carbon\Carbon::parse($paymentHistory[$index]['paid_at'])->format('H:i:s') : now()->format('H:i:s');
+                        $paymentHistory[$index]['paid_at'] = $dpData['paid_at'] . ' ' . $currentTime;
+                    }
+                    // Update payment_method if provided
+                    if (!empty($dpData['payment_method'])) {
+                        $paymentHistory[$index]['payment_method'] = $dpData['payment_method'];
+                    }
+                    // Update notes if provided
+                    if (!empty($dpData['notes'])) {
+                        $paymentHistory[$index]['notes'] = $dpData['notes'];
+                    }
+                }
+            }
+            $validated['payment_history'] = $paymentHistory;
+        }
+
+        // Recalculate remaining amount based on payment history
         $totalPaid = 0;
         foreach ($paymentHistory as $payment) {
             $totalPaid += floatval($payment['amount'] ?? 0);
         }
         $validated['remaining_amount'] = $validated['total_amount'] - $totalPaid;
+
+        // Remove DP fields from validated data as they're not order table columns
+        unset($validated['dp_payments']);
 
         $order->update($validated);
 
@@ -473,7 +491,8 @@ class OrderController extends Controller
                 ->with('info', 'Invoice untuk pesanan ini sudah ada.');
         }
 
-        // Use provided due_date or default to 7 days from now
+        // Use provided dates or defaults
+        $issueDate = $request->input('issue_date', now()->format('Y-m-d'));
         $dueDate = $request->input('due_date', now()->addDays(7)->format('Y-m-d'));
 
         // Calculate total paid from payment_history
@@ -486,7 +505,7 @@ class OrderController extends Controller
         // Create invoice
         $invoice = new Invoice();
         $invoice->order_id = $order->id;
-        $invoice->issue_date = now();
+        $invoice->issue_date = $issueDate; // Use provided or default issue date
         $invoice->due_date = $dueDate; // Use calculated or provided due date
         $invoice->total_amount = $order->total_amount;
         $invoice->paid_amount = $totalPaid; // Set paid_amount first

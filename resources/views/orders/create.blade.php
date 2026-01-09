@@ -239,13 +239,18 @@
 
                     <div>
                         <label class="block text-sm font-medium mb-2 text-black">Pembayaran DP ke</label>
-                        <select name="dp_type" id="dp_type"
+                        <input type="text" name="dp_type" id="dp_type" value="{{ old('dp_type', 'DP1') }}"
+                            placeholder="Contoh: DP1, DP2, Pelunasan, dll"
                             class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none">
-                            <option value="DP1" selected>DP1</option>
-                            <option value="DP2">DP2</option>
-                            <option value="DP3">DP3</option>
-                            <option value="DP4">DP4</option>
-                        </select>
+                        <p class="text-xs text-gray-500 mt-1">Ketik manual label pembayaran, contoh: DP1, DP2, Pelunasan
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-black">Tanggal Pembayaran</label>
+                        <input type="date" name="payment_date" id="payment_date"
+                            value="{{ old('payment_date', date('Y-m-d')) }}"
+                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none">
                     </div>
 
                     <div>

@@ -200,7 +200,7 @@
 
                         <div class="space-y-2">
                             @forelse($upcomingAppointments as $appointment)
-                                <div onclick="showAppointmentDetail({{ $appointment->id }})"
+                                <div onclick="showAppointmentDetail({{ $appointment->order->id }}, '{{ str_contains($appointment->title, 'Akad') ? 'akad' : 'resepsi' }}')"
                                     class="bg-gray-50 rounded-xl p-3 hover:bg-gray-100 transition-all cursor-pointer flex items-start gap-3 border-l-4"
                                     style="border-left-color: {{ $appointment->color ?? '#d4b896' }};">
                                     <!-- Date Badge - Kotak -->
@@ -218,8 +218,11 @@
                                         <div class="flex items-center gap-1.5 mb-1">
                                             <span class="material-symbols-outlined text-sm text-gray-400">schedule</span>
                                             <span class="text-xs font-semibold text-gray-800">
-                                                {{ date('H:i', strtotime($appointment->start_time)) }} -
-                                                {{ date('H:i', strtotime($appointment->end_time)) }} WIB
+                                                {{ date('H:i', strtotime($appointment->start_time)) }}
+                                                @if ($appointment->end_time)
+                                                    - {{ date('H:i', strtotime($appointment->end_time)) }}
+                                                @endif
+                                                WIB
                                             </span>
                                             <span class="text-[10px] text-gray-400">
                                                 {{ $appointment->date->format('D, M d') }}
@@ -466,11 +469,12 @@
             @foreach ($appointments as $date => $dayAppts)
                 @foreach ($dayAppts as $apt)
                     {
-                        id: {{ $apt->id }},
+                        order_id: {{ $apt->order->id }},
+                        type: '{{ str_contains($apt->title, 'Akad') ? 'akad' : 'resepsi' }}',
                         date: '{{ $apt->date->format('Y-m-d') }}',
                         title: '{{ addslashes($apt->title) }}',
                         start_time: '{{ $apt->start_time }}',
-                        end_time: '{{ $apt->end_time }}',
+                        end_time: '{{ $apt->end_time ?? '' }}',
                         color: '{{ $apt->color ?? '#d4b896' }}',
                         location: '{{ addslashes($apt->location ?? '') }}',
                         description: '{{ addslashes($apt->description ?? '') }}',
@@ -485,6 +489,7 @@
                         @if ($apt->order)
                             order: {
                                 id: {{ $apt->order->id }},
+                                order_number: '{{ $apt->order->order_number }}',
                                 total_amount: {{ $apt->order->total_amount }},
                                 notes: '{{ addslashes($apt->order->notes ?? '') }}'
                             }
@@ -534,7 +539,7 @@
 
                     html += `
                         <button
-                            onclick="showAppointmentDetail(${appointment.id})"
+                            onclick="showAppointmentDetail(${appointment.order_id}, '${appointment.type}')"
                             class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all border-l-4"
                             style="border-left-color: ${appointmentColor};">
                             <div class="flex items-start justify-between gap-3">
@@ -542,7 +547,7 @@
                                     <h4 class="font-bold text-gray-900 text-base mb-1">${clientName}</h4>
                                     <div class="flex items-center gap-2 text-sm text-gray-600">
                                         <span class="material-symbols-outlined text-sm">schedule</span>
-                                        <span>${startTimeStr} - ${endTimeStr} WIB</span>
+                                        <span>${startTimeStr}${endTimeStr !== '00:00' ? ' - ' + endTimeStr : ''} WIB</span>
                                     </div>
                                 </div>
                                 <span class="material-symbols-outlined text-gray-400">chevron_right</span>
@@ -561,7 +566,7 @@
             document.getElementById('appointmentListModal').classList.add('hidden');
         }
 
-        function showAppointmentDetail(appointmentId) {
+        function showAppointmentDetail(orderId, type) {
             // Tutup modal list dan buka modal detail LANGSUNG (tanpa delay)
             document.getElementById('appointmentListModal').classList.add('hidden');
             document.getElementById('appointmentDetailModal').classList.remove('hidden');
@@ -580,8 +585,8 @@
             viewBookingBtn.classList.add('opacity-50', 'pointer-events-none', 'cursor-not-allowed');
             viewBookingBtn.classList.remove('cursor-pointer');
 
-            // Fetch data dari API
-            fetch(`/appointments/${appointmentId}`)
+            // Fetch data dari API dengan order_id dan type
+            fetch(`/appointments/${orderId}/${type}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log('Appointment detail data:', data);
@@ -626,8 +631,10 @@
                         endTimeStr = `${endParts[0].padStart(2, '0')}:${endParts[1].padStart(2, '0')}`;
                     }
 
-                    document.getElementById('detailDateTime').innerHTML =
-                        `${dateStr}<br>${startTimeStr} - ${endTimeStr} WIB`;
+                    // Display end time conditionally
+                    const timeDisplay = endTimeStr !== '00:00' ? `${startTimeStr} - ${endTimeStr} WIB` :
+                        `${startTimeStr} WIB`;
+                    document.getElementById('detailDateTime').innerHTML = `${dateStr}<br>${timeDisplay}`;
 
                     // Location
                     if (data.location) {

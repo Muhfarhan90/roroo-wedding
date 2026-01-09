@@ -105,17 +105,14 @@ class ClientController extends Controller
             'bride_parents' => 'nullable|string|max:255',
             'groom_parents' => 'nullable|string|max:255',
             'akad_date' => 'nullable|date',
-            'akad_time' => 'nullable|date_format:H:i',
+            'akad_time' => 'nullable',
             'reception_date' => 'nullable|date',
-            'reception_time' => 'nullable|date_format:H:i',
-            'reception_end_time' => 'nullable|date_format:H:i',
+            'reception_time' => 'nullable',
+            'reception_end_time' => 'nullable',
             'event_location' => 'nullable|string',
         ]);
 
         $client = Client::create($validated);
-
-        // Auto-create appointments for this client
-        $this->createAppointmentsForClient($client);
 
         // Return JSON response if request is AJAX
         if ($request->expectsJson() || $request->ajax()) {
@@ -146,17 +143,14 @@ class ClientController extends Controller
             'bride_parents' => 'nullable|string|max:255',
             'groom_parents' => 'nullable|string|max:255',
             'akad_date' => 'nullable|date',
-            'akad_time' => 'nullable|date_format:H:i',
+            'akad_time' => 'nullable',
             'reception_date' => 'nullable|date',
-            'reception_time' => 'nullable|date_format:H:i',
-            'reception_end_time' => 'nullable|date_format:H:i',
+            'reception_time' => 'nullable',
+            'reception_end_time' => 'nullable',
             'event_location' => 'nullable|string',
         ]);
 
         $client->update($validated);
-
-        // Update or create appointments when dates change
-        $this->updateAppointmentsForClient($client);
 
         return redirect()->route('clients.index')
             ->with('success', 'Klien berhasil diupdate!');
@@ -168,53 +162,5 @@ class ClientController extends Controller
 
         return redirect()->route('clients.index')
             ->with('success', 'Klien berhasil dihapus!');
-    }
-
-    /**
-     * Create appointments for client based on akad and reception dates
-     */
-    private function createAppointmentsForClient(Client $client)
-    {
-        // Create appointment for Akad date
-        if ($client->akad_date) {
-            \App\Models\Appointment::create([
-                'title' => $client->client_name . ' - Akad',
-                'date' => $client->akad_date,
-                'start_time' => $client->akad_time ?? '08:00:00',
-                'end_time' => '12:00:00', // Default end time for akad
-                'location' => $client->event_location,
-                'description' => 'Akad Nikah - ' . $client->client_name,
-                'color' => '#ec4899', // Pink for akad
-                'client_id' => $client->id,
-            ]);
-        }
-
-        // Create appointment for Reception date (if different from akad)
-        if ($client->reception_date && $client->reception_date != $client->akad_date) {
-            \App\Models\Appointment::create([
-                'title' => $client->client_name . ' - Resepsi',
-                'date' => $client->reception_date,
-                'start_time' => $client->reception_time ?? '18:00:00',
-                'end_time' => $client->reception_end_time ?? '22:00:00',
-                'location' => $client->event_location,
-                'description' => 'Resepsi Pernikahan - ' . $client->client_name,
-                'color' => '#9333ea', // Purple for reception
-                'client_id' => $client->id,
-            ]);
-        }
-    }
-
-    /**
-     * Update appointments when client dates change
-     */
-    private function updateAppointmentsForClient(Client $client)
-    {
-        // Delete existing appointments for this client (without order_id)
-        \App\Models\Appointment::where('client_id', $client->id)
-            ->whereNull('order_id')
-            ->delete();
-
-        // Recreate appointments with new dates
-        $this->createAppointmentsForClient($client);
     }
 }
