@@ -491,7 +491,7 @@
                                 id: {{ $apt->order->id }},
                                 order_number: '{{ $apt->order->order_number }}',
                                 total_amount: {{ $apt->order->total_amount }},
-                                notes: '{{ addslashes($apt->order->notes ?? '') }}'
+                                notes: {!! json_encode($apt->order->notes ?? '') !!}
                             }
                         @endif
                     },
