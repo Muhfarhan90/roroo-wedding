@@ -6,8 +6,11 @@ use App\Models\Appointment;
 use App\Models\Order;
 use App\Models\Client;
 use App\Models\Invoice;
+use App\Notifications\OrderUpdatedNotification;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Notification;
 
 class OrderController extends Controller
 {
@@ -312,9 +315,10 @@ class OrderController extends Controller
 
     public function update(Request $request, Order $order)
     {
+        // 1. VALIDASI DATA
         $validated = $request->validate([
             'client_id' => 'required|exists:clients,id',
-            'items' => 'nullable|string', // Changed to string since it's JSON
+            'items' => 'nullable|string',
             'total_amount' => 'required|numeric|min:0',
             'payment_status' => 'required|string',
             'decorations' => 'nullable|array',
@@ -335,101 +339,159 @@ class OrderController extends Controller
             'dp_payments.*.notes' => 'nullable|string',
         ]);
 
-        // Decode items JSON string to array
-        if (!empty($validated['items'])) {
-            $validated['items'] = json_decode($validated['items'], true);
-        } else {
-            $validated['items'] = [];
-        }
+        // 2. DATA PREPARATION (Items, Decorations, Payment History)
+        // Helper inline untuk memastikan format array
+        $ensureArray = function ($value) {
+            if (is_string($value)) {
+                $decoded = json_decode($value, true);
+                return is_array($decoded) ? $decoded : [];
+            }
+            return is_array($value) ? $value : [];
+        };
 
-        // Start with existing decorations
-        $decorations = $order->decorations ?? [];
+        $validated['items'] = $ensureArray($validated['items'] ?? []);
+        $validated['decorations'] = $ensureArray($validated['decorations'] ?? []);
+        // Note: payment_history tidak ada di validate awal, tapi kita handle di bawah
 
-        // Merge with text fields from form
-        if (isset($validated['decorations'])) {
+        // 3. MERGE DECORATIONS (Existing + New Text + New Files)
+        $currentDecorations = $order->decorations ?? [];
+
+        // Merge text input
+        if (!empty($validated['decorations'])) {
             foreach ($validated['decorations'] as $key => $value) {
-                // Only merge non-file fields (text inputs)
                 if (is_string($value) && !empty($value)) {
-                    $decorations[$key] = $value;
+                    $currentDecorations[$key] = $value;
                 }
             }
         }
 
-        // Handle file uploads
+        // Handle File Uploads
         if ($request->hasFile('decorations')) {
             $files = $request->file('decorations');
+            $uploadFields = ['photo_pelaminan', 'photo_kain_tenda', 'foto_gaun_1', 'foto_gaun_2', 'foto_gaun_3'];
 
-            if (isset($files['photo_pelaminan'])) {
-                $file = $files['photo_pelaminan'];
-                $filename = time() . '_pelaminan.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs('decorations', $filename, 'public');
-                $decorations['photo_pelaminan'] = $path;
-            }
-
-            if (isset($files['photo_kain_tenda'])) {
-                $file = $files['photo_kain_tenda'];
-                $filename = time() . '_kain_tenda.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs('decorations', $filename, 'public');
-                $decorations['photo_kain_tenda'] = $path;
-            }
-
-            for ($i = 1; $i <= 3; $i++) {
-                if (isset($files["foto_gaun_{$i}"])) {
-                    $file = $files["foto_gaun_{$i}"];
-                    $filename = time() . "_gaun_{$i}." . $file->getClientOriginalExtension();
+            foreach ($uploadFields as $field) {
+                if (isset($files[$field])) {
+                    $file = $files[$field];
+                    $filename = time() . '_' . $field . '.' . $file->getClientOriginalExtension();
                     $path = $file->storeAs('decorations', $filename, 'public');
-                    $decorations["foto_gaun_{$i}"] = $path;
+                    $currentDecorations[$field] = $path;
                 }
             }
         }
+        $validated['decorations'] = $currentDecorations;
 
-        $validated['decorations'] = $decorations;
-
-        // Update all DP payments if provided
+        // 4. HANDLE DP PAYMENTS & REMAINING AMOUNT
         $paymentHistory = $order->payment_history ?? [];
-        if (!empty($validated['dp_payments'])) {
-            foreach ($validated['dp_payments'] as $index => $dpData) {
+
+        if (!empty($request->dp_payments) && is_array($request->dp_payments)) {
+            foreach ($request->dp_payments as $index => $dpData) {
                 if (isset($paymentHistory[$index])) {
-                    // Update dp_number if provided
-                    if (!empty($dpData['dp_number'])) {
-                        $paymentHistory[$index]['dp_number'] = $dpData['dp_number'];
-                    }
-                    // Update amount if provided
-                    if (!empty($dpData['amount'])) {
-                        $paymentHistory[$index]['amount'] = $dpData['amount'];
-                    }
-                    // Update date if provided
+                    // Update field jika ada isinya
+                    if (!empty($dpData['dp_number'])) $paymentHistory[$index]['dp_number'] = $dpData['dp_number'];
+                    if (!empty($dpData['amount'])) $paymentHistory[$index]['amount'] = $dpData['amount'];
+                    if (!empty($dpData['payment_method'])) $paymentHistory[$index]['payment_method'] = $dpData['payment_method'];
+                    if (!empty($dpData['notes'])) $paymentHistory[$index]['notes'] = $dpData['notes'];
+
                     if (!empty($dpData['paid_at'])) {
-                        $currentTime = isset($paymentHistory[$index]['paid_at']) ? \Carbon\Carbon::parse($paymentHistory[$index]['paid_at'])->format('H:i:s') : now()->format('H:i:s');
-                        $paymentHistory[$index]['paid_at'] = $dpData['paid_at'] . ' ' . $currentTime;
-                    }
-                    // Update payment_method if provided
-                    if (!empty($dpData['payment_method'])) {
-                        $paymentHistory[$index]['payment_method'] = $dpData['payment_method'];
-                    }
-                    // Update notes if provided
-                    if (!empty($dpData['notes'])) {
-                        $paymentHistory[$index]['notes'] = $dpData['notes'];
+                        $existingTime = isset($paymentHistory[$index]['paid_at'])
+                            ? Carbon::parse($paymentHistory[$index]['paid_at'])->format('H:i:s')
+                            : now()->format('H:i:s');
+                        $paymentHistory[$index]['paid_at'] = $dpData['paid_at'] . ' ' . $existingTime;
                     }
                 }
             }
-            $validated['payment_history'] = $paymentHistory;
         }
+        $validated['payment_history'] = $paymentHistory;
 
-        // Recalculate remaining amount based on payment history
-        $totalPaid = 0;
-        foreach ($paymentHistory as $payment) {
-            $totalPaid += floatval($payment['amount'] ?? 0);
-        }
+        // Recalculate Remaining Amount
+        $totalPaid = collect($paymentHistory)->sum(fn($p) => floatval($p['amount'] ?? 0));
         $validated['remaining_amount'] = $validated['total_amount'] - $totalPaid;
 
-        // Remove DP fields from validated data as they're not order table columns
+        // Bersihkan field temporary
         unset($validated['dp_payments']);
 
+        // 5. SIMPAN DATA LAMA (Untuk Comparison)
+        // Kita ambil raw attributes agar bisa membandingkan JSON string vs Array
+        $oldAttributes = $order->getAttributes();
+
+        // 6. UPDATE DATABASE
         $order->update($validated);
+
+        // 7. DETEKSI PERUBAHAN & KIRIM NOTIFIKASI
+        $changes = [];
+
+        foreach ($validated as $key => $newValue) {
+            $oldValue = $oldAttributes[$key] ?? null;
+
+            // Normalisasi Old Value (Decode JSON ke Array jika perlu)
+            if (is_string($oldValue) && $this->isJson($oldValue)) {
+                $oldValue = json_decode($oldValue, true);
+            }
+            // Normalisasi New Value
+            if (is_string($newValue) && $this->isJson($newValue)) {
+                $newValue = json_decode($newValue, true);
+            }
+
+            $isDifferent = false;
+
+            // LOGIKA PERBANDINGAN BARU (LEBIH PINTAR)
+            if (is_array($newValue) || is_array($oldValue)) {
+                // Pastikan keduanya array (handle case null)
+                $arrOld = is_array($oldValue) ? $oldValue : [];
+                $arrNew = is_array($newValue) ? $newValue : [];
+
+                // Gunakan operator '!=' (bukan '!==')
+                // Agar PHP membandingkan isi array tanpa peduli urutan key
+                // Dan agar "100" (string) dianggap sama dengan 100 (int)
+                if ($arrOld != $arrNew) {
+                    $isDifferent = true;
+                    // Simpan sebagai JSON string agar seragam di notifikasi
+                    $oldValue = json_encode($oldValue);
+                    $newValue = json_encode($newValue);
+                }
+            } else {
+                // Bandingkan string/number biasa
+                if ($oldValue != $newValue) {
+                    $isDifferent = true;
+                }
+            }
+
+            if ($isDifferent) {
+                $changes[$key] = [
+                    'old' => $oldValue,
+                    'new' => $newValue,
+                ];
+            }
+        }
+
+        // Kirim Email jika ada perubahan
+        if (!empty($changes)) {
+            // PERBAIKAN: Gunakan env() langsung untuk memastikan alamat email terbaca
+            $adminEmail = env('MAIL_ADMIN', 'muhfarhanhidayatulloh@gmail.com');
+
+            // Dapatkan user yang sedang login
+            $currentUser = auth()->user();
+
+            try {
+                Notification::route('mail', $adminEmail)
+                    ->notify(new OrderUpdatedNotification($order, $changes, $currentUser));
+            } catch (\Exception $e) {
+                // Opsional: Log error jika email gagal, agar tidak membatalkan proses update
+                \Log::error('Gagal mengirim email notifikasi: ' . $e->getMessage());
+            }
+        }
 
         return redirect()->route('orders.show', $order)
             ->with('success', 'Pesanan berhasil diperbarui!');
+    }
+
+    // Helper: Cek string JSON valid
+    private function isJson($string)
+    {
+        if (!is_string($string)) return false;
+        json_decode($string);
+        return (json_last_error() === JSON_ERROR_NONE);
     }
 
     public function destroy(Order $order)

@@ -107,8 +107,7 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Mempelai Wanita</th>
-                <th>Mempelai Pria</th>
+                <th>Nama Mempelai</th>
                 <th>Telepon Wanita</th>
                 <th>Telepon Pria</th>
                 <th>Tanggal Akad</th>
@@ -119,8 +118,7 @@
             @foreach ($clients as $index => $client)
                 <tr>
                     <td class="text-center">{{ $index + 1 }}</td>
-                    <td>{{ $client->bride_name }}</td>
-                    <td>{{ $client->groom_name }}</td>
+                    <td>{{ $client->client_name }}</td>
                     <td>{{ $client->bride_phone }}</td>
                     <td>{{ $client->groom_phone }}</td>
                     <td class="text-center">{{ $client->akad_date ? $client->akad_date->format('d/m/Y') : '-' }}</td>

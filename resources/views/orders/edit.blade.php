@@ -336,17 +336,17 @@
                     <input type="text" data-id="${itemCounter}" data-field="name" value="${name}"
                         placeholder="Paket Riau Pengantin"
                         class="w-full px-3 py-2 border border-gray-200 rounded focus:border-[#d4b896] focus:outline-none text-sm"
-                        onchange="updateItem(${itemCounter})">
+                        onchange="updateItem(event, ${itemCounter})">
                 </td>
                 <td class="px-4 py-3 text-center">
                     <input type="number" data-id="${itemCounter}" data-field="quantity" value="${quantity}" min="1"
                         class="w-full px-3 py-2 border border-gray-200 rounded focus:border-[#d4b896] focus:outline-none text-sm text-center"
-                        onchange="updateItem(${itemCounter})">
+                        onchange="updateItem(event, ${itemCounter})">
                 </td>
                 <td class="px-4 py-3">
                     <input type="number" data-id="${itemCounter}" data-field="price" value="${price}" min="0" step="0.01"
                         class="w-full px-3 py-2 border border-gray-200 rounded focus:border-[#d4b896] focus:outline-none text-sm"
-                        onchange="updateItem(${itemCounter})" placeholder="INO">
+                        onchange="updateItem(event, ${itemCounter})" placeholder="INO">
                 </td>
                 <td class="px-4 py-3">
                     <input type="text" id="total-${itemCounter}" readonly
@@ -378,20 +378,20 @@
                         <input type="text" data-id="${itemCounter}" data-field="name" data-mobile="true" value="${name}"
                             placeholder="Paket Riau Pengantin"
                             class="w-full px-3 py-2 border border-gray-200 rounded focus:border-[#d4b896] focus:outline-none text-sm"
-                            onchange="updateItem(${itemCounter})">
+                            onchange="updateItem(event, ${itemCounter})">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Jml</label>
                             <input type="number" data-id="${itemCounter}" data-field="quantity" data-mobile="true" value="${quantity}" min="1"
                                 class="w-full px-3 py-2 border border-gray-200 rounded focus:border-[#d4b896] focus:outline-none text-sm"
-                                onchange="updateItem(${itemCounter})">
+                                onchange="updateItem(event, ${itemCounter})">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Harga</label>
                             <input type="number" data-id="${itemCounter}" data-field="price" data-mobile="true" value="${price}" min="0" step="0.01"
                                 class="w-full px-3 py-2 border border-gray-200 rounded focus:border-[#d4b896] focus:outline-none text-sm"
-                                onchange="updateItem(${itemCounter})" placeholder="0">
+                                onchange="updateItem(event, ${itemCounter})" placeholder="0">
                         </div>
                     </div>
                     <div>
@@ -414,28 +414,27 @@
             calculateTotal();
         }
 
-        function updateItem(id) {
-            // Get values from either desktop or mobile view
-            const desktopRow = document.querySelector(`#item-row-${id}`);
-            const mobileCard = document.querySelector(`#item-card-${id}`);
+        function updateItem(event, id) {
+            const source = event.target;
+            const isMobile = source.dataset.mobile === "true";
+
+            const desktopRow = document.getElementById(`item-row-${id}`);
+            const mobileCard = document.getElementById(`item-card-${id}`);
 
             let name, quantity, price;
 
-            if (desktopRow) {
+            if (isMobile && mobileCard) {
+                name = mobileCard.querySelector('[data-field="name"]').value;
+                quantity = parseFloat(mobileCard.querySelector('[data-field="quantity"]').value) || 1;
+                price = parseFloat(mobileCard.querySelector('[data-field="price"]').value) || 0;
+            } else if (desktopRow) {
                 name = desktopRow.querySelector('[data-field="name"]').value;
                 quantity = parseFloat(desktopRow.querySelector('[data-field="quantity"]').value) || 1;
                 price = parseFloat(desktopRow.querySelector('[data-field="price"]').value) || 0;
             }
 
-            if (mobileCard) {
-                name = mobileCard.querySelector('[data-field="name"]').value;
-                quantity = parseFloat(mobileCard.querySelector('[data-field="quantity"]').value) || 1;
-                price = parseFloat(mobileCard.querySelector('[data-field="price"]').value) || 0;
-            }
-
             const total = quantity * price;
 
-            // Update item in array
             const itemIndex = items.findIndex(item => item.id === id);
             if (itemIndex !== -1) {
                 items[itemIndex] = {
@@ -447,7 +446,7 @@
                 };
             }
 
-            // Sync desktop and mobile inputs
+            // Sync desktop
             if (desktopRow) {
                 desktopRow.querySelector('[data-field="name"]').value = name;
                 desktopRow.querySelector('[data-field="quantity"]').value = quantity;
@@ -455,6 +454,7 @@
                 document.getElementById(`total-${id}`).value = `Rp ${total.toLocaleString('id-ID')}`;
             }
 
+            // Sync mobile
             if (mobileCard) {
                 mobileCard.querySelector('[data-field="name"]').value = name;
                 mobileCard.querySelector('[data-field="quantity"]').value = quantity;
@@ -464,6 +464,7 @@
 
             calculateTotal();
         }
+
 
         function removeItem(id) {
             const desktopRow = document.getElementById(`item-row-${id}`);
