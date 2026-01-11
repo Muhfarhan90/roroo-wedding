@@ -334,8 +334,15 @@
                             <!-- Tanggal Order -->
                             <div>
                                 <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Tanggal Booking</h3>
-                                <p class="text-sm font-medium text-black">{{ $order->created_at->format('d F Y') }}
-                                </p>
+                                @php
+                                    $firstPaymentDate = null;
+                                    if (!empty($order->payment_history) && is_array($order->payment_history)) {
+                                        $firstPayment = collect($order->payment_history)->sortBy('paid_at')->first();
+                                        if ($firstPayment && !empty($firstPayment['paid_at'])) {
+                                            $firstPaymentDate = \Carbon\Carbon::parse($firstPayment['paid_at']);
+                                        }
+                                    }
+                                @endphp
                             </div>
 
                             {{-- Nama Pengantin --}}
