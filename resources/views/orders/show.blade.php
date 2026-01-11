@@ -343,6 +343,13 @@
                                         }
                                     }
                                 @endphp
+                                <p class="text-sm font-medium text-black">
+                                    @if ($firstPaymentDate)
+                                        {{ $firstPaymentDate->format('d F Y') }}
+                                    @else
+                                        {{ $order->created_at->format('d F Y') }}
+                                    @endif
+                                </p>
                             </div>
 
                             {{-- Nama Pengantin --}}
