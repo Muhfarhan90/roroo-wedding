@@ -114,5 +114,5 @@ return [
     ],
 
     // Tambahan: Email admin untuk notifikasi
-    'admin_email' => env('MAIL_ADMIN', 'muhfarhanhidayatulloh@gmail'),
+    'admin_email' => env('MAIL_ADMIN', 'miminroro1@gmail.com'),
 ];
