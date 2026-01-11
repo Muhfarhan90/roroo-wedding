@@ -468,7 +468,7 @@ class OrderController extends Controller
         // Kirim Email jika ada perubahan
         if (!empty($changes)) {
             // PERBAIKAN: Gunakan env() langsung untuk memastikan alamat email terbaca
-            $adminEmail = env('MAIL_ADMIN', 'muhfarhanhidayatulloh@gmail.com');
+            $adminEmail = env('MAIL_ADMIN', 'miminroro1@gmail.com');
 
             // Dapatkan user yang sedang login
             $currentUser = auth()->user();
