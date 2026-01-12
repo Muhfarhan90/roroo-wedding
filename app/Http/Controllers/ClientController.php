@@ -39,7 +39,7 @@ class ClientController extends Controller
         $sortOrder = 'desc';
 
         switch ($sortBy) {
-            case 'bride_name':
+            case 'client_name':
             case 'akad_date':
             case 'reception_date':
                 $sortOrder = 'asc';

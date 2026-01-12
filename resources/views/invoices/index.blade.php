@@ -40,8 +40,9 @@
                     <div class="relative lg:col-span-5">
                         <span
                             class="material-symbols-outlined absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg sm:text-2xl pointer-events-none">search</span>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Invoice..."
+                        <input type="search" name="search" value="{{ request('search') }}" placeholder="Cari Invoice..."
                             class="w-full pl-9 sm:pl-12 pr-3 sm:pr-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg focus:border-[#d4b896] focus:outline-none transition-colors">
+                        <button type="submit" class="hidden"></button>
                     </div>
 
                     <!-- Filter, Sort, Per Page - 3 columns on mobile, spans 7 columns on desktop -->
