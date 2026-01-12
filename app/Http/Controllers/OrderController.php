@@ -106,8 +106,7 @@ class OrderController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->whereHas('client', function ($q) use ($search) {
-                $q->where('bride_name', 'like', "%{$search}%")
-                    ->orWhere('groom_name', 'like', "%{$search}%");
+                $q->where('client_name', 'like', "%{$search}%");
             })->orWhere('order_number', 'like', "%{$search}%");
         }
 
