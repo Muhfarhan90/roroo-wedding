@@ -33,7 +33,135 @@
 
         </div>
 
-        <div class="flex flex-col lg:grid lg:grid-cols-3 gap-6">
+        <div class="space-y-6">
+            <!-- Sidebar -->
+            <div class="space-y-6 flex flex-col order-1 lg:order-none">
+                <!-- Detail Klien & Acara -->
+                <div class="bg-white border-2 border-[#d4b896] rounded-xl p-6 shadow-lg order-1 lg:order-none">
+                    <h2 class="text-lg font-bold mb-4 text-black border-b-2 border-[#d4b896] pb-2">Detail Klien & Acara
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-3">
+                            <!-- Order Number -->
+                            {{-- <div>
+                                <h3 class="text-sm font-semibold mb-1">Order Number</h3>
+                                <p class="text-xs font-bold text-gray-500">{{ $order->order_number }}</p>
+                            </div> --}}
+
+                            <!-- Tanggal Order -->
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Tanggal Booking</h3>
+                                @php
+                                    $firstPaymentDate = null;
+                                    if (!empty($order->payment_history) && is_array($order->payment_history)) {
+                                        $firstPayment = collect($order->payment_history)->sortBy('paid_at')->first();
+                                        if ($firstPayment && !empty($firstPayment['paid_at'])) {
+                                            $firstPaymentDate = \Carbon\Carbon::parse($firstPayment['paid_at']);
+                                        }
+                                    }
+                                @endphp
+                                <p class="text-sm font-medium text-black">
+                                    @if ($firstPaymentDate)
+                                        {{ $firstPaymentDate->format('d F Y') }}
+                                    @else
+                                        {{ $order->created_at->format('d F Y') }}
+                                    @endif
+                                </p>
+                            </div>
+
+                            {{-- Nama Pengantin --}}
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Nama Pengantin</h3>
+                                <p class="text-sm font-medium text-black ">{{ $order->client->client_name }}</p>
+                            </div>
+
+                            <!-- HP Pengantin Wanita -->
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">HP Pengantin Wanita</h3>
+                                <a href="https://wa.me/{{ $order->client->bride_phone }}"
+                                    class="text-sm font-medium text-black hover:text-[#8b7355]">{{ $order->client->bride_phone }}</a>
+                            </div>
+
+                            <!-- HP Pengantin Pria -->
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">HP Pengantin Pria</h3>
+                                <a href="https://wa.me/{{ $order->client->groom_phone }}"
+                                    class="text-sm font-medium text-black hover:text-[#8b7355]">{{ $order->client->groom_phone }}</a>
+                            </div>
+
+                            <!-- Alamat Pengantin Wanita -->
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Alamat Pengantin Wanita</h3>
+                                <p class="text-sm font-medium text-black">{{ $order->client->bride_address ?? '-' }}
+                                </p>
+                            </div>
+
+                            <!-- Alamat Pengantin Pria -->
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Alamat Pengantin Pria</h3>
+                                <p class="text-sm font-medium text-black">{{ $order->client->groom_address ?? '-' }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+
+                            <!-- Orang Tua Pengantin Wanita -->
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Orang Tua Pengantin Wanita</h3>
+                                <p class="text-sm font-medium text-black">{{ $order->client->bride_parents ?? '-' }}
+                                </p>
+                            </div>
+
+                            <!-- Orang Tua Pengantin Pria -->
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Orang Tua Pengantin Pria</h3>
+                                <p class="text-sm font-medium text-black">{{ $order->client->groom_parents ?? '-' }}
+                                </p>
+                            </div>
+
+                            <!-- Tanggal Akad -->
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Tanggal Akad</h3>
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[#d4b896] text-base">event</span>
+                                    <span class="text-sm font-medium text-black">
+                                        {{ $order->client->akad_date ? $order->client->akad_date->format('d F Y') : '-' }}
+                                        @if ($order->client->akad_time)
+                                            - {{ date('H:i', strtotime($order->client->akad_time)) }} WIB
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Tanggal Resepsi -->
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Tanggal Resepsi</h3>
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[#d4b896] text-base">event</span>
+                                    <span class="text-sm font-medium text-black">
+                                        {{ $order->client->reception_date ? $order->client->reception_date->format('d F Y') : '-' }}
+                                        @if ($order->client->reception_time)
+                                            - {{ date('H:i', strtotime($order->client->reception_time)) }}
+                                            @if ($order->client->reception_end_time)
+                                                s/d {{ date('H:i', strtotime($order->client->reception_end_time)) }}
+                                            @endif
+                                            WIB
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Lokasi Acara -->
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Lokasi Acara</h3>
+                                <p class="text-sm font-medium text-black">{{ $order->client->event_location ?? '-' }}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <!-- Main Content -->
             <div class="lg:col-span-2 space-y-6 flex flex-col order-2 lg:order-none">
                 <!-- Pilihan Kustom -->
@@ -317,134 +445,7 @@
                 @endif
             </div>
 
-            <!-- Sidebar -->
-            <div class="space-y-6 flex flex-col order-1 lg:order-none">
-                <!-- Detail Klien & Acara -->
-                <div class="bg-white border-2 border-[#d4b896] rounded-xl p-6 shadow-lg order-1 lg:order-none">
-                    <h2 class="text-lg font-bold mb-4 text-black border-b-2 border-[#d4b896] pb-2">Detail Klien & Acara
-                    </h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-3">
-                            <!-- Order Number -->
-                            {{-- <div>
-                                <h3 class="text-sm font-semibold mb-1">Order Number</h3>
-                                <p class="text-xs font-bold text-gray-500">{{ $order->order_number }}</p>
-                            </div> --}}
 
-                            <!-- Tanggal Order -->
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Tanggal Booking</h3>
-                                @php
-                                    $firstPaymentDate = null;
-                                    if (!empty($order->payment_history) && is_array($order->payment_history)) {
-                                        $firstPayment = collect($order->payment_history)->sortBy('paid_at')->first();
-                                        if ($firstPayment && !empty($firstPayment['paid_at'])) {
-                                            $firstPaymentDate = \Carbon\Carbon::parse($firstPayment['paid_at']);
-                                        }
-                                    }
-                                @endphp
-                                <p class="text-sm font-medium text-black">
-                                    @if ($firstPaymentDate)
-                                        {{ $firstPaymentDate->format('d F Y') }}
-                                    @else
-                                        {{ $order->created_at->format('d F Y') }}
-                                    @endif
-                                </p>
-                            </div>
-
-                            {{-- Nama Pengantin --}}
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Nama Pengantin</h3>
-                                <p class="text-sm font-medium text-black ">{{ $order->client->client_name }}</p>
-                            </div>
-
-                            <!-- HP Pengantin Wanita -->
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">HP Pengantin Wanita</h3>
-                                <a href="https://wa.me/{{ $order->client->bride_phone }}"
-                                    class="text-sm font-medium text-black hover:text-[#8b7355]">{{ $order->client->bride_phone }}</a>
-                            </div>
-
-                            <!-- HP Pengantin Pria -->
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">HP Pengantin Pria</h3>
-                                <a href="https://wa.me/{{ $order->client->groom_phone }}"
-                                    class="text-sm font-medium text-black hover:text-[#8b7355]">{{ $order->client->groom_phone }}</a>
-                            </div>
-
-                            <!-- Alamat Pengantin Wanita -->
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Alamat Pengantin Wanita</h3>
-                                <p class="text-sm font-medium text-black">{{ $order->client->bride_address ?? '-' }}
-                                </p>
-                            </div>
-
-                            <!-- Alamat Pengantin Pria -->
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Alamat Pengantin Pria</h3>
-                                <p class="text-sm font-medium text-black">{{ $order->client->groom_address ?? '-' }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="space-y-3">
-
-                            <!-- Orang Tua Pengantin Wanita -->
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Orang Tua Pengantin Wanita</h3>
-                                <p class="text-sm font-medium text-black">{{ $order->client->bride_parents ?? '-' }}
-                                </p>
-                            </div>
-
-                            <!-- Orang Tua Pengantin Pria -->
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Orang Tua Pengantin Pria</h3>
-                                <p class="text-sm font-medium text-black">{{ $order->client->groom_parents ?? '-' }}
-                                </p>
-                            </div>
-
-                            <!-- Tanggal Akad -->
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Tanggal Akad</h3>
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-[#d4b896] text-base">event</span>
-                                    <span class="text-sm font-medium text-black">
-                                        {{ $order->client->akad_date ? $order->client->akad_date->format('d F Y') : '-' }}
-                                        @if ($order->client->akad_time)
-                                            - {{ date('H:i', strtotime($order->client->akad_time)) }} WIB
-                                        @endif
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- Tanggal Resepsi -->
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Tanggal Resepsi</h3>
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-[#d4b896] text-base">event</span>
-                                    <span class="text-sm font-medium text-black">
-                                        {{ $order->client->reception_date ? $order->client->reception_date->format('d F Y') : '-' }}
-                                        @if ($order->client->reception_time)
-                                            - {{ date('H:i', strtotime($order->client->reception_time)) }}
-                                            @if ($order->client->reception_end_time)
-                                                s/d {{ date('H:i', strtotime($order->client->reception_end_time)) }}
-                                            @endif
-                                            WIB
-                                        @endif
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- Lokasi Acara -->
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-500 mb-1 uppercase">Lokasi Acara</h3>
-                                <p class="text-sm font-medium text-black">{{ $order->client->event_location ?? '-' }}
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     </div>
