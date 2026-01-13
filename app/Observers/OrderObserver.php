@@ -14,7 +14,7 @@ class OrderObserver
     public function updated(Order $order)
     {
         // Check if payment_history or payment-related fields were updated
-        if ($order->wasChanged(['payment_history', 'remaining_amount', 'payment_status'])) {
+        if ($order->wasChanged(['payment_history', 'remaining_amount', 'payment_status', 'total_amount'])) {
             $this->syncInvoice($order);
         }
     }
@@ -33,6 +33,7 @@ class OrderObserver
 
             // Update invoice
             $invoice->paid_amount = $totalPaid;
+            $invoice->total_amount = $order->total_amount;
             $invoice->remaining_amount = max(0, $invoice->total_amount - $totalPaid);
 
             // Update invoice status

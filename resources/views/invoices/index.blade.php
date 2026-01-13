@@ -14,14 +14,14 @@
             </div>
         </div>
 
-        @if (session('success'))
+        {{-- @if (session('success'))
             <div class="mb-4 sm:mb-6 p-3 sm:p-4 bg-green-50 border-l-4 border-green-500 text-green-800 rounded-lg">
                 <div class="flex items-center gap-2 sm:gap-3">
                     <span class="material-symbols-outlined text-lg sm:text-2xl">check_circle</span>
                     <span class="text-sm sm:text-base">{{ session('success') }}</span>
                 </div>
             </div>
-        @endif
+        @endif --}}
 
         @if (session('error'))
             <div class="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 border-l-4 border-red-500 text-red-800 rounded-lg">
@@ -211,7 +211,8 @@
                                 <td class="px-6 py-4">
                                     <div class="flex items-center justify-center gap-2">
                                         <a href="{{ route('invoices.show', $invoice) }}"
-                                            class="p-2 text-gray-600 hover:text-[#d4b896] transition-colors" title="View">
+                                            class="p-2 text-gray-600 hover:text-[#d4b896] transition-colors"
+                                            title="View">
                                             <span class="material-symbols-outlined">visibility</span>
                                         </a>
                                         <button onclick="downloadInvoice({{ $invoice->id }})"
@@ -219,6 +220,17 @@
                                             title="Download PDF">
                                             <span class="material-symbols-outlined">print</span>
                                         </button>
+                                        <form action="{{ route('invoices.destroy', $invoice) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this invoice?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                                                title="Delete">
+                                                <span class="material-symbols-outlined">delete</span>
+                                            </button>
+
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
