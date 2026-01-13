@@ -33,8 +33,7 @@
 
         </div>
 
-        <div class="space-y-6">
-            <!-- Sidebar -->
+        <div class="flex flex-col lg:grid lg:grid-cols-3 gap-6"> <!-- Sidebar -->
             <div class="space-y-6 flex flex-col order-1 lg:order-none">
                 <!-- Detail Klien & Acara -->
                 <div class="bg-white border-2 border-[#d4b896] rounded-xl p-6 shadow-lg order-1 lg:order-none">
